@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: depromeet-makers-be
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+server:
+  shutdown: graceful
+  tomcat:
+    threads:
+      min-spare: 15
+      max: 200
+    accept-count: 200
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json
+    min-response-size: 1024
