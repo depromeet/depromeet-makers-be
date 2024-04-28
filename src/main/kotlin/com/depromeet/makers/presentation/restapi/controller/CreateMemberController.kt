@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/v1/members")
-class MemberController(
+class CreateMemberController(
     private val createNewMember: CreateNewMember,
 ) {
     @PostMapping
