@@ -1,4 +1,4 @@
-package com.depromeet.makers.domain.use_case
+package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.model.Member

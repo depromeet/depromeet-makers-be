@@ -1,6 +1,6 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.use_case.CreateNewMember
+import com.depromeet.makers.domain.usecase.CreateNewMember
 import com.depromeet.makers.presentation.restapi.dto.request.CreateNewMemberRequest
 import com.depromeet.makers.presentation.restapi.dto.response.CreateNewMemberResponse
 import org.springframework.web.bind.annotation.PostMapping
