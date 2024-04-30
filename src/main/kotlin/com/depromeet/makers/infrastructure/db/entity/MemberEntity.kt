@@ -12,7 +12,7 @@ class MemberEntity private constructor(
     @Column(name = "name", nullable = false)
     val name: String,
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     val email: String,
 
     @Column(name = "passcord", nullable = true)
@@ -20,7 +20,7 @@ class MemberEntity private constructor(
 
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "member_id")
-    var generations: List<MemberGenerationEntity>,
+    var generations: Set<MemberGenerationEntity>,
 ) {
 
     fun toDomain() = Member(
@@ -28,7 +28,9 @@ class MemberEntity private constructor(
         name = name,
         email = email,
         passCord = passCord,
-        generations = generations.map(MemberGenerationEntity::toDomain)
+        generations = generations
+            .map(MemberGenerationEntity::toDomain)
+            .toSet()
     )
 
     override fun equals(other: Any?): Boolean {
@@ -51,7 +53,9 @@ class MemberEntity private constructor(
                 name = name,
                 email = email,
                 passCord = passCord,
-                generations = generations.map { MemberGenerationEntity.fromDomain(memberId, it) }
+                generations = generations
+                    .map { MemberGenerationEntity.fromDomain(memberId, it) }
+                    .toSet()
             )
         }
     }

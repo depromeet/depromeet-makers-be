@@ -7,7 +7,7 @@ data class Member(
     val name: String,
     val email: String,
     val passCord: String?,
-    val generations: List<MemberGeneration>,
+    val generations: Set<MemberGeneration>,
 ) {
     fun hasPassCord() = passCord != null
 
@@ -21,7 +21,7 @@ data class Member(
             name = name,
             email = email,
             passCord = null,
-            generations = listOf(initialGeneration)
+            generations = setOf(initialGeneration)
         )
     }
 }

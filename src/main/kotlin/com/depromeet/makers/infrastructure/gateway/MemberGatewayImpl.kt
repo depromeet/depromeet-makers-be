@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component
 class MemberGatewayImpl(
     private val jpaMemberRepository: JpaMemberRepository,
 ): MemberGateway {
+    override fun findByEmail(email: String): Member? {
+        return jpaMemberRepository
+            .findByEmail(email)
+            ?.let(MemberEntity::toDomain)
+    }
 
     override fun save(member: Member): Member {
         val memberEntity = MemberEntity.fromDomain(member)
