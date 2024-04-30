@@ -1,5 +1,6 @@
 package com.depromeet.makers.domain.usecase
 
+import com.depromeet.makers.domain.exception.MemberAlreadyExistsException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.model.MemberGeneration
@@ -28,7 +29,7 @@ class CreateNewMember(
         val newMember = if (previousMember != null) {
             // 이미 있으면 기존 멤버에 기수 데이터 추가
             if(previousMember.generations.any { it.generationId == newGeneration.generationId }) {
-                TODO()
+                throw MemberAlreadyExistsException()
             }
 
             val newGenerations = previousMember.generations + newGeneration
