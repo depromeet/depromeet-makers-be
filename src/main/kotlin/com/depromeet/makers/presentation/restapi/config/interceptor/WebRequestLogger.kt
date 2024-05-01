@@ -43,7 +43,16 @@ class WebRequestLogger: HandlerInterceptor {
                 userAgent,
             )
         } else {
-
+            logger.info(
+                "{} {} {} {}[{}] {}ms {}",
+                request.method,
+                request.requestURI,
+                originIp,
+                response.status,
+                ex::class.java.name,
+                executionTime,
+                userAgent,
+            )
         }
 
     }

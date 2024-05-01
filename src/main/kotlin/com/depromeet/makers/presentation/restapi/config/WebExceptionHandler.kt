@@ -37,7 +37,6 @@ class WebExceptionHandler {
     fun handleInvalidInput(
         exception: Exception,
     ): ResponseEntity<ErrorResponse> {
-        println(exception::class)
         val data: Any? = when (exception) {
             is MethodArgumentNotValidException -> BindErrorUtils.resolve(exception.allErrors).values
             is MethodArgumentTypeMismatchException -> exception.localizedMessage
