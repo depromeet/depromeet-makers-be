@@ -33,6 +33,14 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+
+	val koTestVersion = "5.8.1"
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:$koTestVersion")
+	testImplementation("io.kotest:kotest-assertions-core:$koTestVersion")
+	testImplementation("io.kotest:kotest-property:$koTestVersion")
+
+	testImplementation("io.mockk:mockk:1.13.10")
+
 }
 
 tasks.withType<KotlinCompile> {

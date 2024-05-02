@@ -15,7 +15,7 @@ class UpdateDefaultMemberPassCord(
 
     override fun execute(input: UpdateDefaultMemberPassCordInput): Member {
         val member = memberGateway.getById(input.memberId)
-        if (!member.hasPassCord()) throw PassCordAlreadySetException()
+        if (member.hasPassCord()) throw PassCordAlreadySetException()
 
         return updateMemberPassCord.execute(
             UpdateMemberPassCord.UpdateMemberPassCordInput(
