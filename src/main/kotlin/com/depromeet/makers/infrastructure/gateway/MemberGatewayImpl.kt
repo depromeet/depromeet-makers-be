@@ -17,6 +17,12 @@ class MemberGatewayImpl(
             ?.let(MemberEntity::toDomain)
     }
 
+    override fun getById(memberId: String): Member {
+        return jpaMemberRepository
+            .getReferenceById(memberId)
+            .let(MemberEntity::toDomain)
+    }
+
     override fun save(member: Member): Member {
         val memberEntity = MemberEntity.fromDomain(member)
         return jpaMemberRepository
