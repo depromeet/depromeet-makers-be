@@ -10,7 +10,7 @@ enum class ErrorCode(
      */
     UNKNOWN_SERVER_ERROR("DE0001", "알 수 없는 오류가 발생했습니다"),
     UNAUTHORIZED("DE0002", "인가되지 않은 접근입니다"),
-    INVALID_INPUT("DE0003","입력값(바디 혹은 파라미터)가 누락되었습니다"),
+    INVALID_INPUT("DE0003", "입력값(바디 혹은 파라미터)가 누락되었습니다"),
 
     /**
      * 사용자 관련 오류

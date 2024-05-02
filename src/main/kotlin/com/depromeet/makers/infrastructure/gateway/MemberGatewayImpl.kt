@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class MemberGatewayImpl(
     private val jpaMemberRepository: JpaMemberRepository,
-): MemberGateway {
+) : MemberGateway {
     override fun findByEmail(email: String): Member? {
         return jpaMemberRepository
             .findByEmail(email)

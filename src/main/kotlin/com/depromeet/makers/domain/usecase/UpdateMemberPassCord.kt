@@ -5,7 +5,7 @@ import com.depromeet.makers.domain.model.Member
 
 class UpdateMemberPassCord(
     private val memberGateway: MemberGateway,
-): UseCase<UpdateMemberPassCord.UpdateMemberPassCordInput, Member> {
+) : UseCase<UpdateMemberPassCord.UpdateMemberPassCordInput, Member> {
     data class UpdateMemberPassCordInput(
         val memberId: String,
         val passCord: String,

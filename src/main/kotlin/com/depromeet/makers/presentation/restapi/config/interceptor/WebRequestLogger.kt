@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 
 @Component
-class WebRequestLogger: HandlerInterceptor {
+class WebRequestLogger : HandlerInterceptor {
     val startTimeAttr = "startTime"
     val logger = logger()
 
@@ -29,10 +29,10 @@ class WebRequestLogger: HandlerInterceptor {
 
         val userAgent = request.getHeader("User-Agent")
         val originIp = request.getHeader("X-FORWARDED-FOR")
-                ?: request.getHeader("CF-Connecting-IP")
-                ?: request.remoteAddr
+            ?: request.getHeader("CF-Connecting-IP")
+            ?: request.remoteAddr
 
-        if (ex == null){
+        if (ex == null) {
             logger.info(
                 "{} {} {} {} {}ms {}",
                 request.method,

@@ -28,12 +28,14 @@ class WebExceptionHandler {
             .body(exception.toErrorResponse())
     }
 
-    @ExceptionHandler(value = [
-        MethodArgumentNotValidException::class,
-        MethodArgumentTypeMismatchException::class,
-        HttpMessageNotReadableException::class,
-        ConstraintViolationException::class,
-    ])
+    @ExceptionHandler(
+        value = [
+            MethodArgumentNotValidException::class,
+            MethodArgumentTypeMismatchException::class,
+            HttpMessageNotReadableException::class,
+            ConstraintViolationException::class,
+        ]
+    )
     fun handleInvalidInput(
         exception: Exception,
     ): ResponseEntity<ErrorResponse> {
@@ -45,10 +47,12 @@ class WebExceptionHandler {
         }
         return ResponseEntity
             .badRequest()
-            .body(ErrorResponse.fromErrorCode(
-                errorCode = ErrorCode.INVALID_INPUT,
-                data = data,
-            ))
+            .body(
+                ErrorResponse.fromErrorCode(
+                    errorCode = ErrorCode.INVALID_INPUT,
+                    data = data,
+                )
+            )
     }
 
     @ExceptionHandler(value = [Throwable::class])

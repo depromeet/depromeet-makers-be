@@ -9,7 +9,7 @@ import com.depromeet.makers.domain.model.MemberRole
 
 class CreateNewMember(
     private val memberGateway: MemberGateway,
-): UseCase<CreateNewMember.CreateNewMemberInput, Member> {
+) : UseCase<CreateNewMember.CreateNewMemberInput, Member> {
     data class CreateNewMemberInput(
         val name: String,
         val email: String,
@@ -28,7 +28,7 @@ class CreateNewMember(
 
         val newMember = if (previousMember != null) {
             // 이미 있으면 기존 멤버에 기수 데이터 추가
-            if(previousMember.generations.any { it.generationId == newGeneration.generationId }) {
+            if (previousMember.generations.any { it.generationId == newGeneration.generationId }) {
                 throw MemberAlreadyExistsException()
             }
 

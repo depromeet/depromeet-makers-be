@@ -8,13 +8,13 @@ import org.springframework.context.annotation.FilterType
 
 @SpringBootApplication
 @ComponentScan(
-	includeFilters = [ComponentScan.Filter(
-		type = FilterType.ASSIGNABLE_TYPE,
-		classes = [UseCase::class]
-	)]
+    includeFilters = [ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = [UseCase::class]
+    )]
 )
 class DepromeetMakersBeApplication
 
 fun main(args: Array<String>) {
-	runApplication<DepromeetMakersBeApplication>(*args)
+    runApplication<DepromeetMakersBeApplication>(*args)
 }

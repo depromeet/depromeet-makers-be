@@ -20,7 +20,7 @@ data class CreateNewMemberResponse(
     val generations: List<CreateNewMemberGenerationResponse>,
 ) {
     @Schema(description = "사용자 기수 정보")
-    data class CreateNewMemberGenerationResponse (
+    data class CreateNewMemberGenerationResponse(
         @Schema(description = "기수", example = "15")
         val generationId: Int,
 

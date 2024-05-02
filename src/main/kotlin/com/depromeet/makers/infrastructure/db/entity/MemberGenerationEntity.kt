@@ -8,9 +8,9 @@ import java.io.Serializable
 
 @IdClass(MemberGenerationEntityKey::class)
 @Entity
-class MemberGenerationEntity private constructor (
+class MemberGenerationEntity private constructor(
     @Id
-    @Column(name = "member_id" , length = 26, columnDefinition = "CHAR(26)", nullable = false)
+    @Column(name = "member_id", length = 26, columnDefinition = "CHAR(26)", nullable = false)
     val memberId: String,
 
     @Id
@@ -64,4 +64,4 @@ class MemberGenerationEntity private constructor (
 class MemberGenerationEntityKey(
     val memberId: String,
     val generationId: Int,
-): Serializable
+) : Serializable
