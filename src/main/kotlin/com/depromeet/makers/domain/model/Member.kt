@@ -11,6 +11,10 @@ data class Member(
 ) {
     fun hasPassCord() = passCord != null
 
+    fun initializePassCord(passCord: String) = this.copy(
+        passCord = passCord
+    )
+
     companion object {
         fun newMember(
             name: String,

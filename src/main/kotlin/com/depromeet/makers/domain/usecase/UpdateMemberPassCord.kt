@@ -13,6 +13,8 @@ class UpdateMemberPassCord(
 
     override fun execute(input: UpdateMemberPassCordInput): Member {
         val member = memberGateway.getById(input.memberId)
-        return memberGateway.save(member.copy(passCord = input.passCord))
+        return memberGateway.save(
+            member.initializePassCord(passCord = input.passCord)
+        )
     }
 }

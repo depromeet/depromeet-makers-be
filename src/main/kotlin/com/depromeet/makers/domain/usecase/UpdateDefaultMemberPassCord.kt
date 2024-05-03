@@ -15,7 +15,7 @@ class UpdateDefaultMemberPassCord(
 
     override fun execute(input: UpdateDefaultMemberPassCordInput): Member {
         val member = memberGateway.getById(input.memberId)
-        if (member.hasPassCord()) throw PassCordAlreadySetException()
+        if (isPassCordInitialized(member)) throw PassCordAlreadySetException()
 
         return updateMemberPassCord.execute(
             UpdateMemberPassCord.UpdateMemberPassCordInput(
@@ -24,4 +24,6 @@ class UpdateDefaultMemberPassCord(
             )
         )
     }
+
+    private fun isPassCordInitialized(member: Member) = member.hasPassCord()
 }
