@@ -21,6 +21,10 @@ data class CreateNewMemberRequest(
     @Schema(description = "기수", example = "15")
     val generationId: Int,
 
+    @field:Min(1) @field:Max(100)
+    @Schema(description = "조 번호", example = "1")
+    val groupId: Int?,
+
     @NotNull
     @Schema(description = "역할", example = "ORGANIZER, MEMBER")
     val role: MemberRole,

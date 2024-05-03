@@ -29,6 +29,7 @@ class CreateNewMemberTest: BehaviorSpec({
             generationId = mockPreviousGenerationId,
             role = MemberRole.MEMBER,
             position = MemberPosition.BACKEND,
+            groupId = null,
         ))
 
         every { memberGateway.findByEmail(any()) } answers {
@@ -51,6 +52,7 @@ class CreateNewMemberTest: BehaviorSpec({
                     generationId = mockGenerationId,
                     role = MemberRole.MEMBER,
                     position = MemberPosition.BACKEND,
+                    groupId = null,
                 )
             )
             Then("기수는 총 두개 (기존 1 + 신규 1)") {
@@ -78,6 +80,7 @@ class CreateNewMemberTest: BehaviorSpec({
             generationId = mockPreviousGenerationId,
             role = MemberRole.MEMBER,
             position = MemberPosition.BACKEND,
+            groupId = null,
         ))
 
         every { memberGateway.findByEmail(any()) } answers {
@@ -101,6 +104,7 @@ class CreateNewMemberTest: BehaviorSpec({
                         generationId = mockGenerationId,
                         role = MemberRole.MEMBER,
                         position = MemberPosition.BACKEND,
+                        groupId = null,
                     )
                 )
             }
@@ -129,6 +133,7 @@ class CreateNewMemberTest: BehaviorSpec({
                     generationId = mockGenerationId,
                     role = MemberRole.MEMBER,
                     position = MemberPosition.BACKEND,
+                    groupId = null,
                 )
             )
             Then("입력한 정보가 전부 일치하고") {

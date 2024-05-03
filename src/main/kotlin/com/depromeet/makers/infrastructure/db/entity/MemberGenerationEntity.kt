@@ -17,6 +17,9 @@ class MemberGenerationEntity private constructor(
     @Column(name = "generation_id", nullable = false)
     val generationId: Int,
 
+    @Column(name = "group_id", nullable = true)
+    val groupId: Int?,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     val role: MemberRole,
@@ -28,7 +31,8 @@ class MemberGenerationEntity private constructor(
     fun toDomain() = MemberGeneration(
         generationId = generationId,
         role = role,
-        position = position
+        position = position,
+        groupId = groupId,
     )
 
     override fun equals(other: Any?): Boolean {
@@ -55,7 +59,8 @@ class MemberGenerationEntity private constructor(
                 memberId = memberId,
                 generationId = generationId,
                 role = role,
-                position = position
+                position = position,
+                groupId = groupId,
             )
         }
     }

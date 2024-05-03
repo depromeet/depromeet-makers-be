@@ -29,6 +29,7 @@ class CreateMemberController(
                 generationId = request.generationId,
                 role = request.role,
                 position = request.position,
+                groupId = request.groupId,
             )
         )
         return CreateNewMemberResponse.fromDomain(member)

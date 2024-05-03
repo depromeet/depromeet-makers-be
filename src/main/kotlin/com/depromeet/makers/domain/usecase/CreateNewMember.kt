@@ -14,6 +14,7 @@ class CreateNewMember(
         val name: String,
         val email: String,
         val generationId: Int,
+        val groupId: Int?,
         val role: MemberRole,
         val position: MemberPosition,
     )
@@ -24,6 +25,7 @@ class CreateNewMember(
             generationId = input.generationId,
             role = input.role,
             position = input.position,
+            groupId = input.groupId,
         )
 
         val newMember = if (previousMember != null) {
