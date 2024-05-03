@@ -23,14 +23,24 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-mysql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	implementation("com.github.f4b6a3:ulid-creator:5.2.3")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+
+	val koTestVersion = "5.8.1"
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:$koTestVersion")
+	testImplementation("io.kotest:kotest-assertions-core:$koTestVersion")
+	testImplementation("io.kotest:kotest-property:$koTestVersion")
+
+	testImplementation("io.mockk:mockk:1.13.10")
+
 }
 
 tasks.withType<KotlinCompile> {
