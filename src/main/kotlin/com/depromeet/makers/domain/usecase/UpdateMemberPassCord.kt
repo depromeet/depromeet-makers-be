@@ -2,6 +2,7 @@ package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.util.EncryptUtils
 
 class UpdateMemberPassCord(
     private val memberGateway: MemberGateway,
@@ -13,8 +14,9 @@ class UpdateMemberPassCord(
 
     override fun execute(input: UpdateMemberPassCordInput): Member {
         val member = memberGateway.getById(input.memberId)
+        val encryptedPassCord = EncryptUtils.encrypt(input.passCord)
         return memberGateway.save(
-            member.initializePassCord(passCord = input.passCord)
+            member.initializePassCord(passCord = encryptedPassCord)
         )
     }
 }

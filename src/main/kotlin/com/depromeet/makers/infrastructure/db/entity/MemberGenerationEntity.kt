@@ -7,7 +7,7 @@ import jakarta.persistence.*
 import java.io.Serializable
 
 @IdClass(MemberGenerationEntityKey::class)
-@Entity
+@Entity(name = "member_generation")
 class MemberGenerationEntity private constructor(
     @Id
     @Column(name = "member_id", length = 26, columnDefinition = "CHAR(26)", nullable = false)
@@ -67,6 +67,6 @@ class MemberGenerationEntity private constructor(
 }
 
 class MemberGenerationEntityKey(
-    val memberId: String,
-    val generationId: Int,
+    val memberId: String = "",
+    val generationId: Int = 0,
 ) : Serializable
