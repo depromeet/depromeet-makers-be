@@ -13,6 +13,13 @@ enum class ErrorCode(
     INVALID_INPUT("DE0003", "입력값(바디 혹은 파라미터)가 누락되었습니다"),
 
     /**
+     * 인증(Authentication) 관련 오류
+     * @see com.depromeet.makers.domain.exception.AuthenticationException
+     */
+    TOKEN_NOT_PROVIDED("AU0001", "인증 토큰이 누락되었습니다."),
+    TOKEN_NOT_VALID("AU0002", "인증 토큰 형태가 올바르지 않습니다."),
+
+    /**
      * 사용자 관련 오류
      * @see com.depromeet.makers.domain.exception.MemberException
      */

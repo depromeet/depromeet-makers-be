@@ -1,11 +1,13 @@
 package com.depromeet.makers.presentation.restapi.config
 
+import com.depromeet.makers.domain.exception.AuthenticationException
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
 import com.depromeet.makers.util.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -64,6 +66,16 @@ class WebExceptionHandler {
         return ResponseEntity
             .badRequest()
             .body(ErrorResponse.fromErrorCode(ErrorCode.UNKNOWN_SERVER_ERROR))
+    }
+
+    @ExceptionHandler(value = [AuthenticationException::class])
+    fun handleAuthenticationException(
+        exception: AuthenticationException,
+        request: HttpServletRequest,
+    ): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(exception.toErrorResponse())
     }
 
     private fun DomainException.toErrorResponse() = ErrorResponse.fromErrorCode(
