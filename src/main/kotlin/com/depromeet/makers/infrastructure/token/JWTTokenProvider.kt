@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
-import java.lang.RuntimeException
 import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
@@ -29,11 +28,11 @@ class JWTTokenProvider(
         }
         return Jwts.builder()
             .header()
-                .add(TOKEN_TYPE_HEADER_KEY, ACCESS_TOKEN_TYPE_VALUE)
+            .add(TOKEN_TYPE_HEADER_KEY, ACCESS_TOKEN_TYPE_VALUE)
             .and()
             .claims()
-                .add(USER_ID_CLAIM_KEY, authentication.name)
-                .add(AUTHORITIES_CLAIM_KEY, authorities)
+            .add(USER_ID_CLAIM_KEY, authentication.name)
+            .add(AUTHORITIES_CLAIM_KEY, authorities)
             .and()
             .expiration(generateAccessTokenExpiration())
             .encryptWith(signKey, Jwts.ENC.A128CBC_HS256)
@@ -43,10 +42,10 @@ class JWTTokenProvider(
     fun generateRefreshToken(authentication: Authentication): String {
         return Jwts.builder()
             .header()
-                .add(TOKEN_TYPE_HEADER_KEY, REFRESH_TOKEN_TYPE_VALUE)
+            .add(TOKEN_TYPE_HEADER_KEY, REFRESH_TOKEN_TYPE_VALUE)
             .and()
             .claims()
-                .add(USER_ID_CLAIM_KEY, authentication.name)
+            .add(USER_ID_CLAIM_KEY, authentication.name)
             .and()
             .expiration(generateRefreshTokenExpiration())
             .encryptWith(signKey, Jwts.ENC.A128CBC_HS256)
@@ -61,8 +60,8 @@ class JWTTokenProvider(
         val userId = claims.payload[USER_ID_CLAIM_KEY] as? String? ?: throw RuntimeException()
         val authorities = claims.payload[AUTHORITIES_CLAIM_KEY]?.toString()
             ?.split(",")
-            ?.map{SimpleGrantedAuthority(it)}
-            ?:emptyList()
+            ?.map { SimpleGrantedAuthority(it) }
+            ?: emptyList()
 
         return UsernamePasswordAuthenticationToken(
             userId,

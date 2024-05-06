@@ -9,7 +9,7 @@ import com.depromeet.makers.util.EncryptUtils
 class GenerateTokenWithEmailAndPassCord(
     private val memberGateway: MemberGateway,
     private val tokenGateway: TokenGateway,
-): UseCase<GenerateTokenWithEmailAndPassCord.GenerateTokenWithEmailAndPassCordInput,
+) : UseCase<GenerateTokenWithEmailAndPassCord.GenerateTokenWithEmailAndPassCordInput,
         GenerateTokenWithEmailAndPassCord.GenerateTokenWithEmailAndPassCordOutput> {
     data class GenerateTokenWithEmailAndPassCordInput(
         val email: String,

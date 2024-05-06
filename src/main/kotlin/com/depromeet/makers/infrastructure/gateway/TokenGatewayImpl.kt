@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class TokenGatewayImpl(
     private val tokenProvider: JWTTokenProvider,
-): TokenGateway {
+) : TokenGateway {
     override fun generateAccessToken(member: Member): String {
         val authorities = member.generations.map { SimpleGrantedAuthority(it.role.roleName) }
         val authentication = UsernamePasswordAuthenticationToken(

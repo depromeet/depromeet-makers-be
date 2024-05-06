@@ -30,9 +30,12 @@ class WebSecurityConfig {
         .authorizeHttpRequests {
             it.anyRequest().authenticated()
         }
-        .addFilterBefore(JWTAuthenticationFilter(jwtTokenProvider, handlerExceptionResolver), UsernamePasswordAuthenticationFilter::class.java)
+        .addFilterBefore(
+            JWTAuthenticationFilter(jwtTokenProvider, handlerExceptionResolver),
+            UsernamePasswordAuthenticationFilter::class.java
+        )
         .exceptionHandling {
-            it.accessDeniedHandler { a, b, c->
+            it.accessDeniedHandler { a, b, c ->
                 println("Oh.. ad..")
             }.authenticationEntryPoint { request, response, authException ->
                 println("Oh,, aed")
