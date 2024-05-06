@@ -1,8 +1,6 @@
 package com.depromeet.makers.presentation.restapi.config
 
-import com.depromeet.makers.domain.exception.AuthenticationException
-import com.depromeet.makers.domain.exception.DomainException
-import com.depromeet.makers.domain.exception.ErrorCode
+import com.depromeet.makers.domain.exception.*
 import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
 import com.depromeet.makers.util.logger
 import jakarta.servlet.http.HttpServletRequest
@@ -10,6 +8,7 @@ import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -77,6 +76,18 @@ class WebExceptionHandler {
             .status(HttpStatus.UNAUTHORIZED)
             .body(exception.toErrorResponse())
     }
+
+    @ExceptionHandler(value = [AuthorizationException::class])
+    fun handleAuthorizationException(
+        exception: AuthorizationException,
+    ): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(exception.toErrorResponse())
+    }
+
+    @ExceptionHandler(value = [AccessDeniedException::class])
+    fun handleAccessDeniedException() = handleAuthorizationException(PermissionDeniedException())
 
     private fun DomainException.toErrorResponse() = ErrorResponse.fromErrorCode(
         errorCode = errorCode,

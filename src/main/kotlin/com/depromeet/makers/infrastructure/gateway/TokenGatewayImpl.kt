@@ -12,7 +12,7 @@ class TokenGatewayImpl(
     private val tokenProvider: JWTTokenProvider,
 ): TokenGateway {
     override fun generateAccessToken(member: Member): String {
-        val authorities = member.generations.map { SimpleGrantedAuthority(it.role.name) }
+        val authorities = member.generations.map { SimpleGrantedAuthority(it.role.roleName) }
         val authentication = UsernamePasswordAuthenticationToken(
             member.memberId,
             null,

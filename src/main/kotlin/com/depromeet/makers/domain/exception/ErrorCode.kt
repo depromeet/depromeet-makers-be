@@ -20,6 +20,12 @@ enum class ErrorCode(
     TOKEN_NOT_VALID("AU0002", "인증 토큰 형태가 올바르지 않습니다."),
 
     /**
+     * 인가(Authorization) 관련 오류
+     * @see com.depromeet.makers.domain.exception.AuthorizationException
+     */
+    PERMISSION_DENIED("AT0001", "해당 리소스에 대한 권한이 없습니다."),
+
+    /**
      * 사용자 관련 오류
      * @see com.depromeet.makers.domain.exception.MemberException
      */
