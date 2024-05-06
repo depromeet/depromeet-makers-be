@@ -44,7 +44,7 @@ data class CreateNewSessionResponse(
                     description = description,
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
-                    place = place?.let { Place.fromDomain(it) },
+                    place = place.let { Place.fromDomain(it) },
                     attendanceMemberIds = attendanceMemberIds
                 )
             }
