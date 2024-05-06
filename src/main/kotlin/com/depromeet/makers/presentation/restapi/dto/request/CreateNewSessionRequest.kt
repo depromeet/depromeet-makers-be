@@ -42,9 +42,9 @@ data class CreateNewSessionRequest(
     val address: String?,
 
     @Schema(description = "경도", example = "35.9418")
-    val x: Double?,
+    val longitude: Double?,
 
     @Schema(description = "위도", example = "126.9544")
-    val y: Double?,
+    val latitude: Double?,
 ) {
 }

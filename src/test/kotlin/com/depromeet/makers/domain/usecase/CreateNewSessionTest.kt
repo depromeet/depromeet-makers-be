@@ -24,8 +24,8 @@ class CreateNewSessionTest : BehaviorSpec({
         val mockStartTime = LocalDateTime.now().plusDays(1)
         val mockSessionType = SessionType.ONLINE
         val mockAddress = null
-        val mockX = null
-        val mockY = null
+        val mockLongitude = null
+        val mockLatitude = null
 
         every { sessionGateWay.save(any()) } answers { firstArg() }
         every { sessionGateWay.existsByGenerationAndWeek(any(), any()) } answers { false }
@@ -40,8 +40,8 @@ class CreateNewSessionTest : BehaviorSpec({
                     startTime = mockStartTime,
                     sessionType = mockSessionType,
                     address = mockAddress,
-                    x = mockX,
-                    y = mockY,
+                    longitude = mockLongitude,
+                    latitude = mockLatitude,
                 )
             )
             Then("세션 정보가 등록된다.") {
@@ -60,8 +60,8 @@ class CreateNewSessionTest : BehaviorSpec({
                     startTime = mockStartTime,
                     sessionType = mockSessionType,
                     address = mockAddress,
-                    x = mockX,
-                    y = mockY,
+                    longitude = mockLongitude,
+                    latitude = mockLatitude,
                 )
             )
             Then("널 값의 description으로 세션 정보가 등록된다.") {
@@ -82,8 +82,8 @@ class CreateNewSessionTest : BehaviorSpec({
         val mockStartTime = LocalDateTime.now().plusDays(1)
         val mockSessionType = SessionType.OFFLINE
         val mockAddress = "서울특별시 강남구 테헤란로 521"
-        val mockX = 37.507502
-        val mockY = 127.056344
+        val mockLongitude = 37.507502
+        val mockLatitude = 127.056344
 
         every { sessionGateWay.save(any()) } answers { firstArg() }
         every { sessionGateWay.existsByGenerationAndWeek(any(), any()) } answers { false }
@@ -98,8 +98,8 @@ class CreateNewSessionTest : BehaviorSpec({
                     startTime = mockStartTime,
                     sessionType = mockSessionType,
                     address = mockAddress,
-                    x = mockX,
-                    y = mockY,
+                    longitude = mockLongitude,
+                    latitude = mockLatitude,
                 )
             )
             Then("세션 정보가 등록된다.") {
@@ -120,8 +120,8 @@ class CreateNewSessionTest : BehaviorSpec({
         val mockStartTime = LocalDateTime.now().plusDays(1)
         val mockSessionType = SessionType.ONLINE
         val mockAddress = null
-        val mockX = null
-        val mockY = null
+        val mockLongitude = null
+        val mockLatitude = null
 
         every { sessionGateWay.save(any()) } answers {
             firstArg()
@@ -142,8 +142,8 @@ class CreateNewSessionTest : BehaviorSpec({
                         startTime = mockStartTime,
                         sessionType = mockSessionType,
                         address = mockAddress,
-                        x = mockX,
-                        y = mockY,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
                     )
                 )
             }

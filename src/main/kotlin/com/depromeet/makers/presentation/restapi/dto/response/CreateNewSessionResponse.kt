@@ -56,18 +56,18 @@ data class CreateNewSessionResponse(
         val address: String,
 
         @Schema(description = "경도", example = "35.9418")
-        val x: Double,
+        val longitude: Double,
 
         @Schema(description = "위도", example = "126.9544")
-        val y: Double
+        val latitude: Double
     ) {
         companion object {
             fun fromDomain(place: com.depromeet.makers.domain.model.Place): Place {
                 return with(place) {
                     Place(
                         address = address,
-                        x = x,
-                        y = y
+                        longitude = longitude,
+                        latitude = latitude
                     )
                 }
             }

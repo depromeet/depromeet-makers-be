@@ -2,24 +2,24 @@ package com.depromeet.makers.domain.model
 
 data class Place(
     val address: String,
-    val x: Double,
-    val y: Double,
+    val longitude: Double,
+    val latitude: Double,
 ) {
     companion object {
         fun newPlace(
             address: String,
-            x: Double,
-            y: Double,
+            longitude: Double,
+            latitude: Double,
         ) = Place(
             address = address,
-            x = x,
-            y = y,
+            longitude = longitude,
+            latitude = latitude,
         )
 
         fun emptyPlace() = Place(
             address = "온라인",
-            x = 0.0,
-            y = 0.0,
+            longitude = 0.0,
+            latitude = 0.0,
         )
     }
 }

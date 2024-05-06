@@ -20,8 +20,8 @@ class CreateNewSession(
         val startTime: LocalDateTime,
         val sessionType: SessionType,
         val address: String?,
-        val x: Double?,
-        val y: Double?,
+        val longitude: Double?,
+        val latitude: Double?,
     )
 
     override fun execute(input: CreateNewSessionInput): Session {
@@ -50,13 +50,13 @@ class CreateNewSession(
         if (input.sessionType.isOnline()) {
             Place.emptyPlace()
         } else {
-            if (input.address == null || input.x == null || input.y == null) {
+            if (input.address == null || input.longitude == null || input.latitude == null) {
                 throw SessionPlaceNotFoundException()
             }
             Place.newPlace(
                 address = input.address,
-                x = input.x,
-                y = input.y,
+                longitude = input.longitude,
+                latitude = input.latitude,
             )
         }
 }

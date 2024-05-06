@@ -34,11 +34,11 @@ class SessionEntity private constructor(
     @Column(name = "address")
     var address: String,
 
-    @Column(name = "x")
-    var x: Double,
+    @Column(name = "longitude")
+    var longitude: Double,
 
-    @Column(name = "y")
-    var y: Double,
+    @Column(name = "latitude")
+    var latitude: Double,
 
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "member_id")
@@ -53,7 +53,7 @@ class SessionEntity private constructor(
             description = description,
             startTime = startTime,
             sessionType = sessionType,
-            place = Place.newPlace(address, x, y),
+            place = Place.newPlace(address, longitude, latitude),
             attendanceMemberIds = attendanceMembers.map { it.toDomain() }.toSet(),
         )
     }
@@ -70,8 +70,8 @@ class SessionEntity private constructor(
                     startTime = startTime,
                     sessionType = sessionType,
                     address = place.address,
-                    x = place.x,
-                    y = place.y,
+                    longitude = place.longitude,
+                    latitude = place.latitude,
                     attendanceMembers = emptySet(),
                 )
             }

@@ -32,8 +32,8 @@ class CreateSessionController(
                 startTime = request.startTime,
                 sessionType = request.sessionType,
                 address = request.address,
-                x = request.x,
-                y = request.y,
+                longitude = request.longitude,
+                latitude = request.latitude,
             )
         )
         return CreateNewSessionResponse.fromDomain(session)
