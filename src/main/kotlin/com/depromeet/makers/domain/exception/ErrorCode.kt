@@ -17,5 +17,12 @@ enum class ErrorCode(
      * @see com.depromeet.makers.domain.exception.MemberException
      */
     MEMBER_ALREADY_EXISTS("ME0001", "해당 이메일의 사용자가 이미 존재합니다"),
-    PASSCORD_ALREADY_SET("ME0002", "이미 비밀번호가 지정되었습니다. 관리자에게 문의하세요")
+    PASSCORD_ALREADY_SET("ME0002", "이미 비밀번호가 지정되었습니다. 관리자에게 문의하세요"),
+
+    /**
+     * 세션 관련 오류
+     * @see com.depromeet.makers.domain.exception.SessionException
+     */
+    INVALID_SESSION_PLACE("SE0001", "오프라인 세션의 장소가 기입이 필요합니다"),
+    SESSION_ALREADY_EXISTS("SE0002", "이미 해당 세션이 존재합니다"),
 }
