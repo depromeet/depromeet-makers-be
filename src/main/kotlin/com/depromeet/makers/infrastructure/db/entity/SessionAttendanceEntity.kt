@@ -23,6 +23,8 @@ class SessionAttendanceEntity private constructor(
     val attendance: AttendanceStatus,
 ) {
     fun toDomain() = SessionAttendance(
+        sessionId = sessionId,
+        memberId = memberId,
         attendance = attendance,
     )
 
