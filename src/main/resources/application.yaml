@@ -22,7 +22,7 @@ server:
 
 app:
   token:
-    secretKey: thisisverysecretkey2342304al293r
+    secretKey: thisisverysecretkey2342304a22a3f
     expiration:
       access: 38400
       refresh: 38400

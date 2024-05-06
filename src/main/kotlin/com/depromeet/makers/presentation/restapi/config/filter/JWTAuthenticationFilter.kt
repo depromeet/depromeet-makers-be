@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
 
-@Component
 class JWTAuthenticationFilter(
     private val jwtTokenProvider: JWTTokenProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,

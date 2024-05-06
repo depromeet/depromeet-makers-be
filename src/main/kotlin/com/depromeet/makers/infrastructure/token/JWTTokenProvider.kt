@@ -49,7 +49,7 @@ class JWTTokenProvider(
                 .add(USER_ID_CLAIM_KEY, authentication.name)
             .and()
             .expiration(generateRefreshTokenExpiration())
-            .signWith(signKey)
+            .encryptWith(signKey, Jwts.ENC.A128CBC_HS256)
             .compact()
     }
 
