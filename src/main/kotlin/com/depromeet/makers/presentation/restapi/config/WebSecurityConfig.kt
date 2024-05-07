@@ -46,7 +46,7 @@ class WebSecurityConfig {
         .build()
 
     @Bean
-    @Order(0)
+    @Order(1)
     fun authSecurityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain = httpSecurity
         .securityMatcher("/v1/auth/**", "/v1/members")
         .csrf { it.disable() }
