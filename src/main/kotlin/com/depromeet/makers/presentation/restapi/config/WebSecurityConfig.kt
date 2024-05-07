@@ -1,5 +1,7 @@
 package com.depromeet.makers.presentation.restapi.config
 
+import com.depromeet.makers.domain.exception.PermissionDeniedException
+import com.depromeet.makers.domain.exception.UnauthorizedException
 import com.depromeet.makers.infrastructure.token.JWTTokenProvider
 import com.depromeet.makers.presentation.restapi.config.filter.JWTAuthenticationFilter
 import org.springframework.context.annotation.Bean
@@ -35,10 +37,10 @@ class WebSecurityConfig {
             UsernamePasswordAuthenticationFilter::class.java
         )
         .exceptionHandling {
-            it.accessDeniedHandler { a, b, c ->
-                println("Oh.. ad..")
+            it.accessDeniedHandler { request, response, exception ->
+                handlerExceptionResolver.resolveException(request, response, null, PermissionDeniedException())
             }.authenticationEntryPoint { request, response, authException ->
-                println("Oh,, aed")
+                handlerExceptionResolver.resolveException(request, response, null, UnauthorizedException())
             }
         }
         .build()
