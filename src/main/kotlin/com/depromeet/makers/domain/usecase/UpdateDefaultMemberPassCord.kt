@@ -1,5 +1,6 @@
 package com.depromeet.makers.domain.usecase
 
+import com.depromeet.makers.domain.exception.MemberNotFoundException
 import com.depromeet.makers.domain.exception.PassCordAlreadySetException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.model.Member
@@ -9,17 +10,17 @@ class UpdateDefaultMemberPassCord(
     private val updateMemberPassCord: UpdateMemberPassCord,
 ) : UseCase<UpdateDefaultMemberPassCord.UpdateDefaultMemberPassCordInput, Member> {
     data class UpdateDefaultMemberPassCordInput(
-        val memberId: String,
+        val email: String,
         val passCord: String,
     )
 
     override fun execute(input: UpdateDefaultMemberPassCordInput): Member {
-        val member = memberGateway.getById(input.memberId)
+        val member = memberGateway.findByEmail(input.email) ?: throw MemberNotFoundException()
         if (isPassCordInitialized(member)) throw PassCordAlreadySetException()
 
         return updateMemberPassCord.execute(
             UpdateMemberPassCord.UpdateMemberPassCordInput(
-                memberId = input.memberId,
+                memberId = member.memberId,
                 passCord = input.passCord,
             )
         )

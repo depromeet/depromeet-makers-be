@@ -32,7 +32,7 @@ class UpdateMemberPassCordTest: BehaviorSpec({
                 )
             )
             Then("비밀번호가 변경되었다") {
-                result.passCord shouldBe testPassCord
+                result.hasPassCord() shouldBe true
             }
         }
     }

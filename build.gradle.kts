@@ -34,6 +34,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 
+	val jjwtVersion = "0.12.5"
+	implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
+
 	val koTestVersion = "5.8.1"
 	testImplementation("io.kotest:kotest-runner-junit5-jvm:$koTestVersion")
 	testImplementation("io.kotest:kotest-assertions-core:$koTestVersion")

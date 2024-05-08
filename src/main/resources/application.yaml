@@ -19,3 +19,10 @@ server:
     enabled: true
     mime-types: text/html,text/plain,text/css,application/javascript,application/json
     min-response-size: 1024
+
+app:
+  token:
+    secretKey: thisisverysecretkey2342304a22a3f
+    expiration:
+      access: 38400
+      refresh: 38400

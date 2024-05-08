@@ -20,14 +20,14 @@ class UpdateDefaultMemberPassCordTest: BehaviorSpec({
             passCord = "passpass",
             generations = emptySet(),
         )
-        every { memberGateway.getById(any()) } returns mockMember
+        every { memberGateway.findByEmail(any()) } returns mockMember
         every { updateMemberPassCord.execute(any()) } returnsArgument 0
 
         When("execute를 실행하면") {
             val executor = {
                 updateDefaultMemberPassCord.execute(
                     UpdateDefaultMemberPassCord.UpdateDefaultMemberPassCordInput(
-                        memberId = "",
+                        email = "",
                         passCord = "newPassword"
                     )
                 )
@@ -48,13 +48,13 @@ class UpdateDefaultMemberPassCordTest: BehaviorSpec({
             passCord = null,
             generations = emptySet(),
         )
-        every { memberGateway.getById(any()) } returns mockMember
+        every { memberGateway.findByEmail(any()) } returns mockMember
         every { updateMemberPassCord.execute(any()) } returns mockMember
 
         When("execute를 실행하면") {
             val result = updateDefaultMemberPassCord.execute(
                 UpdateDefaultMemberPassCord.UpdateDefaultMemberPassCordInput(
-                    memberId = "",
+                    email = "",
                     passCord = "newPassword"
                 )
             )
