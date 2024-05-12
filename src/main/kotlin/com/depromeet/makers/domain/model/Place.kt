@@ -5,6 +5,16 @@ data class Place(
     val longitude: Double,
     val latitude: Double,
 ) {
+    fun update(
+        address: String,
+        longitude: Double,
+        latitude: Double,
+    ) = copy(
+        address = address,
+        longitude = longitude,
+        latitude = latitude,
+    )
+
     companion object {
         fun newPlace(
             address: String,

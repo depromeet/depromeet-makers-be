@@ -17,6 +17,12 @@ class SessionGatewayImpl(
             .toDomain()
     }
 
+    override fun getById(sessionId: String): Session {
+        return jpaSessionRepository
+            .getReferenceById(sessionId)
+            .toDomain()
+    }
+
     override fun existsByGenerationAndWeek(generation: Int, week: Int): Boolean {
         return jpaSessionRepository.existsByGenerationAndWeek(generation, week)
     }

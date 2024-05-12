@@ -8,4 +8,6 @@ interface SessionGateway {
     fun existsByGenerationAndWeek(generation: Int, week: Int): Boolean
 
     fun delete(sessionId: String)
+
+    fun getById(sessionId: String): Session
 }

@@ -1,12 +1,12 @@
 package com.depromeet.makers.presentation.restapi.dto.response
 
-import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionAttendance
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "세션 생성 결과 DTO")
-data class CreateNewSessionResponse(
+
+@Schema(description = "세션 수정 결과 DTO")
+class UpdateSessionResponse(
     @Schema(description = "세션 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val sessionId: String,
 
@@ -29,15 +29,15 @@ data class CreateNewSessionResponse(
     val sessionType: String,
 
     @Schema(description = "장소", example = "온라인")
-    val place: PlaceResponse?,
+    val place: PlaceResponse,
 
     @Schema(description = "참석자 ID 목록")
     val attendanceMemberIds: Set<SessionAttendance>,
 ) {
     companion object {
-        fun fromDomain(session: Session): CreateNewSessionResponse {
+        fun fromDomain(session: Session): UpdateSessionResponse {
             return with(session) {
-                CreateNewSessionResponse(
+                UpdateSessionResponse(
                     sessionId = sessionId,
                     generation = generation,
                     week = week,
@@ -63,7 +63,7 @@ data class CreateNewSessionResponse(
         val latitude: Double
     ) {
         companion object {
-            fun fromDomain(place: Place): PlaceResponse {
+            fun fromDomain(place: com.depromeet.makers.domain.model.Place): PlaceResponse {
                 return with(place) {
                     PlaceResponse(
                         address = address,
