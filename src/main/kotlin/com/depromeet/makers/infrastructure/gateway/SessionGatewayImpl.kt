@@ -20,4 +20,8 @@ class SessionGatewayImpl(
     override fun existsByGenerationAndWeek(generation: Int, week: Int): Boolean {
         return jpaSessionRepository.existsByGenerationAndWeek(generation, week)
     }
+
+    override fun delete(sessionId: String) {
+        jpaSessionRepository.deleteById(sessionId)
+    }
 }

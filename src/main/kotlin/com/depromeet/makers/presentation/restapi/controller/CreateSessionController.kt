@@ -6,6 +6,7 @@ import com.depromeet.makers.presentation.restapi.dto.response.CreateNewSessionRe
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,7 +19,7 @@ class CreateSessionController(
     private val createNewSession: CreateNewSession,
 ) {
     @Operation(summary = "새로운 세션 생성", description = "새로운 세션을 생성합니다.")
-    // TODO: @PreAuthorize("hasRole('ADMIN')") MemberRole 필요.
+    @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping
     fun createNewSession(
         @RequestBody @Valid request: CreateNewSessionRequest,
