@@ -30,4 +30,10 @@ class SessionGatewayImpl(
     override fun delete(sessionId: String) {
         jpaSessionRepository.deleteById(sessionId)
     }
+
+    override fun findAllByGeneration(generation: Int): List<Session> {
+        return jpaSessionRepository
+            .findAllByGeneration(generation)
+            .map { it.toDomain() }
+    }
 }
