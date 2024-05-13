@@ -21,13 +21,10 @@ class UpdateSession(
 
         return sessionGateway.save(
             session.update(
-                generation = session.generation,
-                week = session.week,
-                title = input.title,
+                title = input.title ?: session.title,
                 description = input.description,
-                startTime = input.startTime,
-                sessionType = input.sessionType,
-                place = session.place
+                startTime = input.startTime ?: session.startTime,
+                sessionType = input.sessionType ?: session.sessionType,
             )
         )
     }

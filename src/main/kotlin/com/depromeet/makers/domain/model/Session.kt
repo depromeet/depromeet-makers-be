@@ -16,22 +16,22 @@ data class Session(
     fun isOnline() = sessionType.isOnline()
 
     fun update(
-        generation: Int?,
-        week: Int?,
-        title: String?,
-        description: String?,
-        startTime: LocalDateTime?,
-        sessionType: SessionType?,
-        place: Place?,
+        generation: Int = this.generation,
+        week: Int = this.week,
+        title: String = this.title,
+        description: String? = this.description,
+        startTime: LocalDateTime = this.startTime,
+        sessionType: SessionType = this.sessionType,
+        place: Place = this.place,
     ): Session {
         return copy(
-            generation = generation ?: this.generation,
-            week = week ?: this.week,
-            title = title ?: this.title,
-            description = description ?: this.description,
-            startTime = startTime ?: this.startTime,
-            sessionType = sessionType ?: this.sessionType,
-            place = place ?: this.place
+            generation = generation,
+            week = week,
+            title = title,
+            description = description,
+            startTime = startTime,
+            sessionType = sessionType,
+            place = place,
         )
     }
 }

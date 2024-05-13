@@ -45,7 +45,7 @@ data class UpdateSessionPlaceResponse(
                     description = description,
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
-                    place = place.let { PlaceResponse.fromDomain(it) },
+                    place = place.let(PlaceResponse::fromDomain),
                     attendanceMemberIds = attendanceMemberIds
                 )
             }
