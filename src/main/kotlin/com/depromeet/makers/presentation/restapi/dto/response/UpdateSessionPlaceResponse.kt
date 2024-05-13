@@ -5,8 +5,8 @@ import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionAttendance
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "세션 생성 결과 DTO")
-data class CreateNewSessionResponse(
+@Schema(description = "세션 장소 수정 응답")
+data class UpdateSessionPlaceResponse(
     @Schema(description = "세션 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val sessionId: String,
 
@@ -29,15 +29,15 @@ data class CreateNewSessionResponse(
     val sessionType: String,
 
     @Schema(description = "장소", example = "온라인")
-    val place: PlaceResponse?,
+    val place: PlaceResponse,
 
     @Schema(description = "참석자 ID 목록")
     val attendanceMemberIds: Set<SessionAttendance>,
 ) {
     companion object {
-        fun fromDomain(session: Session): CreateNewSessionResponse {
+        fun fromDomain(session: Session): UpdateSessionPlaceResponse {
             return with(session) {
-                CreateNewSessionResponse(
+                UpdateSessionPlaceResponse(
                     sessionId = sessionId,
                     generation = generation,
                     week = week,
@@ -45,7 +45,7 @@ data class CreateNewSessionResponse(
                     description = description,
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
-                    place = place.let { PlaceResponse.fromDomain(it) },
+                    place = place.let(PlaceResponse::fromDomain),
                     attendanceMemberIds = attendanceMemberIds
                 )
             }

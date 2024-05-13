@@ -14,4 +14,24 @@ data class Session(
     val attendanceMemberIds: Set<SessionAttendance>,
 ) {
     fun isOnline() = sessionType.isOnline()
+
+    fun update(
+        generation: Int = this.generation,
+        week: Int = this.week,
+        title: String = this.title,
+        description: String? = this.description,
+        startTime: LocalDateTime = this.startTime,
+        sessionType: SessionType = this.sessionType,
+        place: Place = this.place,
+    ): Session {
+        return copy(
+            generation = generation,
+            week = week,
+            title = title,
+            description = description,
+            startTime = startTime,
+            sessionType = sessionType,
+            place = place,
+        )
+    }
 }

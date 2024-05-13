@@ -2,7 +2,7 @@ package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.SessionAlreadyExistsException
 import com.depromeet.makers.domain.exception.SessionPlaceNotFoundException
-import com.depromeet.makers.domain.gateway.SessionGateWay
+import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
@@ -10,7 +10,7 @@ import com.depromeet.makers.util.generateULID
 import java.time.LocalDateTime
 
 class CreateNewSession(
-    private val sessionGateWay: SessionGateWay,
+    private val sessionGateWay: SessionGateway,
 ) : UseCase<CreateNewSession.CreateNewSessionInput, Session> {
     data class CreateNewSessionInput(
         val generation: Int,

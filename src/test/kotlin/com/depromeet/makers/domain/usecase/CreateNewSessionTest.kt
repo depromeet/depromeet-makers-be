@@ -1,7 +1,7 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.SessionAlreadyExistsException
-import com.depromeet.makers.domain.gateway.SessionGateWay
+import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.SessionType
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 
 class CreateNewSessionTest : BehaviorSpec({
     Given("온라인 세션을 등록할 때") {
-        val sessionGateWay = mockk<SessionGateWay>()
+        val sessionGateWay = mockk<SessionGateway>()
         val createNewSession = CreateNewSession(sessionGateWay)
 
         val mockGeneration = 14
@@ -72,7 +72,7 @@ class CreateNewSessionTest : BehaviorSpec({
     }
 
     Given("오프라인 세션을 등록할 때") {
-        val sessionGateWay = mockk<SessionGateWay>()
+        val sessionGateWay = mockk<SessionGateway>()
         val createNewSession = CreateNewSession(sessionGateWay)
 
         val mockGeneration = 14
@@ -110,7 +110,7 @@ class CreateNewSessionTest : BehaviorSpec({
     }
 
     Given("이미 등록된 세션을 등록할 때") {
-        val sessionGateWay = mockk<SessionGateWay>()
+        val sessionGateWay = mockk<SessionGateway>()
         val createNewSession = CreateNewSession(sessionGateWay)
 
         val mockGeneration = 14
