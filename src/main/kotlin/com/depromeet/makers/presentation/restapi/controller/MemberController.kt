@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "사용자 관련 API", description = "사용자의 정보를 관리하는 API")
 @RestController
 @RequestMapping("/v1/members")
-class CreateMemberController(
+class MemberController(
     private val createNewMember: CreateNewMember,
 ) {
     @PreAuthorize("hasRole('ORGANIZER')")
