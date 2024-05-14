@@ -28,4 +28,8 @@ class TokenGatewayImpl(
         )
         return tokenProvider.generateRefreshToken(authentication)
     }
+
+    override fun extractMemberIdFromRefreshToken(token: String): String {
+        return tokenProvider.getMemberIdFromRefreshToken(token)
+    }
 }
