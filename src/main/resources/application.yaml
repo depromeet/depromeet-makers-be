@@ -22,7 +22,7 @@ server:
 
 app:
   token:
-    secretKey: thisisverysecretkey2342304a22a3f
+    secretKey: ${JWT_SECRET_KEY}
     expiration:
-      access: 38400
-      refresh: 38400
+      access: 86400
+      refresh: 604800
