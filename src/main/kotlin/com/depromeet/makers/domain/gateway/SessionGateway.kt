@@ -10,4 +10,6 @@ interface SessionGateway {
     fun delete(sessionId: String)
 
     fun getById(sessionId: String): Session
+
+    fun findAllByGeneration(generation: Int): List<Session>
 }
