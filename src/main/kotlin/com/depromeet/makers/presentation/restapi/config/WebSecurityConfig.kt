@@ -24,7 +24,7 @@ class WebSecurityConfig {
         jwtTokenProvider: JWTTokenProvider,
         handlerExceptionResolver: HandlerExceptionResolver,
     ): SecurityFilterChain = httpSecurity
-        .securityMatcher("/v1/members/**")
+        .securityMatcher("/v1/me/**", "/v1/sessions/**", "/v1/members/**", "/v1/attendances/**", "/v1/check-in")
         .csrf { it.disable() }
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
