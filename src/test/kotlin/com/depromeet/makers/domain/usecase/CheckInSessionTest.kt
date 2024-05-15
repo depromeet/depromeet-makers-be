@@ -4,6 +4,7 @@ import com.depromeet.makers.domain.exception.InvalidCheckInDistanceException
 import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
 import com.depromeet.makers.domain.exception.MissingPlaceParamException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
+import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.model.Place
@@ -20,16 +21,11 @@ class CheckInSessionTest : BehaviorSpec({
     Given("온라인 세션에 출석할 때") {
         val attendanceGateway = mockk<AttendanceGateway>()
         val sessionGateway = mockk<SessionGateway>()
-        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+        val memberGateway = mockk<MemberGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway, memberGateway)
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
-        val mockMember = Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
-        )
+        val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
         val mockLongitude = null
         val mockLatitude = null
 
@@ -44,6 +40,14 @@ class CheckInSessionTest : BehaviorSpec({
             place = Place.emptyPlace(),
         )
 
+        every { memberGateway.getById(any()) } returns Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+
         every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
@@ -52,7 +56,7 @@ class CheckInSessionTest : BehaviorSpec({
                 checkInSession.execute(
                     CheckInSession.CheckInSessionInput(
                         now = mockNow,
-                        member = mockMember,
+                        memberId = mockMemberId,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
                     )
@@ -68,21 +72,23 @@ class CheckInSessionTest : BehaviorSpec({
     Given("출석 세션이 존재하지 않는 온라인 세션에 출석할 때") {
         val attendanceGateway = mockk<AttendanceGateway>()
         val sessionGateway = mockk<SessionGateway>()
-        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+        val memberGateway = mockk<MemberGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway, memberGateway)
 
         val mockNow = LocalDateTime.of(2024, 6, 15, 16, 0)
-        val mockMember = Member(
+        val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
+        val mockLongitude = null
+        val mockLatitude = null
+
+        every { memberGateway.getById(any()) } returns Member(
             memberId = "123e4567-e89b-12d3-a456-426614174000",
             name = "홍길동",
             email = "",
             passCord = null,
             generations = emptySet()
         )
-        val mockLongitude = null
-        val mockLatitude = null
 
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns null
-
         every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
@@ -91,7 +97,7 @@ class CheckInSessionTest : BehaviorSpec({
                 checkInSession.execute(
                     CheckInSession.CheckInSessionInput(
                         now = mockNow,
-                        member = mockMember,
+                        memberId = mockMemberId,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
                     )
@@ -107,16 +113,11 @@ class CheckInSessionTest : BehaviorSpec({
     Given("오프라인 세션에 출석할 때") {
         val attendanceGateway = mockk<AttendanceGateway>()
         val sessionGateway = mockk<SessionGateway>()
-        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+        val memberGateway = mockk<MemberGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway, memberGateway)
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
-        val mockMember = Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
-        )
+        val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
         val mockLongitude = 127.0092
         val mockLatitude = 35.9418
 
@@ -135,6 +136,14 @@ class CheckInSessionTest : BehaviorSpec({
             ),
         )
 
+        every { memberGateway.getById(any()) } returns Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+
         every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
@@ -143,7 +152,7 @@ class CheckInSessionTest : BehaviorSpec({
                 checkInSession.execute(
                     CheckInSession.CheckInSessionInput(
                         now = mockNow,
-                        member = mockMember,
+                        memberId = mockMemberId,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
                     )
@@ -159,16 +168,11 @@ class CheckInSessionTest : BehaviorSpec({
     Given("위치에 벗어난 상태에서 오프라인 세션에 출석할 때") {
         val attendanceGateway = mockk<AttendanceGateway>()
         val sessionGateway = mockk<SessionGateway>()
-        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+        val memberGateway = mockk<MemberGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway, memberGateway)
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
-        val mockMember = Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
-        )
+        val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
         val mockLongitude = 0.0
         val mockLatitude = 0.0
 
@@ -187,6 +191,14 @@ class CheckInSessionTest : BehaviorSpec({
             ),
         )
 
+        every { memberGateway.getById(any()) } returns Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+
         every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
@@ -195,7 +207,7 @@ class CheckInSessionTest : BehaviorSpec({
                 checkInSession.execute(
                     CheckInSession.CheckInSessionInput(
                         now = mockNow,
-                        member = mockMember,
+                        memberId = mockMemberId,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
                     )
@@ -211,16 +223,11 @@ class CheckInSessionTest : BehaviorSpec({
     Given("위치에 파라미터가 누락되어 오프라인 세션에 출석할 때") {
         val attendanceGateway = mockk<AttendanceGateway>()
         val sessionGateway = mockk<SessionGateway>()
-        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+        val memberGateway = mockk<MemberGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway, memberGateway)
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
-        val mockMember = Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
-        )
+        val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
         val mockLongitude = null
         val mockLatitude = null
 
@@ -239,6 +246,14 @@ class CheckInSessionTest : BehaviorSpec({
             ),
         )
 
+        every { memberGateway.getById(any()) } returns Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+
         every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
@@ -247,7 +262,7 @@ class CheckInSessionTest : BehaviorSpec({
                 checkInSession.execute(
                     CheckInSession.CheckInSessionInput(
                         now = mockNow,
-                        member = mockMember,
+                        memberId = mockMemberId,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
                     )
