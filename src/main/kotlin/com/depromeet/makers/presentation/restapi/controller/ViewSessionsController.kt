@@ -20,7 +20,7 @@ class ViewSessionsController(
 ) {
     @Operation(summary = "기수에 따른 모든 주차의 세션들 조회 요청", description = "기수에 따른 모든 주차의 세션들을 조회합니다.")
     @Parameter(name = "generation", description = "조회할 세션의 기수", example = "15")
-    @PreAuthorize("hasRole('MEMBER')")
+    @PreAuthorize("hasAnyRole('MEMBER', 'ORGANIZER')")
     @GetMapping
     fun viewSessions(
         @Valid request: ViewSessionsRequest,

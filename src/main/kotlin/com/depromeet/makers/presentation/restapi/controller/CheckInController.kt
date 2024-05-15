@@ -21,7 +21,7 @@ class CheckInController(
     private val checkInSession: CheckInSession,
 ) {
 
-    @PreAuthorize("hasRole('MEMBER')")
+    @PreAuthorize("hasAnyRole('MEMBER', 'ORGANIZER')")
     @Operation(summary = "세션 출석", description = "세션에 출석합니다. (서버에서 현재 시간을 기준으로 출석 처리)")
     @PostMapping
     @ApiResponses(
