@@ -6,4 +6,6 @@ interface AttendanceGateway {
     fun save(attendance: Attendance): Attendance
 
     fun findByMemberIdAndGenerationAndWeek(memberId: String, generation: Int, week: Int): Attendance
+
+    fun findAllByMemberIdAndGeneration(memberId: String, generation: Int): List<Attendance>
 }
