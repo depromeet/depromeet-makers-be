@@ -38,7 +38,6 @@ class CreateNewSession(
             startTime = input.startTime,
             sessionType = input.sessionType,
             place = getNewPlace(input),
-            attendanceMemberIds = emptySet(),
         )
         return sessionGateWay.save(newSession)
     }

@@ -40,10 +40,7 @@ class SessionEntity private constructor(
     @Column(name = "latitude")
     var latitude: Double,
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "member_id")
-    var attendanceMembers: Set<SessionAttendanceEntity>,
-) {
+    ) {
     fun toDomain(): Session {
         return Session(
             sessionId = id,
@@ -54,7 +51,6 @@ class SessionEntity private constructor(
             startTime = startTime,
             sessionType = sessionType,
             place = Place.newPlace(address, longitude, latitude),
-            attendanceMemberIds = attendanceMembers.map { it.toDomain() }.toSet(),
         )
     }
 
@@ -72,7 +68,6 @@ class SessionEntity private constructor(
                     address = place.address,
                     longitude = place.longitude,
                     latitude = place.latitude,
-                    attendanceMembers = emptySet(),
                 )
             }
         }

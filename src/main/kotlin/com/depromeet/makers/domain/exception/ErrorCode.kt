@@ -40,4 +40,15 @@ enum class ErrorCode(
      */
     INVALID_SESSION_PLACE("SE0001", "오프라인 세션의 장소가 기입이 필요합니다"),
     SESSION_ALREADY_EXISTS("SE0002", "이미 해당 세션이 존재합니다"),
+
+    /**
+     * 출석 관련 오류
+     * @see com.depromeet.makers.domain.exception.AttendanceException
+     */
+    BEFORE_AVAILABLE_ATTENDANCE_TIME("AT0001", "출석 시간 이전입니다"),
+    AFTER_AVAILABLE_ATTENDANCE_TIME("AT0002", "출석, 지각 가능 시간이 지났습니다"),
+    ALREADY_ATTENDANCE("AT0003", "이미 출석 처리 되었습니다."),
+    INVALID_CHECKIN_TIME("AT0004", "현재 주차에 해당하는 세션을 찾을 수 없습니다."),
+    MISSING_PLACE_PARAM("AT0005", "오프라인 세션 출석체크의 현재 위치 정보가 누락되었습니다."),
+    INVALID_CHECKIN_DISTANCE("AT0006", "현재 위치와 세션 장소의 거리가 너무 멉니다."),
 }

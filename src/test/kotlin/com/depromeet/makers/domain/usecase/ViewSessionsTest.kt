@@ -25,7 +25,6 @@ class ViewSessionsTest : BehaviorSpec({
                 startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
                 sessionType = SessionType.OFFLINE,
                 place = Place.emptyPlace(),
-                attendanceMemberIds = emptySet(),
             )
         }.toList().shuffled()
 

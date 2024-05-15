@@ -2,7 +2,6 @@ package com.depromeet.makers.presentation.restapi.dto.response
 
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
-import com.depromeet.makers.domain.model.SessionAttendance
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "세션 장소 수정 응답")
@@ -30,9 +29,6 @@ data class UpdateSessionPlaceResponse(
 
     @Schema(description = "장소", example = "온라인")
     val place: PlaceResponse,
-
-    @Schema(description = "참석자 ID 목록")
-    val attendanceMemberIds: Set<SessionAttendance>,
 ) {
     companion object {
         fun fromDomain(session: Session): UpdateSessionPlaceResponse {
@@ -46,7 +42,6 @@ data class UpdateSessionPlaceResponse(
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
                     place = place.let(PlaceResponse::fromDomain),
-                    attendanceMemberIds = attendanceMemberIds
                 )
             }
         }
