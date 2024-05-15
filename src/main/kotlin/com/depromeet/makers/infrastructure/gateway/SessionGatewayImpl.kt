@@ -5,6 +5,7 @@ import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.infrastructure.db.entity.SessionEntity
 import com.depromeet.makers.infrastructure.db.repository.JpaSessionRepository
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 @Component
 class SessionGatewayImpl(
@@ -35,5 +36,20 @@ class SessionGatewayImpl(
         return jpaSessionRepository
             .findAllByGeneration(generation)
             .map { it.toDomain() }
+    }
+
+    override fun findByGenerationAndWeek(generation: Int, week: Int): Session {
+        return jpaSessionRepository
+            .findByGenerationAndWeek(generation, week)
+            .toDomain()
+    }
+
+    override fun findByStartTimeBetween(
+        startTime: LocalDateTime,
+        endTime: LocalDateTime
+    ): Session? {
+        return jpaSessionRepository
+            .findByStartTimeBetween(startTime, endTime)
+            ?.toDomain()
     }
 }

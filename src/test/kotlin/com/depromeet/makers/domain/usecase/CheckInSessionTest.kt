@@ -1,0 +1,263 @@
+package com.depromeet.makers.domain.usecase
+
+import com.depromeet.makers.domain.exception.InvalidCheckInDistanceException
+import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
+import com.depromeet.makers.domain.exception.MissingPlaceParamException
+import com.depromeet.makers.domain.gateway.AttendanceGateway
+import com.depromeet.makers.domain.gateway.SessionGateway
+import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.Place
+import com.depromeet.makers.domain.model.Session
+import com.depromeet.makers.domain.model.SessionType
+import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.BehaviorSpec
+import io.mockk.every
+import io.mockk.mockk
+import java.time.LocalDateTime
+
+class CheckInSessionTest : BehaviorSpec({
+    Given("온라인 세션에 출석할 때") {
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val sessionGateway = mockk<SessionGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+
+        val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+        val mockLongitude = null
+        val mockLatitude = null
+
+        every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
+            sessionId = "123e4567-e89b-12d3-a456-426614174000",
+            generation = 15,
+            week = 1,
+            title = "title",
+            description = null,
+            startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
+            sessionType = SessionType.ONLINE,
+            place = Place.emptyPlace(),
+        )
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.save(any()) } returns mockk()
+
+        When("execute가 실행되면") {
+            val executor = {
+                checkInSession.execute(
+                    CheckInSession.CheckInSessionInput(
+                        now = mockNow,
+                        member = mockMember,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
+                    )
+                )
+            }
+
+            Then("예외 없이 실행된다") {
+                shouldNotThrowAny { executor() }
+            }
+        }
+    }
+
+    Given("출석 세션이 존재하지 않는 온라인 세션에 출석할 때") {
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val sessionGateway = mockk<SessionGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+
+        val mockNow = LocalDateTime.of(2024, 6, 15, 16, 0)
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+        val mockLongitude = null
+        val mockLatitude = null
+
+        every { sessionGateway.findByStartTimeBetween(any(), any()) } returns null
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.save(any()) } returns mockk()
+
+        When("execute가 실행되면") {
+            val executor = {
+                checkInSession.execute(
+                    CheckInSession.CheckInSessionInput(
+                        now = mockNow,
+                        member = mockMember,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
+                    )
+                )
+            }
+
+            Then("InvalidCheckInTimeException 예외를 던진다") {
+                shouldThrow<InvalidCheckInTimeException> { executor() }
+            }
+        }
+    }
+
+    Given("오프라인 세션에 출석할 때") {
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val sessionGateway = mockk<SessionGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+
+        val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+        val mockLongitude = 127.0092
+        val mockLatitude = 35.9418
+
+        every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
+            sessionId = "123e4567-e89b-12d3-a456-426614174000",
+            generation = 15,
+            week = 1,
+            title = "title",
+            description = null,
+            startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
+            sessionType = SessionType.OFFLINE,
+            place = Place(
+                address = "전북 익산시 부송동 100",
+                latitude = 35.9418,
+                longitude = 127.0092,
+            ),
+        )
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.save(any()) } returns mockk()
+
+        When("execute가 실행되면") {
+            val executor = {
+                checkInSession.execute(
+                    CheckInSession.CheckInSessionInput(
+                        now = mockNow,
+                        member = mockMember,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
+                    )
+                )
+            }
+
+            Then("예외 없이 실행된다") {
+                shouldNotThrowAny { executor() }
+            }
+        }
+    }
+
+    Given("위치에 벗어난 상태에서 오프라인 세션에 출석할 때") {
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val sessionGateway = mockk<SessionGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+
+        val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+        val mockLongitude = 0.0
+        val mockLatitude = 0.0
+
+        every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
+            sessionId = "123e4567-e89b-12d3-a456-426614174000",
+            generation = 15,
+            week = 1,
+            title = "title",
+            description = null,
+            startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
+            sessionType = SessionType.OFFLINE,
+            place = Place(
+                address = "전북 익산시 부송동 100",
+                latitude = 35.9418,
+                longitude = 127.0092,
+            ),
+        )
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.save(any()) } returns mockk()
+
+        When("execute가 실행되면") {
+            val executor = {
+                checkInSession.execute(
+                    CheckInSession.CheckInSessionInput(
+                        now = mockNow,
+                        member = mockMember,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
+                    )
+                )
+            }
+
+            Then("InvalidCheckInDistanceException 예외를 던진다") {
+                shouldThrow<InvalidCheckInDistanceException> { executor() }
+            }
+        }
+    }
+
+    Given("위치에 파라미터가 누락되어 오프라인 세션에 출석할 때") {
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val sessionGateway = mockk<SessionGateway>()
+        val checkInSession = CheckInSession(attendanceGateway, sessionGateway)
+
+        val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
+        val mockLongitude = null
+        val mockLatitude = null
+
+        every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
+            sessionId = "123e4567-e89b-12d3-a456-426614174000",
+            generation = 15,
+            week = 1,
+            title = "title",
+            description = null,
+            startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
+            sessionType = SessionType.OFFLINE,
+            place = Place(
+                address = "전북 익산시 부송동 100",
+                latitude = 35.9418,
+                longitude = 127.0092,
+            ),
+        )
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.save(any()) } returns mockk()
+
+        When("execute가 실행되면") {
+            val executor = {
+                checkInSession.execute(
+                    CheckInSession.CheckInSessionInput(
+                        now = mockNow,
+                        member = mockMember,
+                        longitude = mockLongitude,
+                        latitude = mockLatitude,
+                    )
+                )
+            }
+
+
+            Then("MissingPlaceParamException 예외를 던진다") {
+                shouldThrow<MissingPlaceParamException> { executor() }
+            }
+        }
+    }
+})
