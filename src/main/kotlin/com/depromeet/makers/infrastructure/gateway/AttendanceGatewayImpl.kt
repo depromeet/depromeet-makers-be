@@ -28,4 +28,10 @@ class AttendanceGatewayImpl(
             ?.toDomain()
             ?: throw NoSuchElementException("해당하는 회원의 세대, 주차 출석 정보가 없습니다.")
     }
+
+    override fun findAllByMemberIdAndGeneration(memberId: String, generation: Int): List<Attendance> {
+        return jpaAttendanceRepository
+            .findAllByMemberIdAndGeneration(memberId, generation)
+            .map { it.toDomain() }
+    }
 }

@@ -10,4 +10,6 @@ interface JpaAttendanceRepository : JpaRepository<AttendanceEntity, String> {
     fun findAllByGenerationAndWeek(generation: Int, week: Int): List<AttendanceEntity>
 
     fun findByMemberIdAndGenerationAndWeek(memberId: String, generation: Int, week: Int): AttendanceEntity?
+
+    fun findAllByMemberIdAndGeneration(memberId: String, generation: Int): List<AttendanceEntity>
 }

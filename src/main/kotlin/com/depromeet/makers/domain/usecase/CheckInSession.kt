@@ -4,9 +4,9 @@ import com.depromeet.makers.domain.exception.InvalidCheckInDistanceException
 import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
 import com.depromeet.makers.domain.exception.MissingPlaceParamException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
+import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
-import com.depromeet.makers.domain.model.Member
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.math.*
@@ -14,15 +14,17 @@ import kotlin.math.*
 class CheckInSession(
     private val attendanceGateway: AttendanceGateway,
     private val sessionGateway: SessionGateway,
+    private val memberGateway: MemberGateway,
 ) : UseCase<CheckInSession.CheckInSessionInput, Unit> {
     data class CheckInSessionInput(
         val now: LocalDateTime,
-        val member: Member,
+        val memberId: String,
         val longitude: Double?,
         val latitude: Double?,
     )
 
     override fun execute(input: CheckInSessionInput) {
+        val member = memberGateway.getById(input.memberId)
         val monday = input.now.getMonday()
 
         val thisWeekSession = sessionGateway.findByStartTimeBetween(
@@ -32,7 +34,7 @@ class CheckInSession(
 
         val attendance = runCatching {
             attendanceGateway.findByMemberIdAndGenerationAndWeek(
-                input.member.memberId,
+                member.memberId,
                 thisWeekSession.generation,
                 thisWeekSession.week
             )
@@ -40,7 +42,7 @@ class CheckInSession(
             Attendance.newAttendance(
                 generation = thisWeekSession.generation,
                 week = thisWeekSession.week,
-                member = input.member,
+                member = member,
             )
         )
 

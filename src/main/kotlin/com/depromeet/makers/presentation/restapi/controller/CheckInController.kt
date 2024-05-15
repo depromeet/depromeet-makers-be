@@ -1,6 +1,5 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.usecase.CheckInSession
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -32,7 +31,7 @@ class CheckInController(
         ApiResponse(responseCode = "AT0004", description = "현재 주차에 해당하는 세션을 찾을 수 없습니다."),
         ApiResponse(responseCode = "AT0005", description = "현재 위치 파라미터가 누락되었습니다."),
         ApiResponse(responseCode = "AT0006", description = "현재 위치와 세션 장소의 거리가 너무 멉니다."),
-        )
+    )
     fun checkInSession(
         authentication: Authentication,
         @RequestParam("latitude", required = false) latitude: Double?,
@@ -41,7 +40,7 @@ class CheckInController(
         checkInSession.execute(
             CheckInSession.CheckInSessionInput(
                 now = LocalDateTime.now(),
-                member = authentication.principal as Member,
+                memberId = authentication.name,
                 latitude = latitude,
                 longitude = longitude,
             )
