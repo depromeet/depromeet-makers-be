@@ -25,7 +25,6 @@ class UpdateSessionTest : BehaviorSpec({
             startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
             sessionType = SessionType.OFFLINE,
             place = Place.emptyPlace(),
-            attendanceMemberIds = emptySet(),
         )
 
         val mockSessionId = "123e4567-e89b-12d3-a456-426614174000"

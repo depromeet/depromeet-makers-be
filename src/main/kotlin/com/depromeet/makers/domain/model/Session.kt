@@ -11,9 +11,10 @@ data class Session(
     val startTime: LocalDateTime,
     val sessionType: SessionType,
     val place: Place,
-    val attendanceMemberIds: Set<SessionAttendance>,
 ) {
     fun isOnline() = sessionType.isOnline()
+
+    fun isOffline() = sessionType.isOffline()
 
     fun update(
         generation: Int = this.generation,
