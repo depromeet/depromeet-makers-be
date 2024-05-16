@@ -80,14 +80,14 @@ class AuthController(
     fun checkMemberExistsByEmail(
         @RequestParam("email") email: String,
     ): CheckMemberExistsByEmailResponse {
-        val memberExists = try {
+        val member = try {
             getMemberByEmail.execute(GetMemberByEmail.GetMemberByEmailInput(email = email))
-            true
         } catch(e: MemberNotFoundException) {
-            false
+            null
         }
         return CheckMemberExistsByEmailResponse(
-            result = memberExists
+            isMemberExists = member != null,
+            isPassCordAssigned = member?.hasPassCord() == true,
         )
     }
 }
