@@ -50,6 +50,7 @@ class SessionGatewayImpl(
     ): Session? {
         return jpaSessionRepository
             .findByStartTimeBetween(startTime, endTime)
+            .firstOrNull()
             ?.toDomain()
     }
 }
