@@ -57,6 +57,24 @@ data class Attendance(
         throw AttendanceAfterTimeException()
     }
 
+    fun update(
+        attendanceId: String = this.attendanceId,
+        generation: Int = this.generation,
+        week: Int = this.week,
+        member: Member = this.member,
+        attendanceStatus: AttendanceStatus = this.attendanceStatus,
+        attendanceTime: LocalDateTime? = this.attendanceTime
+    ): Attendance {
+        return this.copy(
+            attendanceId = attendanceId,
+            generation = generation,
+            week = week,
+            member = member,
+            attendanceStatus = attendanceStatus,
+            attendanceTime = attendanceTime
+        )
+    }
+
     companion object {
         fun newAttendance(
             generation: Int,
