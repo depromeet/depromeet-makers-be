@@ -17,7 +17,7 @@ class UpdateSessionController(
 ) {
     @Operation(summary = "세션 정보 수정", description = "세션의 정보를 수정합니다.")
     @PreAuthorize("hasRole('ORGANIZER')")
-    @PostMapping("/{sessionId}")
+    @PutMapping("/{sessionId}")
     fun updateSession(
         @PathVariable sessionId: String,
         @RequestBody @Valid request: UpdateSessionRequest,
