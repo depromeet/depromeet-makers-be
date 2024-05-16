@@ -2,6 +2,7 @@ package com.depromeet.makers.infrastructure.db.entity
 
 import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.AttendanceStatus
+import com.depromeet.makers.domain.model.SessionType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -41,6 +42,7 @@ class AttendanceEntity private constructor(
         week = week,
         member = member.toDomain(),
         attendanceStatus = attendanceStatus,
+        sessionType = SessionType.ONLINE,
         attendanceTime = attendanceTime,
     )
 

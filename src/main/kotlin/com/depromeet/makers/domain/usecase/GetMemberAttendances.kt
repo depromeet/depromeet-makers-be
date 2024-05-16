@@ -4,6 +4,7 @@ import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
+import com.depromeet.makers.domain.model.Session
 
 class GetMemberAttendances(
     private val attendanceGateway: AttendanceGateway,
@@ -25,35 +26,38 @@ class GetMemberAttendances(
     override fun execute(input: GetMemberAttendancesInput): GetMemberAttendancesOutput {
         val member = memberGateway.getById(input.memberId)
 
-        val attendances = attendanceGateway.findAllByMemberIdAndGeneration(member.memberId, input.generation)
-            .associate { it.week to it }
-            .toMutableMap()
-
-        (1..16).filter { week -> !attendances.contains(week) }
-            .forEach { week ->
-                attendances[week] = attendanceGateway.save(
-                    Attendance.newAttendance(
-                        member = member,
-                        generation = input.generation,
-                        week = week,
-                    )
+        // 기본값 없으면 세팅 (추후 걷어낼 로직)
+        val sessions = (1..16).map {
+            sessionGateway.findByGenerationAndWeek(input.generation, it) ?: sessionGateway.save(
+                Session.newSession(
+                    generation = input.generation,
+                    week = it,
                 )
-            }
+            )
+        }
+
+        val attendances = (1..16).map {
+            attendanceGateway.save(
+                Attendance.newAttendance(
+                    member = member,
+                    generation = input.generation,
+                    week = it,
+                    sessionType = sessions[it - 1].sessionType,
+                )
+            )
+        }
 
         var offlineAbsenceScore = 0.0
         var totalAbsenceScore = 0.0
-        attendances.values.forEach {
-            offlineAbsenceScore += if (it.attendanceStatus.isAbsence() &&
-                runCatching { sessionGateway.findByGenerationAndWeek(input.generation, it.week).isOffline() }
-                    .getOrDefault(false)
-            ) 1.0 else 0.0
-            totalAbsenceScore += it.attendanceStatus.point
+        (1..16).forEach { week ->
+            offlineAbsenceScore += if (attendances[week - 1].attendanceStatus.isAbsence() && sessions[week - 1].isOffline()) 1.0 else 0.0
+            totalAbsenceScore += attendances[week - 1].attendanceStatus.point
         }
         return GetMemberAttendancesOutput(
             generation = input.generation,
             offlineAbsenceScore = offlineAbsenceScore,
             totalAbsenceScore = totalAbsenceScore,
-            attendances = attendances.values.sortedBy { it.week }
+            attendances = attendances.sortedBy { it.week }
         )
     }
 }

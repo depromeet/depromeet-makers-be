@@ -14,7 +14,7 @@ interface SessionGateway {
 
     fun findAllByGeneration(generation: Int): List<Session>
 
-    fun findByGenerationAndWeek(generation: Int, week: Int): Session
+    fun findByGenerationAndWeek(generation: Int, week: Int): Session?
 
     fun findByStartTimeBetween(startTime: LocalDateTime, endTime: LocalDateTime): Session?
 }

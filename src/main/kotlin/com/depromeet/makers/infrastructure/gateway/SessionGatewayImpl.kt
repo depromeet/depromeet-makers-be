@@ -38,10 +38,10 @@ class SessionGatewayImpl(
             .map { it.toDomain() }
     }
 
-    override fun findByGenerationAndWeek(generation: Int, week: Int): Session {
+    override fun findByGenerationAndWeek(generation: Int, week: Int): Session? {
         return jpaSessionRepository
             .findByGenerationAndWeek(generation, week)
-            .toDomain()
+            ?.toDomain()
     }
 
     override fun findByStartTimeBetween(

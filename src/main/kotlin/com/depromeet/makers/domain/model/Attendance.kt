@@ -11,6 +11,7 @@ data class Attendance(
     val generation: Int,
     val week: Int,
     val member: Member,
+    val sessionType: SessionType,
     val attendanceStatus: AttendanceStatus,
     val attendanceTime: LocalDateTime?
 ) {
@@ -80,12 +81,14 @@ data class Attendance(
             generation: Int,
             week: Int,
             member: Member,
+            sessionType: SessionType = SessionType.ONLINE,
             attendance: AttendanceStatus = AttendanceStatus.ATTENDANCE_ON_HOLD
         ) = Attendance(
             attendanceId = generateULID(),
             generation = generation,
             week = week,
             member = member,
+            sessionType = sessionType,
             attendanceStatus = attendance,
             attendanceTime = null
         )
