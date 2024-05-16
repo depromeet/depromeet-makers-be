@@ -77,10 +77,5 @@ class GetCheckInStatus(
         )
     }
 
-    private fun LocalDateTime.getMonday(): LocalDateTime {
-        val dayOfWeek = this.dayOfWeek
-        val daysToAdd = DayOfWeek.MONDAY.value - dayOfWeek.value
-        return this.plusDays(daysToAdd.toLong())
-    }
+    private fun LocalDateTime.getMonday() = this.toLocalDate().with(DayOfWeek.MONDAY).atStartOfDay()
 }
-

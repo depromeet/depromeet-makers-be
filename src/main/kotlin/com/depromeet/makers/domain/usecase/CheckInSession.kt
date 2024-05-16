@@ -67,11 +67,7 @@ class CheckInSession(
         attendanceGateway.save(attendance.checkIn(input.now, thisWeekSession.startTime))
     }
 
-    private fun LocalDateTime.getMonday(): LocalDateTime {
-        val dayOfWeek = this.dayOfWeek
-        val daysToAdd = DayOfWeek.MONDAY.value - dayOfWeek.value
-        return this.plusDays(daysToAdd.toLong())
-    }
+    private fun LocalDateTime.getMonday() = this.toLocalDate().with(DayOfWeek.MONDAY).atStartOfDay()
 
     private fun inRange(distance: Double, range: Double) = distance <= range
 
