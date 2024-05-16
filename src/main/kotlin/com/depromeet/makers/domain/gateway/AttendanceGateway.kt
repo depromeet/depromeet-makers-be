@@ -5,6 +5,8 @@ import com.depromeet.makers.domain.model.Attendance
 interface AttendanceGateway {
     fun save(attendance: Attendance): Attendance
 
+    fun getById(attendanceId: String): Attendance
+
     fun findByMemberIdAndGenerationAndWeek(memberId: String, generation: Int, week: Int): Attendance
 
     fun findAllByMemberIdAndGeneration(memberId: String, generation: Int): List<Attendance>

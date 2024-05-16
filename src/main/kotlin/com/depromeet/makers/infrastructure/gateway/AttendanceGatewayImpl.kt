@@ -34,4 +34,11 @@ class AttendanceGatewayImpl(
             .findAllByMemberIdAndGeneration(memberId, generation)
             .map { it.toDomain() }
     }
+
+    override fun getById(attendanceId: String): Attendance {
+        return jpaAttendanceRepository
+            .findById(attendanceId)
+            .orElseThrow { NoSuchElementException("해당하는 출석 정보가 없습니다.") }
+            .toDomain()
+    }
 }

@@ -5,8 +5,8 @@ import com.depromeet.makers.domain.model.AttendanceStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-@Schema(description = "출석 현황 DTO")
-data class AttendanceResponse(
+@Schema(description = "출석 현황 수정 응답 DTO")
+data class UpdateAttendanceResponse(
     @Schema(description = "출석 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val attendanceId: String,
 
@@ -24,10 +24,11 @@ data class AttendanceResponse(
 
     @Schema(description = "출석 시각", example = "2021-10-10T10:10:10")
     val attendanceTime: LocalDateTime?,
-) {
+
+    ) {
     companion object {
         fun fromDomain(attendance: Attendance) = with(attendance) {
-            AttendanceResponse(
+            UpdateAttendanceResponse(
                 attendanceId = attendanceId,
                 generation = generation,
                 week = week,
