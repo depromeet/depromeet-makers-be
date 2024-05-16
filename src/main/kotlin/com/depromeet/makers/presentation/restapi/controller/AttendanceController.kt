@@ -3,7 +3,7 @@ package com.depromeet.makers.presentation.restapi.controller
 import com.depromeet.makers.domain.usecase.GetMemberAttendances
 import com.depromeet.makers.domain.usecase.UpdateAttendance
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateAttendanceRequest
-import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
+import com.depromeet.makers.presentation.restapi.dto.response.MyAttendanceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.UpdateAttendanceResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -26,14 +26,15 @@ class AttendanceController(
     fun getMyAttendance(
         authentication: Authentication,
         @RequestParam(defaultValue = "15") generation: Int,
-    ): List<AttendanceResponse> {
-        val attendances = getMemberAttendances.execute(
-            GetMemberAttendances.GetMemberAttendancesInput(
-                memberId = authentication.name,
-                generation = generation,
+    ): MyAttendanceResponse {
+        return MyAttendanceResponse.fromDomain(
+            getMemberAttendances.execute(
+                GetMemberAttendances.GetMemberAttendancesInput(
+                    memberId = authentication.name,
+                    generation = generation,
+                )
             )
         )
-        return attendances.map { AttendanceResponse.fromDomain(it) }
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
