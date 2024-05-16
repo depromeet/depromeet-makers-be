@@ -7,6 +7,7 @@ import com.depromeet.makers.presentation.restapi.config.filter.JWTAuthentication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -26,6 +27,7 @@ class WebSecurityConfig {
     ): SecurityFilterChain = httpSecurity
         .securityMatcher("/v1/me/**", "/v1/sessions/**", "/v1/members/**", "/v1/attendances/**", "/v1/check-in")
         .csrf { it.disable() }
+        .cors(Customizer.withDefaults())
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }
@@ -50,6 +52,7 @@ class WebSecurityConfig {
     fun authSecurityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain = httpSecurity
         .securityMatcher("/v1/auth/**", "/v1/members")
         .csrf { it.disable() }
+        .cors(Customizer.withDefaults())
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }
