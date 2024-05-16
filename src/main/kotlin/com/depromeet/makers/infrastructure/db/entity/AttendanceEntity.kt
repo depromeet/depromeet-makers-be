@@ -30,6 +30,10 @@ class AttendanceEntity private constructor(
     val member: MemberEntity,
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "session_type", nullable = false)
+    val sessionType: SessionType,
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "attendance_status", nullable = false)
     val attendanceStatus: AttendanceStatus,
 
@@ -42,7 +46,7 @@ class AttendanceEntity private constructor(
         week = week,
         member = member.toDomain(),
         attendanceStatus = attendanceStatus,
-        sessionType = SessionType.ONLINE,
+        sessionType = sessionType,
         attendanceTime = attendanceTime,
     )
 
@@ -53,6 +57,7 @@ class AttendanceEntity private constructor(
                 generation = generation,
                 week = week,
                 member = MemberEntity.fromDomain(member),
+                sessionType = sessionType,
                 attendanceStatus = attendanceStatus,
                 attendanceTime = attendanceTime
             )
