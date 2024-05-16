@@ -7,6 +7,9 @@ import java.time.LocalDateTime
 
 @Schema(description = "출석 현황 DTO")
 data class AttendanceResponse(
+    @Schema(description = "출석 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
+    val attendanceId: String,
+
     @Schema(description = "기수", example = "15")
     val generation: Int,
 
@@ -25,6 +28,7 @@ data class AttendanceResponse(
     companion object {
         fun fromDomain(attendance: Attendance) = with(attendance) {
             AttendanceResponse(
+                attendanceId = attendanceId,
                 generation = generation,
                 week = week,
                 memberId = member.memberId,
