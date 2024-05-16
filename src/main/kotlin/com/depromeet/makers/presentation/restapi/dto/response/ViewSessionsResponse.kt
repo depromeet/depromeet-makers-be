@@ -16,11 +16,17 @@ data class ViewSessionsResponse(
         @Schema(description = "세션 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
         val sessionId: String,
 
+        @Schema(description = "기수", example = "15")
+        val generation: Int,
+
         @Schema(description = "주차", example = "1")
         val week: Int,
 
         @Schema(description = "세션 제목", example = "오리엔테이션")
         val title: String,
+
+        @Schema(description = "세션 설명", example = "세션 설명을 입력해주세요.")
+        val description: String?,
 
         @Schema(description = "시작 시간", example = "2021-10-01T19:00:00")
         val startTime: String,
@@ -35,8 +41,10 @@ data class ViewSessionsResponse(
             fun fromDomain(session: Session) = with(session) {
                 SessionResponse(
                     sessionId = sessionId,
+                    generation = generation,
                     week = week,
                     title = title,
+                    description = description,
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
                     place = place.let { PlaceResponse.fromDomain(it) },
