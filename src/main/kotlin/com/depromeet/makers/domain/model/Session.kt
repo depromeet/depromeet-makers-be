@@ -1,5 +1,6 @@
 package com.depromeet.makers.domain.model
 
+import com.depromeet.makers.util.generateULID
 import java.time.LocalDateTime
 
 data class Session(
@@ -34,5 +35,28 @@ data class Session(
             sessionType = sessionType,
             place = place,
         )
+    }
+
+    companion object {
+        fun newSession(
+            generation: Int,
+            week: Int,
+            title: String = "세션 제목입니다.",
+            description: String? = "",
+            startTime: LocalDateTime = LocalDateTime.now(),
+            sessionType: SessionType = SessionType.ONLINE,
+            place: Place = Place.emptyPlace(),
+        ): Session {
+            return Session(
+                sessionId = generateULID(),
+                generation = generation,
+                week = week,
+                title = title,
+                description = description,
+                startTime = startTime,
+                sessionType = sessionType,
+                place = place,
+            )
+        }
     }
 }

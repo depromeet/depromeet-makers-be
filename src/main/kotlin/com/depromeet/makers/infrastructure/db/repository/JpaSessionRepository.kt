@@ -9,7 +9,7 @@ interface JpaSessionRepository : JpaRepository<SessionEntity, String> {
 
     fun findAllByGeneration(generation: Int): List<SessionEntity>
 
-    fun findByGenerationAndWeek(generation: Int, week: Int): SessionEntity
+    fun findByGenerationAndWeek(generation: Int, week: Int): SessionEntity?
 
     fun findByStartTimeBetween(startTime: LocalDateTime, endTime: LocalDateTime): List<SessionEntity>
 }

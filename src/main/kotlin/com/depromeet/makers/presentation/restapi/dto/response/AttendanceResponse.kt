@@ -2,6 +2,7 @@ package com.depromeet.makers.presentation.restapi.dto.response
 
 import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.AttendanceStatus
+import com.depromeet.makers.domain.model.SessionType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
@@ -19,6 +20,9 @@ data class AttendanceResponse(
     @Schema(description = "회원 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val memberId: String,
 
+    @Schema(description = "세션 타입", example = "ONLINE")
+    val sessionType: SessionType,
+
     @Schema(description = "출석 상태", example = "ATTENDANCE")
     val attendanceStatus: AttendanceStatus,
 
@@ -32,6 +36,7 @@ data class AttendanceResponse(
                 generation = generation,
                 week = week,
                 memberId = member.memberId,
+                sessionType = sessionType,
                 attendanceStatus = attendanceStatus,
                 attendanceTime = attendanceTime,
             )
