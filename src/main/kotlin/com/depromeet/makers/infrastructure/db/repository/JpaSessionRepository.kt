@@ -11,5 +11,5 @@ interface JpaSessionRepository : JpaRepository<SessionEntity, String> {
 
     fun findByGenerationAndWeek(generation: Int, week: Int): SessionEntity
 
-    fun findByStartTimeBetween(startTime: LocalDateTime, endTime: LocalDateTime): SessionEntity?
+    fun findByStartTimeBetween(startTime: LocalDateTime, endTime: LocalDateTime): List<SessionEntity>
 }
