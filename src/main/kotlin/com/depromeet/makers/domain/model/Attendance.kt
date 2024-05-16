@@ -35,26 +35,27 @@ data class Attendance(
     fun isTardy() = attendanceStatus.isTardy()
 
     private fun LocalDateTime.isAvailableCheckInTime(sessionStartTime: LocalDateTime): Boolean {
-        // 출석 가능 시간은 세션 시작 시간의 30분 전부터 120분 후까지 입니다. (정책에 따라 수정 필요)
-        if (this.isBefore(sessionStartTime.minusMinutes(30))) {
+        // 출석 요청 가능 시간은 세션 시작 시간의 30분 전부터 120분 후까지 입니다. (정책에 따라 수정 필요)
+        if (this.isBefore(sessionStartTime.minusMinutes(15))) {
             throw AttendanceBeforeTimeException()
         }
-        if (this.isAfter(sessionStartTime.plusMinutes(120))) {
+        if (this.isAfter(sessionStartTime.plusMinutes(240))) {
             throw AttendanceAfterTimeException()
         }
         return true
     }
 
     private fun LocalDateTime.checkIn(sessionStartTime: LocalDateTime): AttendanceStatus {
-        // 출석 인정 시간은 세션 시작 시간의 30분 전부터 30분 후까지 입니다. (정책에 따라 수정 필요)
-        if (this.isAfter(sessionStartTime.minusMinutes(30)) && this.isBefore(sessionStartTime.plusMinutes(30))) {
-            return AttendanceStatus.ATTENDANCE
+        return when {
+            // 출석 가능 시간은 세션 시작 시간의 15분 전부터 15분 후까지 입니다. (정책에 따라 수정 필요)
+            this.isAfter(sessionStartTime.minusMinutes(15)) && this.isBefore(sessionStartTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
+            // 지각은 세션 시작 시간의 15분 후부터 30분 후까지 입니다. (정책에 따라 수정 필요)
+            this.isAfter(sessionStartTime.plusMinutes(15)) && this.isBefore(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.TARDY
+            // 결석은 세션 시작 시간의 30분 후 입니다. (정책에 따라 수정 필요)
+            this.isAfter(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.ABSENCE
+            else -> throw AttendanceAfterTimeException()
         }
-        // 지각 인정 시간은 세션 시작 시간의 30분 후부터 120분 후까지 입니다. (정책에 따라 수정 필요)
-        else if (this.isAfter(sessionStartTime.plusMinutes(30)) && this.isBefore(sessionStartTime.plusMinutes(120))) {
-            return AttendanceStatus.TARDY
-        }
-        throw AttendanceAfterTimeException()
+
     }
 
     fun update(

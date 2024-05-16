@@ -59,11 +59,17 @@ class GetCheckInStatus(
                 input.now.isAfter(thisWeekSession.startTime) && input.now.isBefore(thisWeekSession.startTime.plusMinutes(120))
 
         val expectAttendanceStatus = when {
-            // 세션 시작 ~ 30분 사이 -> 출석으로 인정될 상태
-            input.now.isAfter(thisWeekSession.startTime) && input.now.isBefore(thisWeekSession.startTime.plusMinutes(30)) -> AttendanceStatus.ATTENDANCE
+            // 세션 시작전 15분 ~ 15분 사이 -> 출석으로 인정될 상태
+            input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) &&
+                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
+
             // 세션 시작 30분 ~ 120분 사이 -> 지각으로 인정될 상태
+            input.now.isAfter(thisWeekSession.startTime.plusMinutes(15)) &&
+                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(30)) -> AttendanceStatus.TARDY
+
+            // 세션 시작 30분 이후 ~ 240분 -> 결석으로 인정될 상태
             input.now.isAfter(thisWeekSession.startTime.plusMinutes(30)) &&
-                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(120)) -> AttendanceStatus.TARDY
+                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(240)) -> AttendanceStatus.ABSENCE
 
             else -> AttendanceStatus.ATTENDANCE_ON_HOLD
         }
