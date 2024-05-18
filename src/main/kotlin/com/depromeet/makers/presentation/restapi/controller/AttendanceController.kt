@@ -1,8 +1,10 @@
 package com.depromeet.makers.presentation.restapi.controller
 
+import com.depromeet.makers.domain.usecase.GetAttendancesByTeamAndWeek
 import com.depromeet.makers.domain.usecase.GetMemberAttendances
 import com.depromeet.makers.domain.usecase.UpdateAttendance
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateAttendanceRequest
+import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.MyAttendanceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.UpdateAttendanceResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*
 class AttendanceController(
     private val getMemberAttendances: GetMemberAttendances,
     private val updateAttendance: UpdateAttendance,
+    private val getAttendancesByTeamAndWeek: GetAttendancesByTeamAndWeek,
 ) {
 
     @Operation(summary = "나의 출석 현황 조회", description = "로그인한 사용자의 출석 현황을 조회합니다.")
@@ -51,5 +54,21 @@ class AttendanceController(
             )
         )
         return UpdateAttendanceResponse.fromDomain(attendances)
+    }
+
+    @Operation(summary = "팀, 주차별 출석률 조회", description = "팀, 주차별 출석률을 조회합니다.")
+    @GetMapping("/groupId/{groupId}")
+    fun getTeamAttendance(
+        @RequestParam(defaultValue = "15") generation: Int,
+        @RequestParam week: Int,
+        @PathVariable groupId: Int,
+    ): List<AttendanceResponse> {
+        return getAttendancesByTeamAndWeek.execute(
+            GetAttendancesByTeamAndWeek.GetAttendancesByTeamAndWeekInput(
+                generation = generation,
+                groupId = groupId,
+                week = week,
+            )
+        ).map { AttendanceResponse.fromDomain(it) }
     }
 }
