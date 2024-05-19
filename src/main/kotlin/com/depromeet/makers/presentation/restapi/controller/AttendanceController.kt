@@ -82,12 +82,13 @@ class AttendanceController(
         @RequestParam(defaultValue = "15") generation: Int,
         @RequestParam week: Int,
     ): AttendanceStatsResponse {
-        val (attendances, session) = getAttendancesByWeek.execute(
-            GetAttendancesByWeek.GetAttendancesByWeekInput(
-                generation = generation,
-                week = week,
+        return AttendanceStatsResponse.fromDomain(
+            getAttendancesByWeek.execute(
+                GetAttendancesByWeek.GetAttendancesByWeekInput(
+                    generation = generation,
+                    week = week,
+                )
             )
         )
-        return AttendanceStatsResponse.fromDomain(attendances, session)
     }
 }
