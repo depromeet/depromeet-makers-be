@@ -1,10 +1,12 @@
 package com.depromeet.makers.presentation.restapi.controller
 
 import com.depromeet.makers.domain.usecase.GetAttendancesByTeamAndWeek
+import com.depromeet.makers.domain.usecase.GetAttendancesByWeek
 import com.depromeet.makers.domain.usecase.GetMemberAttendances
 import com.depromeet.makers.domain.usecase.UpdateAttendance
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateAttendanceRequest
 import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
+import com.depromeet.makers.presentation.restapi.dto.response.AttendanceStatsResponse
 import com.depromeet.makers.presentation.restapi.dto.response.MyAttendanceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.UpdateAttendanceResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -22,6 +24,7 @@ class AttendanceController(
     private val getMemberAttendances: GetMemberAttendances,
     private val updateAttendance: UpdateAttendance,
     private val getAttendancesByTeamAndWeek: GetAttendancesByTeamAndWeek,
+    private val getAttendancesByWeek: GetAttendancesByWeek,
 ) {
 
     @Operation(summary = "나의 출석 현황 조회", description = "로그인한 사용자의 출석 현황을 조회합니다.")
@@ -71,5 +74,20 @@ class AttendanceController(
             )
         ).map { AttendanceResponse.fromDomain(it) }
             .sortedBy { it.memberName }
+    }
+
+    @Operation(summary = "팀 별 전체 출석 통계 조회")
+    @GetMapping("/stats")
+    fun getAttendanceStats(
+        @RequestParam(defaultValue = "15") generation: Int,
+        @RequestParam week: Int,
+    ): AttendanceStatsResponse {
+        val (attendances, session) = getAttendancesByWeek.execute(
+            GetAttendancesByWeek.GetAttendancesByWeekInput(
+                generation = generation,
+                week = week,
+            )
+        )
+        return AttendanceStatsResponse.fromDomain(attendances, session)
     }
 }
