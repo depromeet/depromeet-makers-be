@@ -15,7 +15,7 @@ class CheckInSession(
     private val attendanceGateway: AttendanceGateway,
     private val sessionGateway: SessionGateway,
     private val memberGateway: MemberGateway,
-) : UseCase<CheckInSession.CheckInSessionInput, Unit> {
+) : UseCase<CheckInSession.CheckInSessionInput, Attendance> {
     data class CheckInSessionInput(
         val now: LocalDateTime,
         val memberId: String,
@@ -23,7 +23,7 @@ class CheckInSession(
         val latitude: Double?,
     )
 
-    override fun execute(input: CheckInSessionInput) {
+    override fun execute(input: CheckInSessionInput): Attendance {
         val member = memberGateway.getById(input.memberId)
         val monday = input.now.getMonday()
 
@@ -64,7 +64,7 @@ class CheckInSession(
             }
         }
 
-        attendanceGateway.save(attendance.checkIn(input.now, thisWeekSession.startTime))
+        return attendanceGateway.save(attendance.checkIn(input.now, thisWeekSession.startTime))
     }
 
     private fun LocalDateTime.getMonday() = this.toLocalDate().with(DayOfWeek.MONDAY).atStartOfDay()
