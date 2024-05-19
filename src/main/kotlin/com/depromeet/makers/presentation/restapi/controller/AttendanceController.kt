@@ -70,5 +70,6 @@ class AttendanceController(
                 week = week,
             )
         ).map { AttendanceResponse.fromDomain(it) }
+            .sortedBy { it.memberName }
     }
 }

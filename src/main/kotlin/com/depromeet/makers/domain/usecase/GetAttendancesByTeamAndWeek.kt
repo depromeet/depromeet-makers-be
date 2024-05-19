@@ -20,6 +20,6 @@ class GetAttendancesByTeamAndWeek(
             it.member.generations.any {
                 it.generationId == input.generation && it.groupId == input.groupId
             }
-        }.sortedBy { it.member.name }
+        }
     }
 }
