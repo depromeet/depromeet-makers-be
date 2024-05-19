@@ -6,3 +6,4 @@ open class SessionException(
 
 class SessionPlaceNotFoundException : SessionException(ErrorCode.INVALID_SESSION_PLACE)
 class SessionAlreadyExistsException : SessionException(ErrorCode.SESSION_ALREADY_EXISTS)
+class SessionNotFoundException : SessionException(ErrorCode.SESSION_NOT_FOUND)
