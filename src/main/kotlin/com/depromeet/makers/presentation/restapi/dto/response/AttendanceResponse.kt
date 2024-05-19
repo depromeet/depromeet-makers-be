@@ -20,6 +20,12 @@ data class AttendanceResponse(
     @Schema(description = "회원 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val memberId: String,
 
+    @Schema(description = "멤버 이름", example = "김개발")
+    val memberName: String,
+
+    @Schema(description = "멤버 포지션", example = "DESIGN")
+    val memberPosition: String,
+
     @Schema(description = "세션 타입", example = "ONLINE")
     val sessionType: SessionType,
 
@@ -39,6 +45,9 @@ data class AttendanceResponse(
                 sessionType = sessionType,
                 attendanceStatus = attendanceStatus,
                 attendanceTime = attendanceTime,
+                memberPosition = member.generations
+                    .let { generations -> generations.find { it.generationId == generation }!!.position.name },
+                memberName = member.name,
             )
         }
     }

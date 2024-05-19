@@ -10,4 +10,6 @@ interface AttendanceGateway {
     fun findByMemberIdAndGenerationAndWeek(memberId: String, generation: Int, week: Int): Attendance
 
     fun findAllByMemberIdAndGeneration(memberId: String, generation: Int): List<Attendance>
+
+    fun findAllByGenerationAndWeek(generation: Int, week: Int): List<Attendance>
 }

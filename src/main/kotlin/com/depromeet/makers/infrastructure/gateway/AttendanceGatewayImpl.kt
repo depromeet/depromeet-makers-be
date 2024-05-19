@@ -35,6 +35,12 @@ class AttendanceGatewayImpl(
             .map { it.toDomain() }
     }
 
+    override fun findAllByGenerationAndWeek(generation: Int, week: Int): List<Attendance> {
+        return jpaAttendanceRepository
+            .findAllByGenerationAndWeek(generation, week)
+            .map { it.toDomain() }
+    }
+
     override fun getById(attendanceId: String): Attendance {
         return jpaAttendanceRepository
             .findById(attendanceId)
