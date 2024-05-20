@@ -18,6 +18,7 @@ enum class ErrorCode(
      */
     TOKEN_NOT_PROVIDED("AU0001", "인증 토큰이 누락되었습니다."),
     TOKEN_NOT_VALID("AU0002", "인증 토큰 형태가 올바르지 않습니다."),
+    TOKEN_EXPIRED("AU0003", "인증 토큰이 만료되었습니다"),
 
     /**
      * 인가(Authorization) 관련 오류
