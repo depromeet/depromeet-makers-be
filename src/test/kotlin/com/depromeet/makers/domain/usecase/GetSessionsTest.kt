@@ -10,10 +10,10 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
 
-class ViewSessionsTest : BehaviorSpec({
+class GetSessionsTest : BehaviorSpec({
     Given("기수 별 세션을 모두 조회할 때") {
         val sessionGateway = mockk<SessionGateway>()
-        val viewSessions = ViewSessions(sessionGateway)
+        val getSessions = GetSessions(sessionGateway)
 
         val mockShuffledSessionList = (1..16).map { week ->
             Session(
@@ -31,8 +31,8 @@ class ViewSessionsTest : BehaviorSpec({
         every { sessionGateway.findAllByGeneration(any()) } returns mockShuffledSessionList
 
         When("execute가 실행되면") {
-            val result = viewSessions.execute(
-                ViewSessions.ViewSessionsInput(
+            val result = getSessions.execute(
+                GetSessions.GetSessionsInput(
                     generation = 15,
                 )
             )

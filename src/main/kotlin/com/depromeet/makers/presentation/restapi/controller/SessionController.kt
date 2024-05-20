@@ -4,15 +4,15 @@ import com.depromeet.makers.domain.usecase.CreateNewSession
 import com.depromeet.makers.domain.usecase.DeleteSession
 import com.depromeet.makers.domain.usecase.UpdateSession
 import com.depromeet.makers.domain.usecase.UpdateSessionPlace
-import com.depromeet.makers.domain.usecase.ViewSessions
+import com.depromeet.makers.domain.usecase.GetSessions
 import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionPlaceRequest
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionRequest
-import com.depromeet.makers.presentation.restapi.dto.request.ViewSessionsRequest
+import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
 import com.depromeet.makers.presentation.restapi.dto.response.CreateNewSessionResponse
 import com.depromeet.makers.presentation.restapi.dto.response.UpdateSessionPlaceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.UpdateSessionResponse
-import com.depromeet.makers.presentation.restapi.dto.response.ViewSessionsResponse
+import com.depromeet.makers.presentation.restapi.dto.response.GetSessionsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/v1/sessions")
 class SessionController(
     private val createNewSession: CreateNewSession,
-    private val viewSessions: ViewSessions,
+    private val getSessions: GetSessions,
     private val updateSession: UpdateSession,
     private val updateSessionPlace: UpdateSessionPlace,
     private val deleteSession: DeleteSession,
@@ -64,16 +64,16 @@ class SessionController(
     @Operation(summary = "기수에 따른 모든 주차의 세션들 조회 요청", description = "기수에 따른 모든 주차의 세션들을 조회합니다.")
     @Parameter(name = "generation", description = "조회할 세션의 기수", example = "15")
     @GetMapping
-    fun viewSessions(
-        @Valid request: ViewSessionsRequest,
-    ): ViewSessionsResponse {
-        val sessions = viewSessions.execute(
-            ViewSessions.ViewSessionsInput(
+    fun getSessions(
+        @Valid request: GetSessionsRequest,
+    ): GetSessionsResponse {
+        val sessions = getSessions.execute(
+            GetSessions.GetSessionsInput(
                 generation = request.generation,
             )
-        ).map { ViewSessionsResponse.SessionResponse.fromDomain(it) }
+        ).map { GetSessionsResponse.SessionResponse.fromDomain(it) }
 
-        return ViewSessionsResponse(
+        return GetSessionsResponse(
             generation = request.generation,
             sessions = sessions,
         )
