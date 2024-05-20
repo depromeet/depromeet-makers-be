@@ -13,7 +13,7 @@ class AbsentMemberScheduler(
 ) {
 
     @Scheduled(cron = "0 0 20 ? * SAT")
-    fun scheduling() {
+    fun updateAbsenceMember() {
         val today = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT)
         updateAbsenceMember.execute(UpdateAbsenceMember.UpdateAbsenceMemberInput(today))
     }
