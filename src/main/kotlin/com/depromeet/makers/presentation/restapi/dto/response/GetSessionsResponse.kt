@@ -5,7 +5,7 @@ import com.depromeet.makers.domain.model.Session
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "기수에 따른 모든 주차의 세션들 조회 응답 DTO")
-data class ViewSessionsResponse(
+data class GetSessionsResponse(
     @Schema(description = "기수", example = "15")
     val generation: Int,
 
