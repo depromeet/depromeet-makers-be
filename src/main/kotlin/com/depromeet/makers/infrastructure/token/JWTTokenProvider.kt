@@ -60,18 +60,13 @@ class JWTTokenProvider(
     }
 
     fun parseAuthentication(accessToken: String): Authentication {
-        val claims = try {
+        val claims = runCatching {
             jwtParser.parseEncryptedClaims(accessToken)
-        } catch(e: SignatureException) {
-            throw AuthenticationTokenNotValidException()
-        } catch(e: MalformedJwtException) {
-            throw AuthenticationTokenNotValidException()
-        } catch(e: UnsupportedJwtException) {
-            throw AuthenticationTokenNotValidException()
-        }catch(e: IllegalArgumentException) {
-            throw AuthenticationTokenNotValidException()
-        } catch(e: ExpiredJwtException) {
-            throw AuthenticationTokenExpiredException()
+        }.getOrElse {
+            when(it) {
+                is ExpiredJwtException -> throw AuthenticationTokenExpiredException()
+                else -> throw AuthenticationTokenNotValidException()
+            }
         }
         val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
         if (tokenType != ACCESS_TOKEN_TYPE_VALUE) throw RuntimeException()
