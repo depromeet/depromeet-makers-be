@@ -1,11 +1,18 @@
 package com.depromeet.makers.infrastructure.token
 
+import com.depromeet.makers.domain.exception.AuthenticationTokenExpiredException
+import com.depromeet.makers.domain.exception.AuthenticationTokenNotValidException
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
+import java.lang.IllegalArgumentException
+import java.security.SignatureException
 import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
@@ -53,7 +60,14 @@ class JWTTokenProvider(
     }
 
     fun parseAuthentication(accessToken: String): Authentication {
-        val claims = jwtParser.parseEncryptedClaims(accessToken)
+        val claims = runCatching {
+            jwtParser.parseEncryptedClaims(accessToken)
+        }.getOrElse {
+            when(it) {
+                is ExpiredJwtException -> throw AuthenticationTokenExpiredException()
+                else -> throw AuthenticationTokenNotValidException()
+            }
+        }
         val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
         if (tokenType != ACCESS_TOKEN_TYPE_VALUE) throw RuntimeException()
 
