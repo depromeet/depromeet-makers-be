@@ -11,6 +11,8 @@ enum class ErrorCode(
     UNKNOWN_SERVER_ERROR("DE0001", "알 수 없는 오류가 발생했습니다"),
     UNAUTHORIZED("DE0002", "인가되지 않은 접근입니다"),
     INVALID_INPUT("DE0003", "입력값(바디 혹은 파라미터)가 누락되었습니다"),
+    UNKNOWN_RESOURCE("DE0004", "해당 리소스를 찾을 수 없습니다"),
+    INVALID_METHOD("DE0005", "요청 메서드가 잘못되었습니다. API 문서를 확인하세요"),
 
     /**
      * 인증(Authentication) 관련 오류
