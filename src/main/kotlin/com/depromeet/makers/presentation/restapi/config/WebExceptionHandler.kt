@@ -1,10 +1,12 @@
 package com.depromeet.makers.presentation.restapi.config
 
 import com.depromeet.makers.domain.exception.*
+import com.depromeet.makers.domain.gateway.AlertGateway
 import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
 import com.depromeet.makers.util.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
+import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -16,10 +18,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import org.springframework.web.util.BindErrorUtils
+import org.springframework.web.util.ContentCachingRequestWrapper
 import java.io.IOException
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.nio.charset.StandardCharsets
 
 @RestControllerAdvice
-class WebExceptionHandler {
+class WebExceptionHandler(
+    private val alertGateway: AlertGateway,
+    private val environment: Environment,
+) {
     val logger = logger()
 
     @ExceptionHandler(value = [DomainException::class])
@@ -86,11 +95,21 @@ class WebExceptionHandler {
     fun handleUnhandledException(
         exception: Throwable,
         request: HttpServletRequest,
+        bodyCache: ContentCachingRequestWrapper,
     ): ResponseEntity<ErrorResponse> {
         if (exception is IOException) { //클라이언트에서 끊어버린 경우
             return ResponseEntity
                 .internalServerError()
                 .build()
+        }
+
+        if (isProductionInstance()) {
+            val bodyStr = String(bodyCache.contentAsByteArray, StandardCharsets.UTF_8)
+            alertGateway.sendError(
+                "에러 메세지" to (exception.message ?: "Unknown error"),
+                "요청 전문" to dumpRequest(request, bodyStr),
+                "에러 StackTrace" to getStackTraceAsString(exception)
+            )
         }
 
         logger.error("[UnhandledException] " + exception.stackTraceToString())
@@ -125,5 +144,56 @@ class WebExceptionHandler {
         errorCode = errorCode,
         data = data,
     )
+
+    private fun dumpRequest(request: HttpServletRequest, bodyStr: String): String {
+        val dump = StringBuilder("HttpRequest Dump:")
+            .append("\n  Remote Addr   : ").append(request.remoteAddr)
+            .append("\n  Protocol      : ").append(request.protocol)
+            .append("\n  Request Method: ").append(request.method)
+            .append("\n  Request URI   : ").append(request.requestURI)
+            .append("\n  Query String  : ").append(request.queryString)
+            .append("\n  Parameters    : ")
+
+        val parameterNames = request.parameterNames
+        while (parameterNames.hasMoreElements()) {
+            val name = parameterNames.nextElement()
+            dump.append("\n    ").append(name).append('=')
+            val parameterValues = request.getParameterValues(name)
+            for (value in parameterValues) {
+                dump.append(value)
+            }
+        }
+
+        dump.append("\n  Headers       : ")
+        val headerNames = request.headerNames
+        while (headerNames.hasMoreElements()) {
+            val name = headerNames.nextElement()
+            dump.append("\n    ").append(name).append(":")
+            val headerValues = request.getHeaders(name)
+            while (headerValues.hasMoreElements()) {
+                dump.append(headerValues.nextElement())
+            }
+        }
+
+        dump.append("\n==================== [ Body ] ====================")
+        try {
+            dump.append("\n").append(request.reader.use { it.readText() })
+        } catch (ex: Exception) {
+            dump.append("\n").append(bodyStr)
+        }
+        dump.append("\n==================== [ Body ] ====================")
+
+        return dump.toString()
+    }
+
+    private fun getStackTraceAsString(throwable: Throwable): String {
+        val stringWriter = StringWriter()
+        throwable.printStackTrace(PrintWriter(stringWriter))
+        return stringWriter.toString()
+    }
+
+    private fun isProductionInstance(): Boolean {
+        return environment.activeProfiles.contains("prod")
+    }
 }
 

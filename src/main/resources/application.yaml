@@ -21,6 +21,8 @@ server:
     min-response-size: 1024
 
 app:
+  url:
+    slack-webhook-url: ${SLACK_WEBHOOK_URL}
   token:
     secretKey: ${JWT_SECRET_KEY}
     expiration:

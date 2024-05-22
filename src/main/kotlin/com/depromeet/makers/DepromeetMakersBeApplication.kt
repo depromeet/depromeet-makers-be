@@ -6,11 +6,13 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 import org.springframework.context.annotation.FilterType
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @EnableScheduling
 @EnableAspectJAutoProxy
 @SpringBootApplication
+@EnableAsync
 @ComponentScan(
     includeFilters = [ComponentScan.Filter(
         type = FilterType.ASSIGNABLE_TYPE,
