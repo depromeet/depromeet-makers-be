@@ -21,6 +21,6 @@ class SlackAPI(
             .contentType(MediaType.APPLICATION_JSON)
             .body(payload)
 
-        RestTemplate().exchange(requestEntity, Unit::class.java)
+        RestTemplate().exchange(requestEntity, String::class.java)
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 class AlertGatewayImpl(
     private val slackAPI: SlackAPI,
 ): AlertGateway {
-    override fun sendError(elements: List<Pair<String, String>>) {
+    override fun sendError(vararg elements: Pair<String, String>) {
         val requestDto = SlackWebHookRequest(
             attachments = listOf(
                 SlackWebHookAttachment(
@@ -31,7 +31,7 @@ class AlertGatewayImpl(
         slackAPI.sendSlackWebHook(requestDto)
     }
 
-    override fun sendInfo(elements: List<Pair<String, String>>) {
+    override fun sendInfo(vararg elements: Pair<String, String>) {
         val requestDto = SlackWebHookRequest(
             attachments = listOf(
                 SlackWebHookAttachment(
