@@ -7,3 +7,4 @@ open class DefaultException(
 class UnknownErrorException : DefaultException(ErrorCode.UNKNOWN_SERVER_ERROR)
 class UnauthorizedException : DefaultException(ErrorCode.UNAUTHORIZED)
 class InvalidInputException : DefaultException(ErrorCode.INVALID_INPUT)
+class UnknownResourceException : DefaultException(ErrorCode.UNKNOWN_RESOURCE)
