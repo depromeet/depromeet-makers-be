@@ -6,6 +6,7 @@ import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
 import com.depromeet.makers.util.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
+import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -26,6 +27,7 @@ import java.nio.charset.StandardCharsets
 @RestControllerAdvice
 class WebExceptionHandler(
     private val alertGateway: AlertGateway,
+    private val environment: Environment,
 ) {
     val logger = logger()
 
@@ -101,12 +103,14 @@ class WebExceptionHandler(
                 .build()
         }
 
-        val bodyStr = String(bodyCache.contentAsByteArray, StandardCharsets.UTF_8)
-        alertGateway.sendError(
-            "에러 메세지" to (exception.message ?: "Unknown error"),
-            "요청 전문" to dumpRequest(request, bodyStr),
-            "에러 StackTrace" to getStackTraceAsString(exception)
-        )
+        if (isProductionInstance()) {
+            val bodyStr = String(bodyCache.contentAsByteArray, StandardCharsets.UTF_8)
+            alertGateway.sendError(
+                "에러 메세지" to (exception.message ?: "Unknown error"),
+                "요청 전문" to dumpRequest(request, bodyStr),
+                "에러 StackTrace" to getStackTraceAsString(exception)
+            )
+        }
 
         logger.error("[UnhandledException] " + exception.stackTraceToString())
         return ResponseEntity
@@ -186,6 +190,10 @@ class WebExceptionHandler(
         val stringWriter = StringWriter()
         throwable.printStackTrace(PrintWriter(stringWriter))
         return stringWriter.toString()
+    }
+
+    private fun isProductionInstance(): Boolean {
+        return environment.activeProfiles.contains("prod")
     }
 }
 
