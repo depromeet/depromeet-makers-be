@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings" lastSelectedDirectory="src/main/resources" />
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="depromeet-makers-be.main" name="Default" defaultSearchScope="Project">
+        <packages>
+          <package value="com.depromeet.makers" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>
