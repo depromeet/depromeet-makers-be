@@ -26,7 +26,7 @@ data class AttendanceStatsResponse(
     val memberCount: Int,
 
     @Schema(description = "출석한 팀 목록")
-    val teams: Map<Int, AttendanceStatsByTeamResponse>,
+    val teams: List<AttendanceStatsByTeamResponse>,
 ) {
     data class AttendanceStatsByTeamResponse(
         @Schema(description = "팀 번호", example = "1")
@@ -56,13 +56,13 @@ data class AttendanceStatsResponse(
                 attendancePercentage = output.attendancePercentage.toInt(),
                 attendanceCount = output.totalAttendance,
                 memberCount = output.totalMember,
-                teams = output.teamAttendances.mapValues { (teamId, teamAttendancesStats) ->
+                teams = output.teamAttendances.map { (teamId, teamAttendancesStats) ->
                     AttendanceStatsByTeamResponse.new(
                         teamNumber = teamId,
                         attendanceCount = teamAttendancesStats.attendanceCount,
                         memberCount = teamAttendancesStats.memberCount,
                     )
-                }
+                }.sortedBy { it.teamNumber }
             )
         }
     }
