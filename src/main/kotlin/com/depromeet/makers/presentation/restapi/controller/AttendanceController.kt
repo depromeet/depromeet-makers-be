@@ -47,20 +47,19 @@ class AttendanceController(
     @Operation(summary = "출석 정보 수정", description = "유저의 출석 정보를 수정합니다.")
     @PutMapping("{attendanceId}")
     fun updateAttendance(
-        authentication: Authentication,
         @RequestBody @Valid request: UpdateAttendanceRequest, @PathVariable attendanceId: String,
     ): UpdateAttendanceResponse {
         val attendances = updateAttendance.execute(
             UpdateAttendance.UpdateAttendanceInput(
-                authentication.name,
-                request.attendanceStatus,
+                attendanceId = attendanceId,
+                attendanceStatus = request.attendanceStatus,
             )
         )
         return UpdateAttendanceResponse.fromDomain(attendances)
     }
 
     @Operation(summary = "팀, 주차별 출석률 조회", description = "팀, 주차별 출석률을 조회합니다.")
-    @GetMapping("/groupId/{groupId}")
+    @GetMapping("/groups/{groupId}")
     fun getTeamAttendance(
         @RequestParam(defaultValue = "15") generation: Int,
         @RequestParam week: Int,
