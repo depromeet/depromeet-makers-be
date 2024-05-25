@@ -36,13 +36,19 @@ class GetMemberAttendances(
             )
         }
 
-        val attendances = (1..16).map {
-            attendanceGateway.save(
+        val attendances = (1..16).map { week ->
+            runCatching {
+                attendanceGateway.findByMemberIdAndGenerationAndWeek(
+                    memberId = member.memberId,
+                    generation = input.generation,
+                    week = week
+                )
+            }.getOrDefault(
                 Attendance.newAttendance(
                     member = member,
                     generation = input.generation,
-                    week = it,
-                    sessionType = sessions[it - 1].sessionType,
+                    week = week,
+                    sessionType = sessions[week - 1].sessionType,
                 )
             )
         }
