@@ -35,12 +35,12 @@ data class Attendance(
 
     fun isTardy() = attendanceStatus.isTardy()
 
-    private fun LocalDateTime.isAvailableCheckInTime(sessionStartTime: LocalDateTime): Boolean {
+    private fun LocalDateTime.isAvailableCheckInTime(attendanceTime: LocalDateTime): Boolean {
         // 출석 요청 가능 시간은 세션 시작 시간의 30분 전부터 120분 후까지 입니다. (정책에 따라 수정 필요)
-        if (this.isBefore(sessionStartTime.minusMinutes(15))) {
+        if (attendanceTime.isBefore(this.minusMinutes(15))) {
             throw AttendanceBeforeTimeException()
         }
-        if (this.isAfter(sessionStartTime.plusMinutes(240))) {
+        if (attendanceTime.isAfter(this.plusMinutes(120))) {
             throw AttendanceAfterTimeException()
         }
         return true
