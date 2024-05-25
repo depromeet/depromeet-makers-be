@@ -44,11 +44,13 @@ class GetMemberAttendances(
                     week = week
                 )
             }.getOrDefault(
-                Attendance.newAttendance(
-                    member = member,
-                    generation = input.generation,
-                    week = week,
-                    sessionType = sessions[week - 1].sessionType,
+                attendanceGateway.save(
+                    Attendance.newAttendance(
+                        member = member,
+                        generation = input.generation,
+                        week = week,
+                        sessionType = sessions[week - 1].sessionType,
+                    )
                 )
             )
         }
