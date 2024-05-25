@@ -2,6 +2,7 @@ package com.depromeet.makers.presentation.restapi.controller
 
 import com.depromeet.makers.domain.usecase.CheckInSession
 import com.depromeet.makers.domain.usecase.GetCheckInStatus
+import com.depromeet.makers.presentation.restapi.dto.request.GetLocationRequest
 import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
 import com.depromeet.makers.presentation.restapi.dto.response.CheckInStatusResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -26,16 +28,15 @@ class CheckInController(
     @PostMapping
     fun checkInSession(
         authentication: Authentication,
-        @RequestParam("latitude", required = false) latitude: Double?,
-        @RequestParam("longitude", required = false) longitude: Double?,
+        @RequestBody request: GetLocationRequest,
     ): AttendanceResponse {
         return AttendanceResponse.fromDomain(
             checkInSession.execute(
                 CheckInSession.CheckInSessionInput(
                     now = LocalDateTime.now(),
                     memberId = authentication.name,
-                    latitude = latitude,
-                    longitude = longitude,
+                    latitude = request.latitude,
+                    longitude = request.longitude,
                 )
             )
         )
