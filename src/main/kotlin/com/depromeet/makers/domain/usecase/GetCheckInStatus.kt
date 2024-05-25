@@ -56,14 +56,14 @@ class GetCheckInStatus(
 
         // 현재 시간이 출석 요청 가능 시간 사이 && 출석 상태가 ON_HOLD인 경우 -> 플로팅 버튼 띄우기 여부
         val needFloatingButton = attendance.isAttendanceOnHold() &&
-                input.now.isAfter(thisWeekSession.startTime) && input.now.isBefore(thisWeekSession.startTime.plusMinutes(120))
+                input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) && input.now.isBefore(thisWeekSession.startTime.plusMinutes(120))
 
         val expectAttendanceStatus = when {
             // 세션 시작전 15분 ~ 15분 사이 -> 출석으로 인정될 상태
             input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) &&
                     input.now.isBefore(thisWeekSession.startTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
 
-            // 세션 시작 30분 ~ 120분 사이 -> 지각으로 인정될 상태
+            // 세션 시작 15분 ~ 30분 사이 -> 지각으로 인정될 상태
             input.now.isAfter(thisWeekSession.startTime.plusMinutes(15)) &&
                     input.now.isBefore(thisWeekSession.startTime.plusMinutes(30)) -> AttendanceStatus.TARDY
 
