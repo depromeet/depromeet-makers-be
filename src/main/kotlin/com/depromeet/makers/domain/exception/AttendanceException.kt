@@ -10,3 +10,4 @@ class AttendanceAlreadyExistsException : AttendanceException(ErrorCode.ALREADY_A
 class InvalidCheckInTimeException : AttendanceException(ErrorCode.INVALID_CHECKIN_TIME)
 class MissingPlaceParamException : AttendanceException(ErrorCode.MISSING_PLACE_PARAM)
 class InvalidCheckInDistanceException : AttendanceException(ErrorCode.INVALID_CHECKIN_DISTANCE)
+class NotFoundAttendanceException : AttendanceException(ErrorCode.NOT_EXIST_ATTENDANCE)
