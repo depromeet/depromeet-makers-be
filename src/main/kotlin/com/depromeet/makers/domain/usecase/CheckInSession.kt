@@ -59,7 +59,7 @@ class CheckInSession(
                 input.longitude,
             )
 
-            if (!inRange(distance, 100.0)) { // 100m 기준 (임시 설정)
+            if (!inRange(distance, 500.0)) { // 100m 기준 (임시 설정)
                 throw InvalidCheckInDistanceException()
             }
         }
