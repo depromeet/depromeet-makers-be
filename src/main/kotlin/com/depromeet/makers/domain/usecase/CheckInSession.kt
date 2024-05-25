@@ -7,9 +7,13 @@ import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
+import com.depromeet.makers.util.logger
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class CheckInSession(
     private val attendanceGateway: AttendanceGateway,
@@ -46,6 +50,9 @@ class CheckInSession(
             )
         )
 
+        logger().info(thisWeekSession.toString())
+        logger().info(input.longitude.toString() + " " + input.latitude.toString())
+
         // 오프라인 세션의 경우 거리 확인 로직
         if (thisWeekSession.isOffline()) {
             if (input.latitude == null || input.longitude == null) {
@@ -58,6 +65,8 @@ class CheckInSession(
                 input.latitude,
                 input.longitude,
             )
+
+            logger().info(distance.toString())
 
             if (!inRange(distance, 500.0)) { // 100m 기준 (임시 설정)
                 throw InvalidCheckInDistanceException()
