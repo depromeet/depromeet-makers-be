@@ -21,7 +21,8 @@ class WebConfig(
                 "http://localhost:3000",
                 "http://localhost:3300",
                 "https://depromeet-makers.vercel.app",
-                "https://depromeet-makers.dev"
+                "https://depromeet-makers.dev",
+                "https://makers.depromeet.com",
             )
     }
 }
