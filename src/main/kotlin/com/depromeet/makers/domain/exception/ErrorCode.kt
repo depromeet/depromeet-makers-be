@@ -55,4 +55,5 @@ enum class ErrorCode(
     INVALID_CHECKIN_TIME("AT0004", "현재 주차에 해당하는 세션을 찾을 수 없습니다."),
     MISSING_PLACE_PARAM("AT0005", "오프라인 세션 출석체크의 현재 위치 정보가 누락되었습니다."),
     INVALID_CHECKIN_DISTANCE("AT0006", "현재 위치와 세션 장소의 거리가 너무 멉니다."),
+    NOT_EXIST_ATTENDANCE("AT0007", "해당하는 출석 정보가 없습니다.")
 }

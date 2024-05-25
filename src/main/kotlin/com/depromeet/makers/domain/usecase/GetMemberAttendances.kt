@@ -1,5 +1,6 @@
 package com.depromeet.makers.domain.usecase
 
+import com.depromeet.makers.domain.exception.NotFoundAttendanceException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
@@ -43,16 +44,7 @@ class GetMemberAttendances(
                     generation = input.generation,
                     week = week
                 )
-            }.getOrDefault(
-                attendanceGateway.save(
-                    Attendance.newAttendance(
-                        member = member,
-                        generation = input.generation,
-                        week = week,
-                        sessionType = sessions[week - 1].sessionType,
-                    )
-                )
-            )
+            }.getOrElse { throw NotFoundAttendanceException() }
         }
 
         var offlineAbsenceScore = 0.0
