@@ -15,16 +15,32 @@ data class Attendance(
     val attendanceStatus: AttendanceStatus,
     val attendanceTime: LocalDateTime?
 ) {
-    fun checkIn(attendanceTime: LocalDateTime, sessionStartTime: LocalDateTime): Attendance {
-        if (!isAttendanceOnHold()) {
-            throw AttendanceAlreadyExistsException()
-        }
-        sessionStartTime.isAvailableCheckInTime(attendanceTime)
-
+    fun checkIn(now: LocalDateTime, attendanceStatus: AttendanceStatus): Attendance {
         return this.copy(
-            attendanceStatus = attendanceTime.checkIn(sessionStartTime),
-            attendanceTime = LocalDateTime.now()
+            attendanceStatus = attendanceStatus,
+            attendanceTime = now
         )
+    }
+
+    fun expectAttendanceStatus(sessionStartTime: LocalDateTime, now: LocalDateTime): AttendanceStatus {
+        return when {
+            // [출석] 출석 대기 상태이며, 세션 시작 시간의 15분 전부터 15분 전까지 입니다. (정책에 따라 수정 필요)
+            isAttendanceOnHold() && now.isAfter(sessionStartTime.minusMinutes(15)) && now.isBefore(sessionStartTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
+            // [지각] 출석 대기 상태이며, 세션 시작 시간의 15분 후부터 30분 전까지 입니다. (정책에 따라 수정 필요)
+            isAttendanceOnHold() && now.isAfter(sessionStartTime.plusMinutes(15)) && now.isBefore(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.TARDY
+            // [결석] 출석 대기 상태이며, 세션 시작 시간의 30분 후 입니다. (정책에 따라 수정 필요)
+            isAttendanceOnHold() && now.isAfter(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.ABSENCE
+            else -> AttendanceStatus.ATTENDANCE_ON_HOLD
+        }
+    }
+
+    fun isAvailableCheckInRequest(sessionStartTime: LocalDateTime, now: LocalDateTime): Boolean {
+        when {
+            attendanceStatus.isAttendanceOnHold().not() -> throw AttendanceAlreadyExistsException()
+            now.isBefore(sessionStartTime.minusMinutes(15)) -> throw AttendanceBeforeTimeException()
+            now.isAfter(sessionStartTime.plusMinutes(30)) -> throw AttendanceAfterTimeException()
+            else -> return true
+        }
     }
 
     fun isAttendanceOnHold() = attendanceStatus.isAttendanceOnHold()
@@ -34,30 +50,6 @@ data class Attendance(
     fun isAbsence() = attendanceStatus.isAbsence()
 
     fun isTardy() = attendanceStatus.isTardy()
-
-    private fun LocalDateTime.isAvailableCheckInTime(attendanceTime: LocalDateTime): Boolean {
-        // 출석 요청 가능 시간은 세션 시작 시간의 30분 전부터 120분 후까지 입니다. (정책에 따라 수정 필요)
-        if (attendanceTime.isBefore(this.minusMinutes(15))) {
-            throw AttendanceBeforeTimeException()
-        }
-        if (attendanceTime.isAfter(this.plusMinutes(120))) {
-            throw AttendanceAfterTimeException()
-        }
-        return true
-    }
-
-    private fun LocalDateTime.checkIn(sessionStartTime: LocalDateTime): AttendanceStatus {
-        return when {
-            // 출석 가능 시간은 세션 시작 시간의 15분 전부터 15분 후까지 입니다. (정책에 따라 수정 필요)
-            this.isAfter(sessionStartTime.minusMinutes(15)) && this.isBefore(sessionStartTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
-            // 지각은 세션 시작 시간의 15분 후부터 30분 후까지 입니다. (정책에 따라 수정 필요)
-            this.isAfter(sessionStartTime.plusMinutes(15)) && this.isBefore(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.TARDY
-            // 결석은 세션 시작 시간의 30분 후 입니다. (정책에 따라 수정 필요)
-            this.isAfter(sessionStartTime.plusMinutes(30)) -> AttendanceStatus.ABSENCE
-            else -> throw AttendanceAfterTimeException()
-        }
-
-    }
 
     fun update(
         attendanceId: String = this.attendanceId,

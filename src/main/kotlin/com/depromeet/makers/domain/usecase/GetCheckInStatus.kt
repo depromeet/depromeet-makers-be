@@ -54,25 +54,10 @@ class GetCheckInStatus(
         val isBeforeSession15minutes = input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) &&
                 input.now.isBefore(thisWeekSession.startTime)
 
-        // 현재 시간이 출석 요청 가능 시간 사이 && 출석 상태가 ON_HOLD인 경우 -> 플로팅 버튼 띄우기 여부
-        val needFloatingButton = attendance.isAttendanceOnHold() &&
-                input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) && input.now.isBefore(thisWeekSession.startTime.plusMinutes(120))
+        // 현재 시간이 출석 요청 가능 시간 사이 && 출석 상태가 ON_HOLD(출석 대기) 인 경우 -> 플로팅 버튼 띄우기 여부
+        val needFloatingButton = attendance.isAvailableCheckInRequest(thisWeekSession.startTime, input.now)
 
-        val expectAttendanceStatus = when {
-            // 세션 시작전 15분 ~ 15분 사이 -> 출석으로 인정될 상태
-            input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) &&
-                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(15)) -> AttendanceStatus.ATTENDANCE
-
-            // 세션 시작 15분 ~ 30분 사이 -> 지각으로 인정될 상태
-            input.now.isAfter(thisWeekSession.startTime.plusMinutes(15)) &&
-                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(30)) -> AttendanceStatus.TARDY
-
-            // 세션 시작 30분 이후 ~ 240분 -> 결석으로 인정될 상태
-            input.now.isAfter(thisWeekSession.startTime.plusMinutes(30)) &&
-                    input.now.isBefore(thisWeekSession.startTime.plusMinutes(240)) -> AttendanceStatus.ABSENCE
-
-            else -> AttendanceStatus.ATTENDANCE_ON_HOLD
-        }
+        val expectAttendanceStatus = attendance.expectAttendanceStatus(thisWeekSession.startTime, input.now)
 
         return GetCheckInStatusOutput(
             generation = attendance.generation,

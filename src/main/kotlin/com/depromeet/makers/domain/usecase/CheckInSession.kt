@@ -50,8 +50,7 @@ class CheckInSession(
             )
         )
 
-        logger().info(thisWeekSession.toString())
-        logger().info(input.longitude.toString() + " " + input.latitude.toString())
+        attendance.isAvailableCheckInRequest(thisWeekSession.startTime, input.now)
 
         // 오프라인 세션의 경우 거리 확인 로직
         if (thisWeekSession.isOffline()) {
@@ -68,12 +67,13 @@ class CheckInSession(
 
             logger().info(distance.toString())
 
-            if (!inRange(distance, 500.0)) { // 100m 기준 (임시 설정)
+            if (inRange(distance, 1000.0).not()) { // 1000m 기준 (임시 설정)
                 throw InvalidCheckInDistanceException()
             }
         }
 
-        return attendanceGateway.save(attendance.checkIn(input.now, thisWeekSession.startTime))
+        val expectAttendanceStatus = attendance.expectAttendanceStatus(thisWeekSession.startTime, input.now)
+        return attendanceGateway.save(attendance.checkIn(input.now, expectAttendanceStatus))
     }
 
     private fun LocalDateTime.getMonday() = this.toLocalDate().with(DayOfWeek.MONDAY).atStartOfDay()
