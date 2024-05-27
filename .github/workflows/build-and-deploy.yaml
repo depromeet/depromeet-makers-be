@@ -9,7 +9,7 @@ on:
       - 'src/**'
 
 env:
-  ACTIVE_PROFILE: prod
+  SPRING_PROFILES_ACTIVE: prod
 
 jobs:
   build:
