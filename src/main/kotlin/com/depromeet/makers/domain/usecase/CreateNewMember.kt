@@ -1,7 +1,10 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.MemberAlreadyExistsException
+import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
+import com.depromeet.makers.domain.gateway.SessionGateway
+import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.model.MemberGeneration
 import com.depromeet.makers.domain.model.MemberPosition
@@ -9,6 +12,8 @@ import com.depromeet.makers.domain.model.MemberRole
 
 class CreateNewMember(
     private val memberGateway: MemberGateway,
+    private val sessionGateway: SessionGateway,
+    private val attendanceGateway: AttendanceGateway,
 ) : UseCase<CreateNewMember.CreateNewMemberInput, Member> {
     data class CreateNewMemberInput(
         val name: String,
@@ -46,6 +51,20 @@ class CreateNewMember(
                 initialGeneration = newGeneration,
             )
         }
+        initializeAttendance(newMember, newGeneration.generationId)
         return memberGateway.save(newMember)
+    }
+
+    private fun initializeAttendance(member: Member, generationId: Int) {
+        sessionGateway.findAllByGeneration(generationId).distinct()
+            .forEach { session ->
+                attendanceGateway.save(
+                    Attendance.newAttendance(
+                        generation = generationId,
+                        week = session.week,
+                        member = member,
+                    )
+                )
+            }
     }
 }

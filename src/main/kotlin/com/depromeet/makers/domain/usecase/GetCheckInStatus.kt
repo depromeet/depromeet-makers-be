@@ -1,10 +1,10 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
+import com.depromeet.makers.domain.exception.NotFoundAttendanceException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.AttendanceStatus
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -42,13 +42,7 @@ class GetCheckInStatus(
                 thisWeekSession.generation,
                 thisWeekSession.week
             )
-        }.getOrDefault(
-            Attendance.newAttendance(
-                generation = thisWeekSession.generation,
-                week = thisWeekSession.week,
-                member = member,
-            )
-        )
+        }.getOrElse { throw NotFoundAttendanceException() }
 
         // 현재 시간이 세션 시간 15분 전 && 세션 시작 시간 사이인지 확인 -> 팝업 띄우기 여부
         val isBeforeSession15minutes = input.now.isAfter(thisWeekSession.startTime.minusMinutes(15)) &&
