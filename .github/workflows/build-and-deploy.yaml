@@ -42,7 +42,16 @@ jobs:
       - name: 이미지 빌드하고 푸쉬하기
         id: build-image
         run: |
+          echo "image-tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT &&
           chmod +x ./gradlew &&
           export IMAGE_TAG=$(git rev-parse --short HEAD) &&
           export IMAGE_NAME=${{ secrets.IMAGE_NAME }} &&
           ./gradlew jib
+
+      - name: 도커 배포하기
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo docker service update makers_web --image ${{ secrets.IMAGE_NAME }}:${{ steps.build-image.outputs.image-tag }}
