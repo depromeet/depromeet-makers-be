@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
 	kotlin("plugin.jpa") version "1.9.23"
+	id("com.google.cloud.tools.jib") version "3.4.2"
 }
 
 group = "com.depromeet"
@@ -62,4 +63,36 @@ tasks.withType<Test> {
 
 springBoot {
 	buildInfo()
+}
+
+jib {
+	val activeProfile: String? = System.getenv("SPRING_PROFILES_ACTIVE")
+	val imageName: String? = System.getenv("IMAGE_NAME")
+	val imageTag: String? = System.getenv("IMAGE_TAG")
+	val serverPort: String = System.getenv("SERVER_PORT") ?: "8080"
+	from {
+		image = "amazoncorretto:17-alpine3.17-jdk"
+	}
+	to {
+		image = imageName
+		tags = setOf(imageTag, "latest")
+	}
+	container {
+		jvmFlags =
+			listOf(
+				"-Dspring.profiles.active=$activeProfile",
+				"-Dserver.port=$serverPort",
+				"-Djava.security.egd=file:/dev/./urandom",
+				"-Dfile.encoding=UTF-8",
+				"-Duser.timezone=Asia/Seoul",
+				"-XX:+UnlockExperimentalVMOptions",
+				"-XX:+UseContainerSupport",
+				"-XX:+UseG1GC",
+//				"-XX:InitialHeapSize=2g",
+//				"-XX:MaxHeapSize=2g", // 프리티어니까... vm아 괜찮을 만큼만 적당히 할당해봐...
+				"-XX:+DisableExplicitGC", // System.gc() 방어
+				"-server",
+			)
+		ports = listOf(serverPort)
+	}
 }
