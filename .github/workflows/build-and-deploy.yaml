@@ -1,7 +1,7 @@
 name: 이미지 빌드 & 푸쉬
 on:
   push:
-    branches: [ 'develop', 'feature/#49' ]
+    branches: [ 'develop' ]
     paths:
       - '.github/workflows/**'
       - 'build.gradle.kts'
