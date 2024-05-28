@@ -51,8 +51,10 @@ class CreateNewMember(
                 initialGeneration = newGeneration,
             )
         }
-        initializeAttendance(newMember, newGeneration.generationId)
-        return memberGateway.save(newMember)
+
+        val member = memberGateway.save(newMember)
+        initializeAttendance(member, newGeneration.generationId)
+        return member
     }
 
     private fun initializeAttendance(member: Member, generationId: Int) {
