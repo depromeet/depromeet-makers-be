@@ -1,13 +1,31 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
   application:
     name: depromeet-makers-be
   flyway:
     enabled: true
     baseline-on-migrate: true
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+    hikari:
+      auto-commit: false
+      pool-name: makers-db-pool
+      minimum-idle: 10
+      maximum-pool-size: 30
+      connection-timeout: 60000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+
 server:
   shutdown: graceful
   tomcat:
