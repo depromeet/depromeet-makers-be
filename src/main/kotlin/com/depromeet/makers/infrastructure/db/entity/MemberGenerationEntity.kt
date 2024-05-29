@@ -66,7 +66,7 @@ class MemberGenerationEntity private constructor(
     }
 }
 
-class MemberGenerationEntityKey(
+data class MemberGenerationEntityKey(
     val memberId: String = "",
     val generationId: Int = 0,
 ) : Serializable
