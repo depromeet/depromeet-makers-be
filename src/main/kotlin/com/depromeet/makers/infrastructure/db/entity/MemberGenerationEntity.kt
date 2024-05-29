@@ -21,7 +21,7 @@ class MemberGenerationEntity private constructor(
     val groupId: Int?,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(255)")
     val role: MemberRole,
 
     @Enumerated(EnumType.STRING)
