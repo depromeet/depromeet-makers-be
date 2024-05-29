@@ -30,11 +30,11 @@ class AttendanceEntity private constructor(
     val member: MemberEntity,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "session_type", nullable = false)
+    @Column(name = "session_type", nullable = false, columnDefinition = "VARCHAR(255)")
     val sessionType: SessionType,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "attendance_status", nullable = false)
+    @Column(name = "attendance_status", nullable = false, columnDefinition = "VARCHAR(255)")
     val attendanceStatus: AttendanceStatus,
 
     @Column(name = "attendance_time", nullable = true)

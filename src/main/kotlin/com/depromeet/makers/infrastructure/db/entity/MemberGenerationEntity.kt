@@ -25,7 +25,7 @@ class MemberGenerationEntity private constructor(
     val role: MemberRole,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "position", nullable = false)
+    @Column(name = "position", nullable = false, columnDefinition = "VARCHAR(255)")
     val position: MemberPosition,
 ) {
     fun toDomain() = MemberGeneration(

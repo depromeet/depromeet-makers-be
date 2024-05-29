@@ -28,7 +28,7 @@ class SessionEntity private constructor(
     val startTime: LocalDateTime,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "session_type", nullable = false)
+    @Column(name = "session_type", nullable = false, columnDefinition = "VARCHAR(255)")
     val sessionType: SessionType,
 
     @Column(name = "address")
