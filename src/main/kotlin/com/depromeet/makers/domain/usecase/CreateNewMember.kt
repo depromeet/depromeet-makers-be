@@ -59,6 +59,7 @@ class CreateNewMember(
 
     private fun initializeAttendance(member: Member, generationId: Int) {
         sessionGateway.findAllByGeneration(generationId).distinct()
+            .sortedBy { it.week }
             .forEach { session ->
                 attendanceGateway.save(
                     Attendance.newAttendance(
