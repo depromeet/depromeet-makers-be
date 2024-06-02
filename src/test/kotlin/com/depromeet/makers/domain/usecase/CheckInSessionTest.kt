@@ -6,6 +6,7 @@ import com.depromeet.makers.domain.exception.MissingPlaceParamException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
+import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
@@ -26,8 +27,15 @@ class CheckInSessionTest : BehaviorSpec({
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
         val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
-        val mockLongitude = null
-        val mockLatitude = null
+        val mockLongitude = 127.0092
+        val mockLatitude = 35.9418
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
 
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
             sessionId = "123e4567-e89b-12d3-a456-426614174000",
@@ -40,15 +48,15 @@ class CheckInSessionTest : BehaviorSpec({
             place = Place.emptyPlace(),
         )
 
-        every { memberGateway.getById(any()) } returns Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
+        every { memberGateway.getById(any()) } returns mockMember
+
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } returns Attendance.newAttendance(
+            generation = 15,
+            week = 1,
+            member = mockMember,
+            sessionType = SessionType.ONLINE,
         )
 
-        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
@@ -77,10 +85,9 @@ class CheckInSessionTest : BehaviorSpec({
 
         val mockNow = LocalDateTime.of(2024, 6, 15, 16, 0)
         val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
-        val mockLongitude = null
-        val mockLatitude = null
-
-        every { memberGateway.getById(any()) } returns Member(
+        val mockLongitude = 127.0092
+        val mockLatitude = 35.9418
+        val mockMember = Member(
             memberId = "123e4567-e89b-12d3-a456-426614174000",
             name = "홍길동",
             email = "",
@@ -88,8 +95,10 @@ class CheckInSessionTest : BehaviorSpec({
             generations = emptySet()
         )
 
+        every { memberGateway.getById(any()) } returns mockMember
+
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns null
-        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } returns mockk()
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
@@ -120,6 +129,13 @@ class CheckInSessionTest : BehaviorSpec({
         val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
         val mockLongitude = 127.0092
         val mockLatitude = 35.9418
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
 
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
             sessionId = "123e4567-e89b-12d3-a456-426614174000",
@@ -144,7 +160,12 @@ class CheckInSessionTest : BehaviorSpec({
             generations = emptySet()
         )
 
-        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } returns Attendance.newAttendance(
+            generation = 15,
+            week = 1,
+            member = mockMember,
+            sessionType = SessionType.ONLINE,
+        )
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
@@ -173,8 +194,15 @@ class CheckInSessionTest : BehaviorSpec({
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
         val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
-        val mockLongitude = 0.0
-        val mockLatitude = 0.0
+        val mockLongitude = 10.0
+        val mockLatitude = 10.0
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
 
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
             sessionId = "123e4567-e89b-12d3-a456-426614174000",
@@ -199,7 +227,13 @@ class CheckInSessionTest : BehaviorSpec({
             generations = emptySet()
         )
 
-        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } returns Attendance.newAttendance(
+            generation = 15,
+            week = 1,
+            member = mockMember,
+            sessionType = SessionType.OFFLINE,
+
+        )
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
@@ -228,8 +262,15 @@ class CheckInSessionTest : BehaviorSpec({
 
         val mockNow = LocalDateTime.of(2024, 5, 15, 16, 0)
         val mockMemberId = "123e4567-e89b-12d3-a456-426614174000"
-        val mockLongitude = null
-        val mockLatitude = null
+        val mockLongitude = 0.0
+        val mockLatitude = 0.0
+        val mockMember = Member(
+            memberId = "123e4567-e89b-12d3-a456-426614174000",
+            name = "홍길동",
+            email = "",
+            passCord = null,
+            generations = emptySet()
+        )
 
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns Session(
             sessionId = "123e4567-e89b-12d3-a456-426614174000",
@@ -246,15 +287,14 @@ class CheckInSessionTest : BehaviorSpec({
             ),
         )
 
-        every { memberGateway.getById(any()) } returns Member(
-            memberId = "123e4567-e89b-12d3-a456-426614174000",
-            name = "홍길동",
-            email = "",
-            passCord = null,
-            generations = emptySet()
-        )
+        every { memberGateway.getById(any()) } returns mockMember
 
-        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } throws RuntimeException()
+        every { attendanceGateway.findByMemberIdAndGenerationAndWeek(any(), any(), any()) } returns Attendance.newAttendance(
+            generation = 15,
+            week = 1,
+            member = mockMember,
+            sessionType = SessionType.OFFLINE,
+        )
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
