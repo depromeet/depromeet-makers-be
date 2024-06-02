@@ -1,7 +1,9 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.MemberAlreadyExistsException
+import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
+import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Member
 import com.depromeet.makers.domain.model.MemberGeneration
 import com.depromeet.makers.domain.model.MemberPosition
@@ -15,22 +17,26 @@ import io.mockk.every
 import io.mockk.mockk
 
 
-class CreateNewMemberTest: BehaviorSpec({
+class CreateNewMemberTest : BehaviorSpec({
     Given("이미 존재하는 이메일의 사용자이지만 새로운 기수일 때") {
         val memberGateway = mockk<MemberGateway>()
-        val createNewMember = CreateNewMember(memberGateway)
+        val sessionGateway = mockk<SessionGateway>()
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val createNewMember = CreateNewMember(memberGateway, sessionGateway, attendanceGateway)
 
         val mockName = "송영민"
         val mockMemberId = "1"
         val mockEmail = "yeongmin1061@gmail.com"
         val mockGenerationId = 14
         val mockPreviousGenerationId = 12
-        val mockPreviousGenerations = setOf(MemberGeneration(
-            generationId = mockPreviousGenerationId,
-            role = MemberRole.MEMBER,
-            position = MemberPosition.BACKEND,
-            groupId = null,
-        ))
+        val mockPreviousGenerations = setOf(
+            MemberGeneration(
+                generationId = mockPreviousGenerationId,
+                role = MemberRole.MEMBER,
+                position = MemberPosition.BACKEND,
+                groupId = null,
+            )
+        )
 
         every { memberGateway.findByEmail(any()) } answers {
             val email = firstArg<String>()
@@ -43,6 +49,9 @@ class CreateNewMemberTest: BehaviorSpec({
             )
         }
         every { memberGateway.save(any()) } returnsArgument 0
+        every { sessionGateway.findAllByGeneration(any()) } returns emptyList()
+        every { attendanceGateway.save(any()) } returns mockk()
+
 
         When("execute가 실행하면") {
             val result = createNewMember.execute(
@@ -69,19 +78,23 @@ class CreateNewMemberTest: BehaviorSpec({
 
     Given("이미 존재하는 이메일의 사용자이고 이미 등록된 기수일 때") {
         val memberGateway = mockk<MemberGateway>()
-        val createNewMember = CreateNewMember(memberGateway)
+        val sessionGateway = mockk<SessionGateway>()
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val createNewMember = CreateNewMember(memberGateway, sessionGateway, attendanceGateway)
 
         val mockName = "송영민"
         val mockMemberId = "1"
         val mockEmail = "yeongmin1061@gmail.com"
         val mockGenerationId = 14
         val mockPreviousGenerationId = 14
-        val mockPreviousGenerations = setOf(MemberGeneration(
-            generationId = mockPreviousGenerationId,
-            role = MemberRole.MEMBER,
-            position = MemberPosition.BACKEND,
-            groupId = null,
-        ))
+        val mockPreviousGenerations = setOf(
+            MemberGeneration(
+                generationId = mockPreviousGenerationId,
+                role = MemberRole.MEMBER,
+                position = MemberPosition.BACKEND,
+                groupId = null,
+            )
+        )
 
         every { memberGateway.findByEmail(any()) } answers {
             val email = firstArg<String>()
@@ -116,7 +129,9 @@ class CreateNewMemberTest: BehaviorSpec({
 
     Given("처음 등록하는 사용자일 때") {
         val memberGateway = mockk<MemberGateway>()
-        val createNewMember = CreateNewMember(memberGateway)
+        val sessionGateway = mockk<SessionGateway>()
+        val attendanceGateway = mockk<AttendanceGateway>()
+        val createNewMember = CreateNewMember(memberGateway, sessionGateway, attendanceGateway)
 
         val mockName = "송영민"
         val mockEmail = "yeongmin1061@gmail.com"
@@ -124,6 +139,8 @@ class CreateNewMemberTest: BehaviorSpec({
 
         every { memberGateway.findByEmail(any()) } returns null
         every { memberGateway.save(any()) } returnsArgument 0
+        every { sessionGateway.findAllByGeneration(any()) } returns emptyList()
+        every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행하면") {
             val result = createNewMember.execute(
