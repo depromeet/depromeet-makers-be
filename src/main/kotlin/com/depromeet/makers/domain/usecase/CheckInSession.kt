@@ -3,11 +3,11 @@ package com.depromeet.makers.domain.usecase
 import com.depromeet.makers.domain.exception.InvalidCheckInDistanceException
 import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
 import com.depromeet.makers.domain.exception.MissingPlaceParamException
+import com.depromeet.makers.domain.exception.NotFoundAttendanceException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
-import com.depromeet.makers.util.logger
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import kotlin.math.atan2
@@ -23,8 +23,8 @@ class CheckInSession(
     data class CheckInSessionInput(
         val now: LocalDateTime,
         val memberId: String,
-        val longitude: Double?,
-        val latitude: Double?,
+        val longitude: Double,
+        val latitude: Double,
     )
 
     override fun execute(input: CheckInSessionInput): Attendance {
@@ -42,21 +42,13 @@ class CheckInSession(
                 thisWeekSession.generation,
                 thisWeekSession.week
             )
-        }.getOrDefault(
-            Attendance.newAttendance(
-                generation = thisWeekSession.generation,
-                week = thisWeekSession.week,
-                member = member,
-            )
-        )
+        }.getOrElse { throw NotFoundAttendanceException() }
 
         attendance.isAvailableCheckInRequest(thisWeekSession.startTime, input.now)
 
         // 오프라인 세션의 경우 거리 확인 로직
         if (thisWeekSession.isOffline()) {
-            if (input.latitude == null || input.longitude == null) {
-                throw MissingPlaceParamException()
-            }
+            validateLocation(input.latitude, input.longitude)
 
             val distance = calculateDistance(
                 thisWeekSession.place.latitude,
@@ -64,8 +56,6 @@ class CheckInSession(
                 input.latitude,
                 input.longitude,
             )
-
-            logger().info(distance.toString())
 
             if (inRange(distance, 1000.0).not()) { // 1000m 기준 (임시 설정)
                 throw InvalidCheckInDistanceException()
@@ -90,5 +80,11 @@ class CheckInSession(
                 sin(dLon / 2) * sin(dLon / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return earthRadius * c
+    }
+
+    private fun validateLocation(latitude: Double, longitude: Double) {
+        if (latitude == 0.0 || longitude == 0.0) {
+            throw MissingPlaceParamException()
+        }
     }
 }
