@@ -9,4 +9,7 @@ data class MemberLoginResponse(
 
     @Schema(description = "리프레쉬 토큰")
     val refreshToken: String,
+
+    @Schema(description = "사용자 정보")
+    val member: MemberResponse,
 )

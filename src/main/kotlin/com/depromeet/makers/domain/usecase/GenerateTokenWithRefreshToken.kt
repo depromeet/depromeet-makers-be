@@ -16,6 +16,7 @@ class GenerateTokenWithRefreshToken(
     data class GenerateTokenWithEmailAndPassCordOutput(
         val accessToken: String,
         val refreshToken: String,
+        val email: String,
     )
 
     override fun execute(input: GenerateTokenWithRefreshTokenInput): GenerateTokenWithEmailAndPassCordOutput {
@@ -26,6 +27,7 @@ class GenerateTokenWithRefreshToken(
         return GenerateTokenWithEmailAndPassCordOutput(
             accessToken = tokenGateway.generateAccessToken(member),
             refreshToken = tokenGateway.generateRefreshToken(member),
+            email = member.email,
         )
     }
 }

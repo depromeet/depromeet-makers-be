@@ -10,6 +10,7 @@ import com.depromeet.makers.presentation.restapi.dto.request.MemberLoginRequest
 import com.depromeet.makers.presentation.restapi.dto.request.MemberRefreshTokenRequest
 import com.depromeet.makers.presentation.restapi.dto.response.CheckMemberExistsByEmailResponse
 import com.depromeet.makers.presentation.restapi.dto.response.MemberLoginResponse
+import com.depromeet.makers.presentation.restapi.dto.response.MemberResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -40,9 +41,15 @@ class AuthController(
                 passCord = request.passCord,
             )
         )
+        val member = getMemberByEmail.execute(
+            GetMemberByEmail.GetMemberByEmailInput(
+                email = request.email
+            )
+        )
         return MemberLoginResponse(
             accessToken = tokens.accessToken,
             refreshToken = tokens.refreshToken,
+            member = MemberResponse.fromDomain(member)
         )
     }
 
@@ -56,9 +63,15 @@ class AuthController(
                 refreshToken = request.refreshToken,
             )
         )
+        val member = getMemberByEmail.execute(
+            GetMemberByEmail.GetMemberByEmailInput(
+                email = tokens.email,
+            )
+        )
         return MemberLoginResponse(
             accessToken = tokens.accessToken,
             refreshToken = tokens.refreshToken,
+            member = MemberResponse.fromDomain(member)
         )
     }
 
