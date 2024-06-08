@@ -1,31 +1,18 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.CreateNewSession
-import com.depromeet.makers.domain.usecase.DeleteSession
-import com.depromeet.makers.domain.usecase.UpdateSession
-import com.depromeet.makers.domain.usecase.UpdateSessionPlace
-import com.depromeet.makers.domain.usecase.GetSessions
+import com.depromeet.makers.domain.usecase.*
 import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
+import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionPlaceRequest
 import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionRequest
-import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
-import com.depromeet.makers.presentation.restapi.dto.response.CreateNewSessionResponse
-import com.depromeet.makers.presentation.restapi.dto.response.UpdateSessionPlaceResponse
-import com.depromeet.makers.presentation.restapi.dto.response.UpdateSessionResponse
-import com.depromeet.makers.presentation.restapi.dto.response.GetSessionsResponse
+import com.depromeet.makers.presentation.restapi.dto.response.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @Tag(name = "세션 관련 API", description = "세션의 정보를 관리하는 API")
 @RestController
@@ -36,9 +23,8 @@ class SessionController(
     private val updateSession: UpdateSession,
     private val updateSessionPlace: UpdateSessionPlace,
     private val deleteSession: DeleteSession,
-
-
-    ) {
+    private val getInfoSession: GetInfoSession,
+) {
     @Operation(summary = "새로운 세션 생성", description = "새로운 세션을 생성합니다.")
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping
@@ -76,6 +62,19 @@ class SessionController(
         return GetSessionsResponse(
             generation = request.generation,
             sessions = sessions,
+        )
+    }
+
+    @Operation(summary = "세션 정보 조회", description = "세션의 정보를 조회합니다.")
+    @GetMapping("/info")
+    fun getInfoSession(
+    ): GetSessionResponse {
+        return GetSessionResponse.fromDomain(
+            getInfoSession.execute(
+                GetInfoSession.GetInfoSessionInput(
+                    now = LocalDateTime.now(),
+                )
+            )
         )
     }
 
