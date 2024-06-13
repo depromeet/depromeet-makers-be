@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Entity
 class NotificationEntity private constructor(
     @Id
-    @Column(name = "notification_id", columnDefinition = "CHAR(26)", nullable = false)
+    @Column(name = "id", columnDefinition = "CHAR(26)", nullable = false)
     val id: String,
 
     @Id
@@ -29,7 +29,7 @@ class NotificationEntity private constructor(
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime,
 
-    @Column(name = "read_at")
+    @Column(name = "read_at", nullable = true)
     var readAt: LocalDateTime?,
 ) {
 
