@@ -19,7 +19,7 @@ data class NotificationResponse(
     val type: NotificationType,
 
     @Schema(description = "읽기 여부")
-    val float: Boolean,
+    val isRead: Boolean,
 ) {
     companion object {
         fun fromDomain(output: GetRecentNotification.GetRecentNotificationOutput) = NotificationResponse(
@@ -27,7 +27,7 @@ data class NotificationResponse(
             memberId = output.memberId,
             content = output.content,
             type = output.type,
-            float = output.float,
+            isRead = output.isRead,
         )
     }
 }

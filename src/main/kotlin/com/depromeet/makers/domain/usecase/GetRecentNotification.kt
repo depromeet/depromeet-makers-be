@@ -18,11 +18,11 @@ class GetRecentNotification(
         val content: String,
         val type: NotificationType,
         val createdAt: LocalDateTime,
-        val float: Boolean = false,
+        val isRead: Boolean = false,
     )
 
     override fun execute(input: GetRecentNotificationInput): GetRecentNotificationOutput {
-        val notification = notificationGateway.getRecentNotification(input.memberId)
+        val notification = notificationGateway.findRecentNotification(input.memberId)
 
         // 조회 알림이 없다면 default 값
         if (notification == null) {
@@ -32,7 +32,7 @@ class GetRecentNotification(
                 content = "defaultContent",
                 type = NotificationType.NONE,
                 createdAt = LocalDateTime.now(),
-                float = false,
+                isRead = true,
             )
         }
 
@@ -42,7 +42,7 @@ class GetRecentNotification(
             content = notification.content,
             type = notification.type,
             createdAt = notification.createdAt,
-            float = notification.readAt == null,
+            isRead = notification.readAt != null,
         )
     }
 }
