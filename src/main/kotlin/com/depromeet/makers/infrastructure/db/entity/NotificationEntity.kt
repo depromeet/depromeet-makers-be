@@ -9,7 +9,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import java.time.LocalDateTime
 
-@Entity
+@Entity(name = "notifications")
 class NotificationEntity private constructor(
     @Id
     @Column(name = "id", columnDefinition = "CHAR(26)", nullable = false)
