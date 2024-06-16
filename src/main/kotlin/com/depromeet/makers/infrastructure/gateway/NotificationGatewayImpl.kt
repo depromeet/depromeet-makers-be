@@ -23,4 +23,10 @@ class NotificationGatewayImpl(
             .findFirstByMemberIdOrderByIdDesc(memberId)
             ?.toDomain()
     }
+
+    override fun getById(notificationId: String): Notification {
+        return jpaNotificationRepository
+            .getReferenceById(notificationId)
+            .let(NotificationEntity::toDomain)
+    }
 }
