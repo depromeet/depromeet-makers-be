@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@Tag(name = "알림", description = "알림 관련 API")
+@Tag(name = "알림 API", description = "알림 관련 API")
 @RestController
 @RequestMapping("/v1/notifications")
 class NotificationController(
