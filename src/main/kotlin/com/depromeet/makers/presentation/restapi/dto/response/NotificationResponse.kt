@@ -4,21 +4,22 @@ import com.depromeet.makers.domain.model.NotificationType
 import com.depromeet.makers.domain.usecase.GetRecentNotification
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(description = "알림 DTO")
 data class NotificationResponse(
 
-    @Schema(description = "알림 ID")
+    @Schema(description = "알림 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val id: String,
 
-    @Schema(description = "사용자 ID")
+    @Schema(description = "사용자 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val memberId: String,
 
-    @Schema(description = "알림 내용")
+    @Schema(description = "알림 내용", example = "지난주에 결석하셨군요. 증빙이 필요하다면 증빙서류를 제출해주세요.")
     val content: String,
 
-    @Schema(description = "알림 타입", example = "MEETING")
+    @Schema(description = "알림 타입", example = "DOCUMENT")
     val type: NotificationType,
 
-    @Schema(description = "읽기 여부")
+    @Schema(description = "읽기 여부", example = "false")
     val isRead: Boolean,
 ) {
     companion object {
