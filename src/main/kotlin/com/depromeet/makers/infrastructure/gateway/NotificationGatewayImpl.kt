@@ -18,7 +18,7 @@ class NotificationGatewayImpl(
             .toDomain()
     }
 
-    override fun findRecentNotification(memberId: String): Notification? {
+    override fun findRecentNotificationByMemberId(memberId: String): Notification? {
         return jpaNotificationRepository
             .findFirstByMemberIdOrderByIdDesc(memberId)
             ?.toDomain()

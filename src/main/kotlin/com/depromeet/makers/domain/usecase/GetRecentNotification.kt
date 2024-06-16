@@ -22,7 +22,7 @@ class GetRecentNotification(
     )
 
     override fun execute(input: GetRecentNotificationInput): GetRecentNotificationOutput {
-        val notification = notificationGateway.findRecentNotification(input.memberId)
+        val notification = notificationGateway.findRecentNotificationByMemberId(input.memberId)
 
         // 조회 알림이 없다면 default 값
         if (notification == null) {
