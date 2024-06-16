@@ -1,5 +1,6 @@
 package com.depromeet.makers.presentation.restapi.dto.response
 
+import com.depromeet.makers.domain.model.Notification
 import com.depromeet.makers.domain.model.NotificationType
 import com.depromeet.makers.domain.usecase.GetRecentNotification
 import io.swagger.v3.oas.annotations.media.Schema
@@ -30,5 +31,15 @@ data class NotificationResponse(
             type = output.type,
             isRead = output.isRead,
         )
+
+        fun fromDomain(output: Notification): NotificationResponse {
+            return NotificationResponse(
+                id = output.id,
+                memberId = output.memberId,
+                content = output.content,
+                type = output.type,
+                isRead = output.readAt != null,
+            )
+        }
     }
 }
