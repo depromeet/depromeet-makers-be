@@ -15,7 +15,6 @@ class NotificationEntity private constructor(
     @Column(name = "id", columnDefinition = "CHAR(26)", nullable = false)
     val id: String,
 
-    @Id
     @Column(name = "member_id", columnDefinition = "CHAR(26)", nullable = false)
     val memberId: String,
 
