@@ -23,7 +23,7 @@ class NotificationEntity private constructor(
     val content: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, columnDefinition = "VARCHAR(255)")
     val type: NotificationType,
 
     @Column(name = "created_at", nullable = false)
