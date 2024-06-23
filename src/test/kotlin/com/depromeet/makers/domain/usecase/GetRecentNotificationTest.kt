@@ -5,6 +5,7 @@ import com.depromeet.makers.domain.model.Notification
 import com.depromeet.makers.domain.model.NotificationType
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
@@ -32,7 +33,7 @@ class GetRecentNotificationTest : BehaviorSpec({
             )
 
             Then("읽지 않은 알림이 조회된다") {
-                result.isRead shouldBe false
+                result.readAt shouldBe null
             }
         }
     }
@@ -61,7 +62,7 @@ class GetRecentNotificationTest : BehaviorSpec({
             )
 
             Then("읽은 알림이 조회된다") {
-                result.isRead shouldBe true
+                result.readAt shouldNotBe null
             }
         }
     }
