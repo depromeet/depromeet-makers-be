@@ -11,7 +11,7 @@ data class Notification(
     val createdAt: LocalDateTime,
     val readAt: LocalDateTime?,
 ) {
-    fun read() = copy(readAt = LocalDateTime.now())
+    fun read(now: LocalDateTime) = copy(readAt = now)
 
     companion object {
         fun newNotification(

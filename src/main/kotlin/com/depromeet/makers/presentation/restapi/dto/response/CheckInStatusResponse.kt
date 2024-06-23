@@ -19,5 +19,4 @@ data class CheckInStatusResponse(
 
     @Schema(name = "expectAttendanceStatus", description = "출석 시 예상하는 상태")
     val expectAttendanceStatus: AttendanceStatus,
-) {
-}
+)

@@ -6,7 +6,6 @@ import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
-import com.depromeet.makers.util.generateULID
 import java.time.LocalDateTime
 
 class CreateNewSession(
@@ -29,17 +28,17 @@ class CreateNewSession(
             throw SessionAlreadyExistsException()
         }
 
-        val newSession = Session(
-            sessionId = generateULID(),
-            generation = input.generation,
-            week = input.week,
-            title = input.title,
-            description = input.description,
-            startTime = input.startTime,
-            sessionType = input.sessionType,
-            place = getNewPlace(input),
+        return sessionGateWay.save(
+            Session.newSession(
+                generation = input.generation,
+                week = input.week,
+                title = input.title,
+                description = input.description,
+                startTime = input.startTime,
+                sessionType = input.sessionType,
+                place = getNewPlace(input),
+            )
         )
-        return sessionGateWay.save(newSession)
     }
 
     private fun hasSameGenerationAndWeekSession(generation: Int, week: Int) =
