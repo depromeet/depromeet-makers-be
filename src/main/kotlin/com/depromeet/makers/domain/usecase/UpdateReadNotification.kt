@@ -17,10 +17,6 @@ class UpdateReadNotification(
     override fun execute(input: UpdateReadNotificationInput): Notification {
         val notification = notificationGateway.getById(input.notificationId)
 
-        return notificationGateway.save(
-            notification.copy(
-                readAt = input.now
-            )
-        )
+        return notificationGateway.save(notification.read(input.now))
     }
 }
