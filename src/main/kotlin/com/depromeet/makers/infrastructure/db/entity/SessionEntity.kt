@@ -40,7 +40,7 @@ class SessionEntity private constructor(
     @Column(name = "latitude")
     var latitude: Double,
 
-    @Column(name = "place_name", nullable = true)
+    @Column(name = "place_name", nullable = true, columnDefinition = "VARCHAR(255)")
     var placeName: String?,
 
     ) {
