@@ -13,4 +13,7 @@ data class UpdateSessionPlaceRequest(
 
     @Schema(description = "위도", example = "126.9544")
     val latitude: Double,
+
+    @Schema(description = "세션 장소 이름", example = "모두의연구소 강남")
+    val placeName: String?,
 )
