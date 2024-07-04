@@ -40,6 +40,9 @@ class SessionEntity private constructor(
     @Column(name = "latitude")
     var latitude: Double,
 
+    @Column(name = "place_name", nullable = true)
+    var placeName: String?,
+
     ) {
     fun toDomain(): Session {
         return Session(
@@ -50,7 +53,7 @@ class SessionEntity private constructor(
             description = description,
             startTime = startTime,
             sessionType = sessionType,
-            place = Place.newPlace(address, longitude, latitude),
+            place = Place.newPlace(address, longitude, latitude, placeName),
         )
     }
 
@@ -68,6 +71,7 @@ class SessionEntity private constructor(
                     address = place.address,
                     longitude = place.longitude,
                     latitude = place.latitude,
+                    placeName = place.name,
                 )
             }
         }

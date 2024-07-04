@@ -21,6 +21,7 @@ class CreateNewSession(
         val address: String?,
         val longitude: Double?,
         val latitude: Double?,
+        val placeName: String?,
     )
 
     override fun execute(input: CreateNewSessionInput): Session {
@@ -55,6 +56,7 @@ class CreateNewSession(
                 address = input.address,
                 longitude = input.longitude,
                 latitude = input.latitude,
+                name = input.placeName,
             )
         }
 }
