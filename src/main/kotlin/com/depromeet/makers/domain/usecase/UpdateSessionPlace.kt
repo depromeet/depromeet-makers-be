@@ -11,6 +11,7 @@ class UpdateSessionPlace(
         val address: String,
         val latitude: Double,
         val longitude: Double,
+        val name: String?,
     )
 
     override fun execute(input: UpdateSessionInput): Session {
@@ -19,6 +20,7 @@ class UpdateSessionPlace(
             address = input.address,
             latitude = input.latitude,
             longitude = input.longitude,
+            name = input.name,
         )
 
         return sessionGateway.save(

@@ -1,0 +1,1 @@
+ALTER TABLE session ADD COLUMN `place_name` VARCHAR(255) DEFAULT NULL;

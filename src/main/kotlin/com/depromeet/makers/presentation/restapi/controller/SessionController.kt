@@ -42,6 +42,7 @@ class SessionController(
                 address = request.address,
                 longitude = request.longitude,
                 latitude = request.latitude,
+                placeName = request.placeName,
             )
         )
         return CreateNewSessionResponse.fromDomain(session)
@@ -110,6 +111,7 @@ class SessionController(
                 address = request.address,
                 latitude = request.latitude,
                 longitude = request.longitude,
+                name = request.placeName,
             )
         )
         return UpdateSessionPlaceResponse.fromDomain(updatedSession)
