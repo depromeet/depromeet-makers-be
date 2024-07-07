@@ -1,5 +1,6 @@
 package com.depromeet.makers.presentation.restapi.controller
 
+import com.depromeet.makers.domain.model.MemberRole
 import com.depromeet.makers.domain.usecase.*
 import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
 import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
@@ -52,11 +54,13 @@ class SessionController(
     @Parameter(name = "generation", description = "조회할 세션의 기수", example = "15")
     @GetMapping
     fun getSessions(
+        authentication: Authentication,
         @Valid request: GetSessionsRequest,
     ): GetSessionsResponse {
         val sessions = getSessions.execute(
             GetSessions.GetSessionsInput(
                 generation = request.generation,
+                isOrganizer = authentication.authorities.any { it.authority == MemberRole.ORGANIZER.roleName }
             )
         ).map { GetSessionsResponse.SessionResponse.fromDomain(it) }
 
@@ -69,11 +73,13 @@ class SessionController(
     @Operation(summary = "세션 정보 조회", description = "세션의 정보를 조회합니다.")
     @GetMapping("/info")
     fun getInfoSession(
+        authentication: Authentication,
     ): GetSessionResponse {
         return GetSessionResponse.fromDomain(
             getInfoSession.execute(
                 GetInfoSession.GetInfoSessionInput(
                     now = LocalDateTime.now(),
+                    isOrganizer = authentication.authorities.any { it.authority == MemberRole.ORGANIZER.roleName }
                 )
             )
         )
