@@ -17,6 +17,7 @@ class UpdateSessionPlaceTest : BehaviorSpec({
 
         val mockPreviousSessionPlace = Place(
             address = "전북 익산시 부송동 100",
+            name = "오프라인 장소",
             latitude = 35.9418,
             longitude = 127.0092,
         )
@@ -41,6 +42,7 @@ class UpdateSessionPlaceTest : BehaviorSpec({
                 mockPreviousSession.copy(
                     place = Place(
                         address = mockAddress,
+                        name = "오프라인 장소",
                         latitude = mockLatitude,
                         longitude = mockLongitude,
                     )
@@ -54,6 +56,7 @@ class UpdateSessionPlaceTest : BehaviorSpec({
                     address = mockAddress,
                     latitude = mockLatitude,
                     longitude = mockLongitude,
+                    name = "오프라인 장소",
                 )
             )
 
