@@ -8,9 +8,15 @@ class GetSessions(
 ) : UseCase<GetSessions.GetSessionsInput, List<Session>> {
     data class GetSessionsInput(
         val generation: Int,
+        val isOrganizer: Boolean,
     )
 
     override fun execute(input: GetSessionsInput): List<Session> {
-        return sessionGateway.findAllByGeneration(input.generation).sortedBy { it.week }
+        val sessions = sessionGateway.findAllByGeneration(input.generation).sortedBy { it.week }
+
+        return when {
+            input.isOrganizer -> sessions
+            else -> sessions.map { it.maskLocation() }
+        }
     }
 }

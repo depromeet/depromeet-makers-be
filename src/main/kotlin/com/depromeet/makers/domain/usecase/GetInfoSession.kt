@@ -11,15 +11,21 @@ class GetInfoSession(
 ) : UseCase<GetInfoSession.GetInfoSessionInput, Session> {
     data class GetInfoSessionInput(
         val now: LocalDateTime,
+        val isOrganizer: Boolean,
     )
 
     override fun execute(input: GetInfoSessionInput): Session {
         val monday = input.now.getMonday()
 
-        return sessionGateway.findByStartTimeBetween(
+        val session = sessionGateway.findByStartTimeBetween(
             monday,
             monday.plusDays(7)
         ) ?: throw SessionNotFoundException()
+
+        return when {
+            input.isOrganizer -> session
+            else -> session.maskLocation()
+        }
     }
 
     private fun LocalDateTime.getMonday() = this.toLocalDate().with(DayOfWeek.MONDAY).atStartOfDay()
