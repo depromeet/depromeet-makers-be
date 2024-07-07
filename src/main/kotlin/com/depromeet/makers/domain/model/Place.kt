@@ -18,6 +18,13 @@ data class Place(
         name = name,
     )
 
+    fun maskLocation(): Place {
+        return copy(
+            longitude = 0.0,
+            latitude = 0.0,
+        )
+    }
+
     companion object {
         fun newPlace(
             address: String,

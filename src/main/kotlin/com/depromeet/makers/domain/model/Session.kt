@@ -17,6 +17,12 @@ data class Session(
 
     fun isOffline() = sessionType.isOffline()
 
+    fun maskLocation(): Session {
+        return copy(
+            place = place.maskLocation()
+        )
+    }
+
     fun update(
         generation: Int = this.generation,
         week: Int = this.week,
