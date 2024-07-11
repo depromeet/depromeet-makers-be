@@ -147,6 +147,7 @@ class CheckInSessionTest : BehaviorSpec({
             sessionType = SessionType.OFFLINE,
             place = Place(
                 address = "전북 익산시 부송동 100",
+                name = "오프라인 장소",
                 latitude = 35.9418,
                 longitude = 127.0092,
             ),
@@ -214,6 +215,7 @@ class CheckInSessionTest : BehaviorSpec({
             sessionType = SessionType.OFFLINE,
             place = Place(
                 address = "전북 익산시 부송동 100",
+                name = "오프라인 장소",
                 latitude = 35.9418,
                 longitude = 127.0092,
             ),
@@ -282,6 +284,7 @@ class CheckInSessionTest : BehaviorSpec({
             sessionType = SessionType.OFFLINE,
             place = Place(
                 address = "전북 익산시 부송동 100",
+                name = "오프라인 장소",
                 latitude = 35.9418,
                 longitude = 127.0092,
             ),

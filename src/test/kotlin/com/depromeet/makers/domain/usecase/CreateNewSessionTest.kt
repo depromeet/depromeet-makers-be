@@ -42,6 +42,7 @@ class CreateNewSessionTest : BehaviorSpec({
                     address = mockAddress,
                     longitude = mockLongitude,
                     latitude = mockLatitude,
+                    placeName = "장소",
                 )
             )
             Then("세션 정보가 등록된다.") {
@@ -62,6 +63,7 @@ class CreateNewSessionTest : BehaviorSpec({
                     address = mockAddress,
                     longitude = mockLongitude,
                     latitude = mockLatitude,
+                    placeName = "장소",
                 )
             )
             Then("널 값의 description으로 세션 정보가 등록된다.") {
@@ -100,6 +102,7 @@ class CreateNewSessionTest : BehaviorSpec({
                     address = mockAddress,
                     longitude = mockLongitude,
                     latitude = mockLatitude,
+                    placeName = "장소",
                 )
             )
             Then("세션 정보가 등록된다.") {
@@ -144,6 +147,7 @@ class CreateNewSessionTest : BehaviorSpec({
                         address = mockAddress,
                         longitude = mockLongitude,
                         latitude = mockLatitude,
+                        placeName = "장소",
                     )
                 )
             }

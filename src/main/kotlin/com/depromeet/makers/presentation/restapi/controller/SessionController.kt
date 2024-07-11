@@ -1,5 +1,6 @@
 package com.depromeet.makers.presentation.restapi.controller
 
+import com.depromeet.makers.domain.model.MemberRole
 import com.depromeet.makers.domain.usecase.*
 import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
 import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
@@ -48,15 +50,21 @@ class SessionController(
         return CreateNewSessionResponse.fromDomain(session)
     }
 
-    @Operation(summary = "기수에 따른 모든 주차의 세션들 조회 요청", description = "기수에 따른 모든 주차의 세션들을 조회합니다.")
+    @Operation(
+        summary = "기수에 따른 모든 주차의 세션들 조회 요청",
+        description = "기수에 따른 모든 주차의 세션들을 조회합니다.\n" +
+                "일반 유저의 경우 위도, 경도가 0.0 으로 마스킹되어 반환됩니다."
+    )
     @Parameter(name = "generation", description = "조회할 세션의 기수", example = "15")
     @GetMapping
     fun getSessions(
+        authentication: Authentication,
         @Valid request: GetSessionsRequest,
     ): GetSessionsResponse {
         val sessions = getSessions.execute(
             GetSessions.GetSessionsInput(
                 generation = request.generation,
+                isOrganizer = authentication.authorities.any { it.authority == MemberRole.ORGANIZER.roleName }
             )
         ).map { GetSessionsResponse.SessionResponse.fromDomain(it) }
 
@@ -66,14 +74,19 @@ class SessionController(
         )
     }
 
-    @Operation(summary = "세션 정보 조회", description = "세션의 정보를 조회합니다.")
+    @Operation(
+        summary = "세션 정보 조회", description = "세션의 정보를 조회합니다.\n" +
+                "일반 유저의 경우 위도, 경도가 0.0 으로 마스킹되어 반환됩니다."
+    )
     @GetMapping("/info")
     fun getInfoSession(
+        authentication: Authentication,
     ): GetSessionResponse {
         return GetSessionResponse.fromDomain(
             getInfoSession.execute(
                 GetInfoSession.GetInfoSessionInput(
                     now = LocalDateTime.now(),
+                    isOrganizer = authentication.authorities.any { it.authority == MemberRole.ORGANIZER.roleName }
                 )
             )
         )
