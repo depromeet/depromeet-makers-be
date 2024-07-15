@@ -29,6 +29,9 @@ class GetSessionResponse(
 
     @Schema(description = "장소", example = "온라인")
     val place: PlaceResponse,
+
+    @Schema(description = "세션 코드 (어드민 role 경우 view)", example = "1234")
+    val code: String?,
 ) {
     companion object {
         fun fromDomain(session: Session) = with(session) {
@@ -41,6 +44,7 @@ class GetSessionResponse(
                 startTime = startTime.toString(),
                 sessionType = sessionType.name,
                 place = place.let { PlaceResponse.fromDomain(it) },
+                code = code,
             )
         }
     }
