@@ -89,8 +89,6 @@ jib {
 				"-XX:+UnlockExperimentalVMOptions",
 				"-XX:+UseContainerSupport",
 				"-XX:+UseG1GC",
-//				"-XX:InitialHeapSize=2g",
-//				"-XX:MaxHeapSize=2g", // 프리티어니까... vm아 괜찮을 만큼만 적당히 할당해봐...
 				"-XX:+DisableExplicitGC", // System.gc() 방어
 				"-server",
 			)
