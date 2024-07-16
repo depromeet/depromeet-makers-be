@@ -25,6 +25,7 @@ class GetSessionsTest : BehaviorSpec({
                 startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
                 sessionType = SessionType.OFFLINE,
                 place = Place.emptyPlace(),
+                code = "1234",
             )
         }.toList().shuffled()
 
@@ -34,7 +35,7 @@ class GetSessionsTest : BehaviorSpec({
             val result = getSessions.execute(
                 GetSessions.GetSessionsInput(
                     generation = 15,
-                    isOrganizer = false
+                    isOrganizer = true
                 )
             )
 
