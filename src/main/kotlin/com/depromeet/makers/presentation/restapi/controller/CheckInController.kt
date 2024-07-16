@@ -63,7 +63,7 @@ class CheckInController(
                                     "  \"code\": \"AT0008\",\n" +
                                     "  \"message\": \"출석 코드가 일치하지 않습니다.\",\n" +
                                     "  \"data\": {\n" +
-                                    "    \"retryCount\": 1\n" +
+                                    "    \"tryCount\": 1\n" +
                                     "  }\n" +
                                     "}"
                         )],
