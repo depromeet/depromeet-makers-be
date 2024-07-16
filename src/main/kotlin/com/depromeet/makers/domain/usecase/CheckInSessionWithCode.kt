@@ -2,7 +2,7 @@ package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.*
 import com.depromeet.makers.domain.gateway.AttendanceGateway
-import com.depromeet.makers.domain.gateway.NotificationGateway
+import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
 import java.time.DayOfWeek
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class CheckInSessionWithCode(
     private val attendanceGateway: AttendanceGateway,
     private val sessionGateway: SessionGateway,
-    private val memGateway: NotificationGateway,
+    private val memberGateway: MemberGateway,
 ) : UseCase<CheckInSessionWithCode.CheckInSessionWithCodeInput, Attendance> {
     data class CheckInSessionWithCodeInput(
         val memberId: String,
@@ -20,7 +20,7 @@ class CheckInSessionWithCode(
     )
 
     override fun execute(input: CheckInSessionWithCodeInput): Attendance {
-        val member = memGateway.getById(input.memberId)
+        val member = memberGateway.getById(input.memberId)
         val monday = input.now.getMonday()
 
         val thisWeekSession =
