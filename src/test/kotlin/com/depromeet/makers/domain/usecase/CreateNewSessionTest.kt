@@ -6,7 +6,10 @@ import com.depromeet.makers.domain.model.SessionType
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldBeInteger
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
@@ -48,6 +51,12 @@ class CreateNewSessionTest : BehaviorSpec({
             Then("세션 정보가 등록된다.") {
                 result.title shouldBeEqual mockTitle
                 result.description shouldBe mockDescription
+            }
+
+            Then("4자리 랜덤 출석 코드가 생성된다.") {
+                result.code shouldNotBe null
+                result.code.shouldBeInteger()
+                result.code!!.length shouldBe 4
             }
         }
 

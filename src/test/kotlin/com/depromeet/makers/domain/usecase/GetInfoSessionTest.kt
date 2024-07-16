@@ -29,6 +29,7 @@ class GetInfoSessionTest : BehaviorSpec({
                 latitude = 37.501,
                 name = "장소"
             ),
+            code = "1234",
         )
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns mockSession
 
@@ -43,6 +44,10 @@ class GetInfoSessionTest : BehaviorSpec({
             Then("위치 정보가 마스킹되어 반환된다") {
                 result.place.longitude shouldBe 0.0
                 result.place.latitude shouldBe 0.0
+            }
+
+            Then("출석 코드가 마스킹되어 반환된다") {
+                result.code shouldBe null
             }
         }
     }
@@ -65,6 +70,7 @@ class GetInfoSessionTest : BehaviorSpec({
                 latitude = 37.501,
                 name = "장소"
             ),
+            code = "1234",
         )
         every { sessionGateway.findByStartTimeBetween(any(), any()) } returns mockSession
 
@@ -79,6 +85,10 @@ class GetInfoSessionTest : BehaviorSpec({
             Then("위치 정보가 마스킹되지 않고 반환된다") {
                 result.place.longitude shouldBe 127.034
                 result.place.latitude shouldBe 37.501
+            }
+
+            Then("출석 코드가 마스킹되지 않고 반환된다") {
+                result.code shouldBe "1234"
             }
         }
     }
