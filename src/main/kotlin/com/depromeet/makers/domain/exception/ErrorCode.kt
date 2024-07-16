@@ -58,4 +58,5 @@ enum class ErrorCode(
     NOT_EXIST_ATTENDANCE("AT0007", "해당하는 출석 정보가 없습니다."),
     INVALID_CHECKIN_CODE("AT0008", "출석 코드가 일치하지 않습니다."),
     NOT_SUPPORTED_CHECKIN_CODE("AT0009", "출석 코드로 출석할 수 없는 세션입니다."),
+    TRY_COUNT_OVER("AT0010", "출석 시도 횟수를 초과하였습니다."),
 }

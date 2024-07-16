@@ -1,9 +1,6 @@
 package com.depromeet.makers.domain.usecase
 
-import com.depromeet.makers.domain.exception.InvalidCheckInCodeException
-import com.depromeet.makers.domain.exception.InvalidCheckInTimeException
-import com.depromeet.makers.domain.exception.NotFoundAttendanceException
-import com.depromeet.makers.domain.exception.NotSupportedCheckInCodeException
+import com.depromeet.makers.domain.exception.*
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.NotificationGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
@@ -45,10 +42,15 @@ class CheckInSessionWithCode(
                 )
             }.getOrElse { throw NotFoundAttendanceException() }
 
+        if (attendance.isTryCountOver()) {
+            throw TryCountOverException()
+        }
+
         attendance.isAvailableCheckInRequest(thisWeekSession.startTime, input.now)
 
         if (thisWeekSession.code != input.code) {
-            throw InvalidCheckInCodeException()
+            attendanceGateway.save(attendance.tryCountUp())
+            throw InvalidCheckInCodeException(attendance.getTryCount())
         }
 
         val expectAttendanceStatus = attendance.expectAttendanceStatus(thisWeekSession.startTime, input.now)
