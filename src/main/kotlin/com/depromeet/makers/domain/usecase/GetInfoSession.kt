@@ -24,7 +24,7 @@ class GetInfoSession(
 
         return when {
             input.isOrganizer -> session
-            else -> session.maskLocation()
+            else -> session.mask()
         }
     }
 

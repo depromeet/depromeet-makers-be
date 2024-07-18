@@ -25,6 +25,7 @@ class GetSessionsTest : BehaviorSpec({
                 startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
                 sessionType = SessionType.OFFLINE,
                 place = Place.emptyPlace(),
+                code = "1234",
             )
         }.toList().shuffled()
 
@@ -34,7 +35,7 @@ class GetSessionsTest : BehaviorSpec({
             val result = getSessions.execute(
                 GetSessions.GetSessionsInput(
                     generation = 15,
-                    isOrganizer = false
+                    isOrganizer = true
                 )
             )
 
@@ -66,6 +67,7 @@ class GetSessionsTest : BehaviorSpec({
                     latitude = 37.501,
                     name = "장소"
                 ),
+                code = "1234",
             )
         )
         every { sessionGateway.findAllByGeneration(any()) } returns mockSessionList
@@ -81,6 +83,10 @@ class GetSessionsTest : BehaviorSpec({
             Then("위치 정보가 마스킹되어 반환된다") {
                 result[0].place.longitude shouldBe 0.0
                 result[0].place.latitude shouldBe 0.0
+            }
+
+            Then("코드 정보가 마스킹되어 반환된다") {
+                result[0].code shouldBe null
             }
         }
     }
@@ -104,6 +110,7 @@ class GetSessionsTest : BehaviorSpec({
                     latitude = 37.501,
                     name = "장소"
                 ),
+                code = "1234",
             )
         )
         every { sessionGateway.findAllByGeneration(any()) } returns mockSessionList
@@ -116,9 +123,13 @@ class GetSessionsTest : BehaviorSpec({
                 )
             )
 
-            Then("위치 정보가 마스킹되어 반환된다") {
+            Then("위치 정보가 마스킹되지 않고 반환된다") {
                 result[0].place.longitude shouldBe 127.034
                 result[0].place.latitude shouldBe 37.501
+            }
+
+            Then("코드 정보가 마스킹되지 않고 반환된다") {
+                result[0].code shouldBe "1234"
             }
         }
     }

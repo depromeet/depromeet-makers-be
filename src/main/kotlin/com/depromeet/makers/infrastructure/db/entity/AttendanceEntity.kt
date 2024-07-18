@@ -39,6 +39,9 @@ class AttendanceEntity private constructor(
 
     @Column(name = "attendance_time", nullable = true)
     val attendanceTime: LocalDateTime?,
+
+    @Column(name = "try_count", nullable = true)
+    var tryCount: Int? = 0,
 ) {
     fun toDomain() = Attendance(
         attendanceId = id,
@@ -48,6 +51,7 @@ class AttendanceEntity private constructor(
         attendanceStatus = attendanceStatus,
         sessionType = sessionType,
         attendanceTime = attendanceTime,
+        tryCount = tryCount ?: 0
     )
 
     companion object {
@@ -59,7 +63,8 @@ class AttendanceEntity private constructor(
                 member = MemberEntity.fromDomain(member),
                 sessionType = sessionType,
                 attendanceStatus = attendanceStatus,
-                attendanceTime = attendanceTime
+                attendanceTime = attendanceTime,
+                tryCount = tryCount,
             )
         }
     }

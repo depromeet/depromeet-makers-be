@@ -13,7 +13,8 @@ data class Attendance(
     val member: Member,
     val sessionType: SessionType,
     val attendanceStatus: AttendanceStatus,
-    val attendanceTime: LocalDateTime?
+    val attendanceTime: LocalDateTime?,
+    val tryCount: Int,
 ) {
     fun checkIn(now: LocalDateTime, attendanceStatus: AttendanceStatus): Attendance {
         return this.copy(
@@ -51,13 +52,20 @@ data class Attendance(
 
     fun isTardy() = attendanceStatus.isTardy()
 
+    fun tryCountUp() = this.copy(tryCount = tryCount + 1)
+
+    fun isTryCountOver() = tryCount >= MAX_TRY_COUNT
+
+    fun getTryCount() = TryCount(tryCount)
+
     fun update(
         attendanceId: String = this.attendanceId,
         generation: Int = this.generation,
         week: Int = this.week,
         member: Member = this.member,
         attendanceStatus: AttendanceStatus = this.attendanceStatus,
-        attendanceTime: LocalDateTime? = this.attendanceTime
+        attendanceTime: LocalDateTime? = this.attendanceTime,
+        tryCount: Int = this.tryCount,
     ): Attendance {
         return this.copy(
             attendanceId = attendanceId,
@@ -65,11 +73,14 @@ data class Attendance(
             week = week,
             member = member,
             attendanceStatus = attendanceStatus,
-            attendanceTime = attendanceTime
+            attendanceTime = attendanceTime,
+            tryCount = tryCount
         )
     }
 
     companion object {
+        const val MAX_TRY_COUNT = 3 // 최대 출석 코드 기입 횟수
+
         fun newAttendance(
             generation: Int,
             week: Int,
@@ -83,7 +94,12 @@ data class Attendance(
             member = member,
             sessionType = sessionType,
             attendanceStatus = attendance,
-            attendanceTime = null
+            attendanceTime = null,
+            tryCount = 0
         )
     }
+
+    data class TryCount(
+        val tryCount: Int,
+    )
 }

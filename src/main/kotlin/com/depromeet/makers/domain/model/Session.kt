@@ -2,6 +2,7 @@ package com.depromeet.makers.domain.model
 
 import com.depromeet.makers.util.generateULID
 import java.time.LocalDateTime
+import kotlin.random.Random
 
 data class Session(
     val sessionId: String,
@@ -12,14 +13,16 @@ data class Session(
     val startTime: LocalDateTime,
     val sessionType: SessionType,
     val place: Place,
+    val code: String? = generateCode(),
 ) {
     fun isOnline() = sessionType.isOnline()
 
     fun isOffline() = sessionType.isOffline()
 
-    fun maskLocation(): Session {
+    fun mask(): Session {
         return copy(
-            place = place.maskLocation()
+            place = place.maskLocation(),
+            code = null,
         )
     }
 
@@ -63,6 +66,11 @@ data class Session(
                 sessionType = sessionType,
                 place = place,
             )
+        }
+
+        fun generateCode(): String {
+            val randomNumber = Random.nextInt(0, 10000)
+            return String.format("%04d", randomNumber)
         }
     }
 }

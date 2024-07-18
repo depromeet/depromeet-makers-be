@@ -16,7 +16,7 @@ class GetSessions(
 
         return when {
             input.isOrganizer -> sessions
-            else -> sessions.map { it.maskLocation() }
+            else -> sessions.map { it.mask() }
         }
     }
 }

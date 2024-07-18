@@ -55,5 +55,8 @@ enum class ErrorCode(
     INVALID_CHECKIN_TIME("AT0004", "현재 주차에 해당하는 세션을 찾을 수 없습니다."),
     MISSING_PLACE_PARAM("AT0005", "오프라인 세션 출석체크의 현재 위치 정보가 누락되었습니다."),
     INVALID_CHECKIN_DISTANCE("AT0006", "현재 위치와 세션 장소의 거리가 너무 멉니다."),
-    NOT_EXIST_ATTENDANCE("AT0007", "해당하는 출석 정보가 없습니다.")
+    NOT_EXIST_ATTENDANCE("AT0007", "해당하는 출석 정보가 없습니다."),
+    INVALID_CHECKIN_CODE("AT0008", "잘못된 출석 코드입니다. 다시 시도해주세요."),
+    NOT_SUPPORTED_CHECKIN_CODE("AT0009", "출석 코드로 출석할 수 없는 세션입니다."),
+    TRY_COUNT_OVER("AT0010", "출석 인증 횟수를 초과했습니다."),
 }
