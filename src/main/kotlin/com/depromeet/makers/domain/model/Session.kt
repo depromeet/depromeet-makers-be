@@ -34,6 +34,7 @@ data class Session(
         startTime: LocalDateTime = this.startTime,
         sessionType: SessionType = this.sessionType,
         place: Place = this.place,
+        code: String? = this.code,
     ): Session {
         return copy(
             generation = generation,
@@ -43,6 +44,7 @@ data class Session(
             startTime = startTime,
             sessionType = sessionType,
             place = place,
+            code = code,
         )
     }
 
