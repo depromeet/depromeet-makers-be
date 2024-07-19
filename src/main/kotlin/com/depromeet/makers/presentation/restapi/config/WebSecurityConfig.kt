@@ -25,7 +25,7 @@ class WebSecurityConfig {
         jwtTokenProvider: JWTTokenProvider,
         handlerExceptionResolver: HandlerExceptionResolver,
     ): SecurityFilterChain = httpSecurity
-        .securityMatcher("/v1/me/**", "/v1/sessions/**", "/v1/members/**", "/v1/attendances/**", "/v1/check-in", "/v1/notifications/**")
+        .securityMatcher("/v1/me/**", "/v1/sessions/**", "/v1/members/**", "/v1/attendances/**", "/v1/check-in/**", "/v1/notifications/**")
         .csrf { it.disable() }
         .cors(Customizer.withDefaults())
         .sessionManagement {
