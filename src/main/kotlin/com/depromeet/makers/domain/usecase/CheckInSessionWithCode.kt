@@ -49,8 +49,9 @@ class CheckInSessionWithCode(
         attendance.isAvailableCheckInRequest(thisWeekSession.startTime, input.now)
 
         if (thisWeekSession.code != input.code) {
-            attendanceGateway.save(attendance.tryCountUp())
-            throw InvalidCheckInCodeException(attendance.getTryCount())
+            val updatedAttendance = attendance.tryCountUp()
+            attendanceGateway.save(updatedAttendance)
+            throw InvalidCheckInCodeException(updatedAttendance.getTryCount())
         }
 
         val expectAttendanceStatus = attendance.expectAttendanceStatus(thisWeekSession.startTime, input.now)
