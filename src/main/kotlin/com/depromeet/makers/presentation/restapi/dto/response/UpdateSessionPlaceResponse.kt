@@ -29,6 +29,9 @@ data class UpdateSessionPlaceResponse(
 
     @Schema(description = "장소", example = "온라인")
     val place: PlaceResponse,
+
+    @Schema(description = "세션 코드", example = "1234")
+    val code: String?,
 ) {
     companion object {
         fun fromDomain(session: Session): UpdateSessionPlaceResponse {
@@ -42,6 +45,7 @@ data class UpdateSessionPlaceResponse(
                     startTime = startTime.toString(),
                     sessionType = sessionType.name,
                     place = place.let(PlaceResponse::fromDomain),
+                    code = code,
                 )
             }
         }

@@ -26,6 +26,7 @@ class SessionController(
     private val updateSessionPlace: UpdateSessionPlace,
     private val deleteSession: DeleteSession,
     private val getInfoSession: GetInfoSession,
+    private val refreshSessionCode: RefreshSessionCode,
 ) {
     @Operation(summary = "새로운 세션 생성", description = "새로운 세션을 생성합니다.")
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -128,6 +129,19 @@ class SessionController(
             )
         )
         return UpdateSessionPlaceResponse.fromDomain(updatedSession)
+    }
+
+    @Operation(summary = "세션 코드 갱신", description = "세션의 코드를 갱신합니다.")
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @PatchMapping("/{sessionId}/code")
+    fun refreshSessionCode(
+        @PathVariable sessionId: String,
+    ): UpdateSessionResponse {
+        val updatedSession =
+            refreshSessionCode.execute(
+                sessionId = sessionId,
+            )
+        return UpdateSessionResponse.fromDomain(updatedSession)
     }
 
     @Operation(summary = "세션 삭제", description = "세션을 삭제합니다.")
