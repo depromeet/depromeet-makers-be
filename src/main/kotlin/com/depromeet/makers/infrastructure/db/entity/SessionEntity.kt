@@ -1,8 +1,8 @@
 package com.depromeet.makers.infrastructure.db.entity
 
-import com.depromeet.makers.domain.model.Place
-import com.depromeet.makers.domain.model.Session
-import com.depromeet.makers.domain.model.SessionType
+import com.depromeet.makers.domain.model.session.Place
+import com.depromeet.makers.domain.model.session.Session
+import com.depromeet.makers.domain.model.session.SessionType
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

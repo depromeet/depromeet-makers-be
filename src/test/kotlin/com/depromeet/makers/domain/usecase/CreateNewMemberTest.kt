@@ -4,10 +4,11 @@ import com.depromeet.makers.domain.exception.MemberAlreadyExistsException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.Member
-import com.depromeet.makers.domain.model.MemberGeneration
-import com.depromeet.makers.domain.model.MemberPosition
-import com.depromeet.makers.domain.model.MemberRole
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.model.member.MemberGeneration
+import com.depromeet.makers.domain.model.member.MemberPosition
+import com.depromeet.makers.domain.model.member.MemberRole
+import com.depromeet.makers.domain.usecase.member.CreateNewMember
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.equals.shouldBeEqual

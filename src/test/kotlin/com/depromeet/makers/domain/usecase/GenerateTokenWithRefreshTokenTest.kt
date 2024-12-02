@@ -3,11 +3,10 @@ package com.depromeet.makers.domain.usecase
 import com.depromeet.makers.domain.exception.PassCordNotSetException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.TokenGateway
-import com.depromeet.makers.domain.model.Member
-import com.depromeet.makers.util.EncryptUtils
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.usecase.member.GenerateTokenWithRefreshToken
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.equals.shouldBeEqual
 import io.mockk.every
 import io.mockk.mockk
 

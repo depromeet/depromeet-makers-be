@@ -1,7 +1,7 @@
 package com.depromeet.makers.infrastructure.gateway
 
 import com.depromeet.makers.domain.gateway.TokenGateway
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
 import com.depromeet.makers.infrastructure.token.JWTTokenProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority

@@ -1,7 +1,8 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.MemberGateway
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.usecase.member.UpdateMemberPassCord
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

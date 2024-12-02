@@ -2,11 +2,11 @@ package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.SessionAlreadyExistsException
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.SessionType
+import com.depromeet.makers.domain.model.session.SessionType
+import com.depromeet.makers.domain.usecase.session.CreateNewSession
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.equals.shouldBeEqual
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldBeInteger

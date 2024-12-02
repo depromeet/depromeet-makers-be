@@ -6,11 +6,12 @@ import com.depromeet.makers.domain.exception.MissingPlaceParamException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.Attendance
-import com.depromeet.makers.domain.model.Member
-import com.depromeet.makers.domain.model.Place
-import com.depromeet.makers.domain.model.Session
-import com.depromeet.makers.domain.model.SessionType
+import com.depromeet.makers.domain.model.attendence.Attendance
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.model.session.Place
+import com.depromeet.makers.domain.model.session.Session
+import com.depromeet.makers.domain.model.session.SessionType
+import com.depromeet.makers.domain.usecase.attendence.CheckInSession
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec

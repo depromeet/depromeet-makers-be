@@ -1,7 +1,7 @@
 package com.depromeet.makers.infrastructure.db.entity
 
-import com.depromeet.makers.domain.model.Notification
-import com.depromeet.makers.domain.model.NotificationType
+import com.depromeet.makers.domain.model.notification.Notification
+import com.depromeet.makers.domain.model.notification.NotificationType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

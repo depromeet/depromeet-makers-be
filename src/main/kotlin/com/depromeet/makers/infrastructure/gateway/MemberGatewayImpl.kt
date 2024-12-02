@@ -1,7 +1,7 @@
 package com.depromeet.makers.infrastructure.gateway
 
 import com.depromeet.makers.domain.gateway.MemberGateway
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
 import com.depromeet.makers.infrastructure.db.entity.MemberEntity
 import com.depromeet.makers.infrastructure.db.repository.JpaMemberRepository
 

@@ -4,7 +4,8 @@ import com.depromeet.makers.domain.exception.MemberNotFoundException
 import com.depromeet.makers.domain.exception.PassCordNotSetException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.TokenGateway
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.usecase.member.GenerateTokenWithEmailAndPassCord
 import com.depromeet.makers.util.EncryptUtils
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec

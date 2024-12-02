@@ -1,7 +1,7 @@
 package com.depromeet.makers.infrastructure.gateway
 
 import com.depromeet.makers.domain.gateway.NotificationGateway
-import com.depromeet.makers.domain.model.Notification
+import com.depromeet.makers.domain.model.notification.Notification
 import com.depromeet.makers.infrastructure.db.entity.NotificationEntity
 import com.depromeet.makers.infrastructure.db.repository.JpaNotificationRepository
 import org.springframework.stereotype.Component

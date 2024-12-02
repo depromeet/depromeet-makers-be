@@ -1,6 +1,6 @@
 package com.depromeet.makers.domain.gateway
 
-import com.depromeet.makers.domain.model.Notification
+import com.depromeet.makers.domain.model.notification.Notification
 
 interface NotificationGateway {
     fun getById(notificationId: String): Notification

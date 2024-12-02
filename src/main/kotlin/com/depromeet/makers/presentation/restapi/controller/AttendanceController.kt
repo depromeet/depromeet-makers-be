@@ -1,14 +1,14 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.GetAttendancesByTeamAndWeek
-import com.depromeet.makers.domain.usecase.GetAttendancesByWeek
-import com.depromeet.makers.domain.usecase.GetMemberAttendances
-import com.depromeet.makers.domain.usecase.UpdateAttendance
-import com.depromeet.makers.presentation.restapi.dto.request.UpdateAttendanceRequest
-import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
-import com.depromeet.makers.presentation.restapi.dto.response.AttendanceStatsResponse
-import com.depromeet.makers.presentation.restapi.dto.response.MyAttendanceResponse
-import com.depromeet.makers.presentation.restapi.dto.response.UpdateAttendanceResponse
+import com.depromeet.makers.domain.usecase.attendence.GetAttendancesByTeamAndWeek
+import com.depromeet.makers.domain.usecase.attendence.GetAttendancesByWeek
+import com.depromeet.makers.domain.usecase.attendence.GetMemberAttendances
+import com.depromeet.makers.domain.usecase.attendence.UpdateAttendance
+import com.depromeet.makers.presentation.restapi.dto.attendence.request.UpdateAttendanceRequest
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.AttendanceResponse
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.AttendanceStatsResponse
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.MyAttendanceResponse
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.UpdateAttendanceResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid

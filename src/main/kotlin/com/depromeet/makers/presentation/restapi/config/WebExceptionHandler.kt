@@ -2,7 +2,7 @@ package com.depromeet.makers.presentation.restapi.config
 
 import com.depromeet.makers.domain.exception.*
 import com.depromeet.makers.domain.gateway.AlertGateway
-import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
+import com.depromeet.makers.presentation.restapi.dto.ErrorResponse
 import com.depromeet.makers.util.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException

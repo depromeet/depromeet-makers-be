@@ -1,7 +1,7 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.GetMemberById
-import com.depromeet.makers.presentation.restapi.dto.response.MemberResponse
+import com.depromeet.makers.domain.usecase.member.GetMemberById
+import com.depromeet.makers.presentation.restapi.dto.member.response.MemberResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.core.Authentication

@@ -1,6 +1,6 @@
 package com.depromeet.makers.domain.gateway
 
-import com.depromeet.makers.domain.model.Session
+import com.depromeet.makers.domain.model.session.Session
 import java.time.LocalDateTime
 
 interface SessionGateway {

@@ -1,12 +1,12 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.model.MemberRole
-import com.depromeet.makers.domain.usecase.*
-import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
-import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
-import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionPlaceRequest
-import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionRequest
-import com.depromeet.makers.presentation.restapi.dto.response.*
+import com.depromeet.makers.domain.model.member.MemberRole
+import com.depromeet.makers.domain.usecase.session.*
+import com.depromeet.makers.presentation.restapi.dto.session.request.CreateNewSessionRequest
+import com.depromeet.makers.presentation.restapi.dto.session.request.GetSessionsRequest
+import com.depromeet.makers.presentation.restapi.dto.session.request.UpdateSessionPlaceRequest
+import com.depromeet.makers.presentation.restapi.dto.session.request.UpdateSessionRequest
+import com.depromeet.makers.presentation.restapi.dto.session.response.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag

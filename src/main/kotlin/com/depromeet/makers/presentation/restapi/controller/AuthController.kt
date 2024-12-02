@@ -1,16 +1,16 @@
 package com.depromeet.makers.presentation.restapi.controller
 
 import com.depromeet.makers.domain.exception.MemberNotFoundException
-import com.depromeet.makers.domain.usecase.GenerateTokenWithEmailAndPassCord
-import com.depromeet.makers.domain.usecase.GenerateTokenWithRefreshToken
-import com.depromeet.makers.domain.usecase.GetMemberByEmail
-import com.depromeet.makers.domain.usecase.UpdateDefaultMemberPassCord
-import com.depromeet.makers.presentation.restapi.dto.request.MemberDefaultPassCordRequest
-import com.depromeet.makers.presentation.restapi.dto.request.MemberLoginRequest
-import com.depromeet.makers.presentation.restapi.dto.request.MemberRefreshTokenRequest
-import com.depromeet.makers.presentation.restapi.dto.response.CheckMemberExistsByEmailResponse
-import com.depromeet.makers.presentation.restapi.dto.response.MemberLoginResponse
-import com.depromeet.makers.presentation.restapi.dto.response.MemberResponse
+import com.depromeet.makers.domain.usecase.member.GenerateTokenWithEmailAndPassCord
+import com.depromeet.makers.domain.usecase.member.GenerateTokenWithRefreshToken
+import com.depromeet.makers.domain.usecase.member.GetMemberByEmail
+import com.depromeet.makers.domain.usecase.member.UpdateDefaultMemberPassCord
+import com.depromeet.makers.presentation.restapi.dto.member.request.MemberDefaultPassCordRequest
+import com.depromeet.makers.presentation.restapi.dto.member.request.MemberLoginRequest
+import com.depromeet.makers.presentation.restapi.dto.member.request.MemberRefreshTokenRequest
+import com.depromeet.makers.presentation.restapi.dto.member.response.CheckMemberExistsByEmailResponse
+import com.depromeet.makers.presentation.restapi.dto.member.response.MemberLoginResponse
+import com.depromeet.makers.presentation.restapi.dto.member.response.MemberResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid

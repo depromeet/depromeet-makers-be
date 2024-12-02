@@ -1,7 +1,7 @@
 package com.depromeet.makers.infrastructure.gateway
 
 import com.depromeet.makers.domain.gateway.AttendanceGateway
-import com.depromeet.makers.domain.model.Attendance
+import com.depromeet.makers.domain.model.attendence.Attendance
 import com.depromeet.makers.infrastructure.db.entity.AttendanceEntity
 import com.depromeet.makers.infrastructure.db.repository.JpaAttendanceRepository
 import org.springframework.stereotype.Component
