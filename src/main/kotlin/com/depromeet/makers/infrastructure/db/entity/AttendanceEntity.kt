@@ -1,8 +1,8 @@
 package com.depromeet.makers.infrastructure.db.entity
 
-import com.depromeet.makers.domain.model.Attendance
-import com.depromeet.makers.domain.model.AttendanceStatus
-import com.depromeet.makers.domain.model.SessionType
+import com.depromeet.makers.domain.model.attendence.Attendance
+import com.depromeet.makers.domain.model.attendence.AttendanceStatus
+import com.depromeet.makers.domain.model.session.SessionType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

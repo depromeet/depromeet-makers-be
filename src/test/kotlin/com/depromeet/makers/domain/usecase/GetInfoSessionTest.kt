@@ -1,9 +1,10 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.Place
-import com.depromeet.makers.domain.model.Session
-import com.depromeet.makers.domain.model.SessionType
+import com.depromeet.makers.domain.model.session.Place
+import com.depromeet.makers.domain.model.session.Session
+import com.depromeet.makers.domain.model.session.SessionType
+import com.depromeet.makers.domain.usecase.session.GetInfoSession
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

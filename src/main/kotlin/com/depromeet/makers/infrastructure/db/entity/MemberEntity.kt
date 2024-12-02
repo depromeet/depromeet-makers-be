@@ -1,6 +1,6 @@
 package com.depromeet.makers.infrastructure.db.entity
 
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
 import jakarta.persistence.*
 
 @Entity(name = "member")

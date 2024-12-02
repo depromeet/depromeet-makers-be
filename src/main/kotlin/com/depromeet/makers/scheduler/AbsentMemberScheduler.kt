@@ -1,6 +1,6 @@
 package com.depromeet.makers.scheduler
 
-import com.depromeet.makers.domain.usecase.UpdateAbsenceMember
+import com.depromeet.makers.domain.usecase.attendence.UpdateAbsenceMember
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDate

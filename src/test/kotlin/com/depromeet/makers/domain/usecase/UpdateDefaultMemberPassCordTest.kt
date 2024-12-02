@@ -2,7 +2,9 @@ package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.PassCordAlreadySetException
 import com.depromeet.makers.domain.gateway.MemberGateway
-import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.usecase.member.UpdateDefaultMemberPassCord
+import com.depromeet.makers.domain.usecase.member.UpdateMemberPassCord
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every

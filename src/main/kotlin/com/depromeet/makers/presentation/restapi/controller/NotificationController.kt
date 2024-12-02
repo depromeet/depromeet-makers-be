@@ -1,8 +1,8 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.GetRecentNotification
-import com.depromeet.makers.domain.usecase.UpdateReadNotification
-import com.depromeet.makers.presentation.restapi.dto.response.NotificationResponse
+import com.depromeet.makers.domain.usecase.notification.GetRecentNotification
+import com.depromeet.makers.domain.usecase.notification.UpdateReadNotification
+import com.depromeet.makers.presentation.restapi.dto.notification.response.NotificationResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.core.Authentication

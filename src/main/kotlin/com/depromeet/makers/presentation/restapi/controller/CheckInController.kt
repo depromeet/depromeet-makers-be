@@ -1,13 +1,13 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.CheckInSession
-import com.depromeet.makers.domain.usecase.CheckInSessionWithCode
-import com.depromeet.makers.domain.usecase.GetCheckInStatus
-import com.depromeet.makers.presentation.restapi.dto.request.CheckInCodeRequest
-import com.depromeet.makers.presentation.restapi.dto.request.GetLocationRequest
-import com.depromeet.makers.presentation.restapi.dto.response.AttendanceResponse
-import com.depromeet.makers.presentation.restapi.dto.response.CheckInStatusResponse
-import com.depromeet.makers.presentation.restapi.dto.response.ErrorResponse
+import com.depromeet.makers.domain.usecase.attendence.CheckInSession
+import com.depromeet.makers.domain.usecase.attendence.CheckInSessionWithCode
+import com.depromeet.makers.domain.usecase.attendence.GetCheckInStatus
+import com.depromeet.makers.presentation.restapi.dto.attendence.request.CheckInCodeRequest
+import com.depromeet.makers.presentation.restapi.dto.attendence.request.GetLocationRequest
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.AttendanceResponse
+import com.depromeet.makers.presentation.restapi.dto.attendence.response.CheckInStatusResponse
+import com.depromeet.makers.presentation.restapi.dto.ErrorResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject

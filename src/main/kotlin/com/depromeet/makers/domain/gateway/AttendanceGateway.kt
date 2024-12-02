@@ -1,6 +1,6 @@
 package com.depromeet.makers.domain.gateway
 
-import com.depromeet.makers.domain.model.Attendance
+import com.depromeet.makers.domain.model.attendence.Attendance
 
 interface AttendanceGateway {
     fun save(attendance: Attendance): Attendance

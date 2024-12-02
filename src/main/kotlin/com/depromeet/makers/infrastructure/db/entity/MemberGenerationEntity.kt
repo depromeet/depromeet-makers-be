@@ -1,8 +1,8 @@
 package com.depromeet.makers.infrastructure.db.entity
 
-import com.depromeet.makers.domain.model.MemberGeneration
-import com.depromeet.makers.domain.model.MemberPosition
-import com.depromeet.makers.domain.model.MemberRole
+import com.depromeet.makers.domain.model.member.MemberGeneration
+import com.depromeet.makers.domain.model.member.MemberPosition
+import com.depromeet.makers.domain.model.member.MemberRole
 import jakarta.persistence.*
 import java.io.Serializable
 

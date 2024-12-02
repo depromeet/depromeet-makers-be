@@ -6,7 +6,13 @@ import com.depromeet.makers.domain.exception.TryCountOverException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.*
+import com.depromeet.makers.domain.model.attendence.Attendance
+import com.depromeet.makers.domain.model.attendence.AttendanceStatus
+import com.depromeet.makers.domain.model.member.Member
+import com.depromeet.makers.domain.model.session.Place
+import com.depromeet.makers.domain.model.session.Session
+import com.depromeet.makers.domain.model.session.SessionType
+import com.depromeet.makers.domain.usecase.attendence.CheckInSessionWithCode
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

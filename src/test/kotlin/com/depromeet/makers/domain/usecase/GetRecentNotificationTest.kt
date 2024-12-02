@@ -1,8 +1,9 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.NotificationGateway
-import com.depromeet.makers.domain.model.Notification
-import com.depromeet.makers.domain.model.NotificationType
+import com.depromeet.makers.domain.model.notification.Notification
+import com.depromeet.makers.domain.model.notification.NotificationType
+import com.depromeet.makers.domain.usecase.notification.GetRecentNotification
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

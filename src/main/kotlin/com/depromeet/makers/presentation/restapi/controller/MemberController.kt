@@ -1,8 +1,8 @@
 package com.depromeet.makers.presentation.restapi.controller
 
-import com.depromeet.makers.domain.usecase.CreateNewMember
-import com.depromeet.makers.presentation.restapi.dto.request.CreateNewMemberRequest
-import com.depromeet.makers.presentation.restapi.dto.response.CreateNewMemberResponse
+import com.depromeet.makers.domain.usecase.member.CreateNewMember
+import com.depromeet.makers.presentation.restapi.dto.member.request.CreateNewMemberRequest
+import com.depromeet.makers.presentation.restapi.dto.member.response.CreateNewMemberResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
