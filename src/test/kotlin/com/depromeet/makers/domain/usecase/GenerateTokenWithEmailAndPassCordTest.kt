@@ -1,6 +1,7 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.MemberNotFoundException
+import com.depromeet.makers.domain.exception.PassCordNotMatchedException
 import com.depromeet.makers.domain.exception.PassCordNotSetException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.TokenGateway
@@ -88,8 +89,8 @@ class GenerateTokenWithEmailAndPassCordTest: BehaviorSpec({
                     )
                 )
             }
-            Then("MemberNotFoundException을 던짐") {
-                shouldThrow<MemberNotFoundException>(executor)
+            Then("PassCordNotMatchedException을 던짐") {
+                shouldThrow<PassCordNotMatchedException>(executor)
             }
         }
     }
