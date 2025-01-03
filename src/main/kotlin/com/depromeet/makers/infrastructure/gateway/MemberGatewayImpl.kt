@@ -13,7 +13,7 @@ class MemberGatewayImpl(
 ) : MemberGateway {
     override fun findByEmail(email: String): Member? {
         return jpaMemberRepository
-            .findByEmail(email)
+            .findTopByEmailOrderByGenerationsDesc(email)
             ?.let(MemberEntity::toDomain)
     }
 
