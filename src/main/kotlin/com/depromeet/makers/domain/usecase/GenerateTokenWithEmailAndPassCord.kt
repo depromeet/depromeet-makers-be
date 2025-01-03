@@ -1,6 +1,7 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.MemberNotFoundException
+import com.depromeet.makers.domain.exception.PassCordNotMatchedException
 import com.depromeet.makers.domain.exception.PassCordNotSetException
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.TokenGateway
@@ -26,7 +27,7 @@ class GenerateTokenWithEmailAndPassCord(
         if (!member.hasPassCord()) throw PassCordNotSetException()
 
         val isPassCordMatched = EncryptUtils.isMatch(input.passCord, member.passCord!!)
-        if (!isPassCordMatched) throw MemberNotFoundException()
+        if (!isPassCordMatched) throw PassCordNotMatchedException()
 
         return GenerateTokenWithEmailAndPassCordOutput(
             accessToken = tokenGateway.generateAccessToken(member),
