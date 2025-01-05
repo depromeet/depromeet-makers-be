@@ -43,6 +43,8 @@ sentry:
   exception-resolver-order: -2147483647
   max-request-body-size: always
   send-default-pii: true
+  logging:
+    minimum-event-level: info
 
 app:
   url:
