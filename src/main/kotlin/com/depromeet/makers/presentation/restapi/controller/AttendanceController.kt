@@ -47,10 +47,12 @@ class AttendanceController(
     @Operation(summary = "출석 정보 수정", description = "유저의 출석 정보를 수정합니다.")
     @PutMapping("{attendanceId}")
     fun updateAttendance(
+        authentication: Authentication,
         @RequestBody @Valid request: UpdateAttendanceRequest, @PathVariable attendanceId: String,
     ): UpdateAttendanceResponse {
         val attendances = updateAttendance.execute(
             UpdateAttendance.UpdateAttendanceInput(
+                authentication.name,
                 attendanceId = attendanceId,
                 attendanceStatus = request.attendanceStatus,
             )
