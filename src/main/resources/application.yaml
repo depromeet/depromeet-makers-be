@@ -54,3 +54,6 @@ app:
     expiration:
       access: 86400
       refresh: 604800
+
+depromeet:
+  generation: 16
