@@ -15,6 +15,8 @@ data class Member(
         passCord = passCord
     )
 
+    fun currentRole(generation: Int) = generations.find { it.generationId == generation }?.role ?: MemberRole.GRADUATE
+
     companion object {
         fun newMember(
             name: String,

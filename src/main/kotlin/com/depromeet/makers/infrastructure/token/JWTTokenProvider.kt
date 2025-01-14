@@ -2,6 +2,7 @@ package com.depromeet.makers.infrastructure.token
 
 import com.depromeet.makers.domain.exception.AuthenticationTokenExpiredException
 import com.depromeet.makers.domain.exception.AuthenticationTokenNotValidException
+import com.depromeet.makers.properties.DepromeetProperties
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
@@ -22,6 +23,7 @@ class JWTTokenProvider(
     @Value("\${app.token.secretKey}") private val verifyKey: String,
     @Value("\${app.token.expiration.access}") private val accessTokenExpiration: Long,
     @Value("\${app.token.expiration.refresh}") private val refreshTokenExpiration: Long,
+    private val depromeetProperties: DepromeetProperties,
 ) {
     private final val signKey: SecretKey = SecretKeySpec(verifyKey.toByteArray(), "AES")
     private val jwtParser = Jwts
@@ -40,6 +42,7 @@ class JWTTokenProvider(
             .claims()
             .add(USER_ID_CLAIM_KEY, authentication.name)
             .add(AUTHORITIES_CLAIM_KEY, authorities)
+            .add("GENERATION", depromeetProperties.generation)
             .and()
             .expiration(generateAccessTokenExpiration())
             .encryptWith(signKey, Jwts.ENC.A128CBC_HS256)
