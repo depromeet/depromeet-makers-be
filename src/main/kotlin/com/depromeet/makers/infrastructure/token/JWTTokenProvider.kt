@@ -2,17 +2,14 @@ package com.depromeet.makers.infrastructure.token
 
 import com.depromeet.makers.domain.exception.AuthenticationTokenExpiredException
 import com.depromeet.makers.domain.exception.AuthenticationTokenNotValidException
+import com.depromeet.makers.properties.DepromeetProperties
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
-import io.jsonwebtoken.UnsupportedJwtException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
-import java.security.SignatureException
 import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
@@ -22,6 +19,7 @@ class JWTTokenProvider(
     @Value("\${app.token.secretKey}") private val verifyKey: String,
     @Value("\${app.token.expiration.access}") private val accessTokenExpiration: Long,
     @Value("\${app.token.expiration.refresh}") private val refreshTokenExpiration: Long,
+    private val depromeetProperties: DepromeetProperties,
 ) {
     private final val signKey: SecretKey = SecretKeySpec(verifyKey.toByteArray(), "AES")
     private val jwtParser = Jwts
@@ -40,6 +38,7 @@ class JWTTokenProvider(
             .claims()
             .add(USER_ID_CLAIM_KEY, authentication.name)
             .add(AUTHORITIES_CLAIM_KEY, authorities)
+            .add(GENERATION_KEY, depromeetProperties.generation)
             .and()
             .expiration(generateAccessTokenExpiration())
             .encryptWith(signKey, Jwts.ENC.A128CBC_HS256)
@@ -63,7 +62,7 @@ class JWTTokenProvider(
         val claims = runCatching {
             jwtParser.parseEncryptedClaims(accessToken)
         }.getOrElse {
-            when(it) {
+            when (it) {
                 is ExpiredJwtException -> throw AuthenticationTokenExpiredException()
                 else -> throw AuthenticationTokenNotValidException()
             }
@@ -99,6 +98,7 @@ class JWTTokenProvider(
     companion object {
         const val USER_ID_CLAIM_KEY = "user_id"
         const val AUTHORITIES_CLAIM_KEY = "authorities"
+        const val GENERATION_KEY = "generation"
 
         const val TOKEN_TYPE_HEADER_KEY = "token_type"
         const val ACCESS_TOKEN_TYPE_VALUE = "access_token"
