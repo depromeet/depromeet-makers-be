@@ -1,6 +1,7 @@
 package com.depromeet.makers.infrastructure.token
 
 import com.depromeet.makers.domain.exception.AuthenticationTokenExpiredException
+import com.depromeet.makers.domain.exception.AuthenticationTokenGenerationExpiredException
 import com.depromeet.makers.domain.exception.AuthenticationTokenNotValidException
 import com.depromeet.makers.properties.DepromeetProperties
 import io.jsonwebtoken.ExpiredJwtException
@@ -69,6 +70,9 @@ class JWTTokenProvider(
         }
         val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
         if (tokenType != ACCESS_TOKEN_TYPE_VALUE) throw RuntimeException()
+
+        val generation = claims.header[GENERATION_KEY] ?: throw AuthenticationTokenGenerationExpiredException()
+        if (generation != depromeetProperties.generation) throw AuthenticationTokenGenerationExpiredException()
 
         val userId = claims.payload[USER_ID_CLAIM_KEY] as? String? ?: throw RuntimeException()
         val authorities = claims.payload[AUTHORITIES_CLAIM_KEY]?.toString()
