@@ -71,7 +71,7 @@ class JWTTokenProvider(
         val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
         if (tokenType != ACCESS_TOKEN_TYPE_VALUE) throw RuntimeException()
 
-        val generation = claims.header[GENERATION_KEY] ?: throw AuthenticationTokenGenerationExpiredException()
+        val generation = claims.payload[GENERATION_KEY] ?: throw AuthenticationTokenGenerationExpiredException()
         if (generation != depromeetProperties.generation) throw AuthenticationTokenGenerationExpiredException()
 
         val userId = claims.payload[USER_ID_CLAIM_KEY] as? String? ?: throw RuntimeException()
