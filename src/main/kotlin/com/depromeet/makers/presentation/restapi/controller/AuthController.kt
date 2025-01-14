@@ -10,7 +10,7 @@ import com.depromeet.makers.presentation.restapi.dto.request.MemberLoginRequest
 import com.depromeet.makers.presentation.restapi.dto.request.MemberRefreshTokenRequest
 import com.depromeet.makers.presentation.restapi.dto.response.CheckMemberExistsByEmailResponse
 import com.depromeet.makers.presentation.restapi.dto.response.MemberLoginResponse
-import com.depromeet.makers.presentation.restapi.dto.response.MemberResponse
+import com.depromeet.makers.properties.DepromeetProperties
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/auth")
 class AuthController(
+    private val depromeetProperties: DepromeetProperties,
     private val generateTokenWithEmailAndPassCord: GenerateTokenWithEmailAndPassCord,
     private val generateTokenWithRefreshToken: GenerateTokenWithRefreshToken,
     private val updateDefaultMemberPassCord: UpdateDefaultMemberPassCord,
@@ -49,7 +50,7 @@ class AuthController(
         return MemberLoginResponse(
             accessToken = tokens.accessToken,
             refreshToken = tokens.refreshToken,
-            member = MemberResponse.fromDomain(member)
+            member.currentRole(depromeetProperties.generation)
         )
     }
 
@@ -71,7 +72,7 @@ class AuthController(
         return MemberLoginResponse(
             accessToken = tokens.accessToken,
             refreshToken = tokens.refreshToken,
-            member = MemberResponse.fromDomain(member)
+            member.currentRole(depromeetProperties.generation)
         )
     }
 
