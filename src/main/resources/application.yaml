@@ -38,13 +38,13 @@ server:
     mime-types: text/html,text/plain,text/css,application/javascript,application/json
     min-response-size: 1024
 
-sentry:
-  dsn: ${SENTRY_DSN}
-  exception-resolver-order: -2147483647
-  max-request-body-size: always
-  send-default-pii: true
-  logging:
-    minimum-event-level: info
+#sentry:
+#  dsn: ${SENTRY_DSN}
+#  exception-resolver-order: -2147483647
+#  max-request-body-size: always
+#  send-default-pii: true
+#  logging:
+#    minimum-event-level: info
 
 app:
   url:
