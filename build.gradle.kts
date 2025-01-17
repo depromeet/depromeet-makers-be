@@ -7,7 +7,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.23"
 	kotlin("plugin.jpa") version "1.9.23"
 	id("com.google.cloud.tools.jib") version "3.4.2"
-	id ("io.sentry.jvm.gradle") version "4.14.1"
+//	id ("io.sentry.jvm.gradle") version "4.14.1"
 }
 
 group = "com.depromeet"
