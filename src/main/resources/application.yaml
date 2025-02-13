@@ -53,7 +53,7 @@ app:
     secretKey: ${JWT_SECRET_KEY}
     expiration:
       access: 86400
-      refresh: 604800
+      refresh: 1296000
 
 depromeet:
   generation: 16
