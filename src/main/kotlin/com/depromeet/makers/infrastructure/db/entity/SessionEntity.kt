@@ -3,7 +3,11 @@ package com.depromeet.makers.infrastructure.db.entity
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.Id
 import java.time.LocalDateTime
 
 @Entity(name = "session")
@@ -22,7 +26,7 @@ class SessionEntity private constructor(
     val title: String,
 
     @Column(name = "description", nullable = false)
-    var description: String?,
+    val description: String?,
 
     @Column(name = "start_time", nullable = false)
     val startTime: LocalDateTime,
@@ -31,23 +35,37 @@ class SessionEntity private constructor(
     @Column(name = "session_type", nullable = false, columnDefinition = "VARCHAR(255)")
     val sessionType: SessionType,
 
-    @Column(name = "address")
-    var address: String,
+    @Column(name = "address", nullable = true)
+    val address: String?,
 
-    @Column(name = "longitude")
-    var longitude: Double,
+    @Column(name = "longitude", nullable = true)
+    val longitude: Double?,
 
-    @Column(name = "latitude")
-    var latitude: Double,
+    @Column(name = "latitude", nullable = true)
+    val latitude: Double?,
 
     @Column(name = "place_name", nullable = true, columnDefinition = "VARCHAR(255)")
-    var placeName: String?,
+    val placeName: String?,
 
-    @Column(name = "code")
-    var code: String?,
+    @Column(name = "place_id", nullable = true, columnDefinition = "VARCHAR(255)")
+    val placeId: String?,
 
-    ) {
+    @Column(name = "code", nullable = false)
+    val code: String,
+) {
     fun toDomain(): Session {
+        val place = if (sessionType.isOffline()) {
+            Place(
+                placeId = placeId!!,
+                name = placeName!!,
+                address = address!!,
+                longitude = longitude!!,
+                latitude = latitude!!,
+            )
+        } else {
+            null
+        }
+
         return Session(
             sessionId = id,
             generation = generation,
@@ -56,7 +74,7 @@ class SessionEntity private constructor(
             description = description,
             startTime = startTime,
             sessionType = sessionType,
-            place = Place.newPlace(address, longitude, latitude, placeName),
+            place = place,
             code = code,
         )
     }
@@ -72,10 +90,11 @@ class SessionEntity private constructor(
                     description = description,
                     startTime = startTime,
                     sessionType = sessionType,
-                    address = place.address,
-                    longitude = place.longitude,
-                    latitude = place.latitude,
-                    placeName = place.name,
+                    address = place?.address,
+                    longitude = place?.longitude,
+                    latitude = place?.latitude,
+                    placeName = place?.name,
+                    placeId = place?.placeId,
                     code = code,
                 )
             }

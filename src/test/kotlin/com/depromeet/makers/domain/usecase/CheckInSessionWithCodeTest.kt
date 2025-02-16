@@ -6,7 +6,12 @@ import com.depromeet.makers.domain.exception.TryCountOverException
 import com.depromeet.makers.domain.gateway.AttendanceGateway
 import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.*
+import com.depromeet.makers.domain.model.Attendance
+import com.depromeet.makers.domain.model.AttendanceStatus
+import com.depromeet.makers.domain.model.Member
+import com.depromeet.makers.domain.model.Place
+import com.depromeet.makers.domain.model.Session
+import com.depromeet.makers.domain.model.SessionType
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -49,12 +54,14 @@ class CheckInSessionWithCodeTest : BehaviorSpec({
             description = "세션 설명",
             startTime = mockNow,
             sessionType = SessionType.OFFLINE,
-            place = Place.newPlace(
+            place = Place.create(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "서울특별시 강남구 테헤란로 521",
                 longitude = 127.034,
                 latitude = 37.501,
-                name = "장소"
-            ),
+                name = "장소",
+
+                ),
             code = mockCode,
         )
 
@@ -161,11 +168,12 @@ class CheckInSessionWithCodeTest : BehaviorSpec({
             description = "세션 설명",
             startTime = mockNow,
             sessionType = SessionType.OFFLINE,
-            place = Place.newPlace(
+            place = Place.create(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
+                name = "장소",
                 address = "서울특별시 강남구 테헤란로 521",
                 longitude = 127.034,
                 latitude = 37.501,
-                name = "장소"
             ),
             code = mockCode,
         )

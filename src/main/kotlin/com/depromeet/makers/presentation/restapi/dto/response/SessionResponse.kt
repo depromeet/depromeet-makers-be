@@ -1,11 +1,10 @@
 package com.depromeet.makers.presentation.restapi.dto.response
 
-import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "세션 조회 응답 DTO")
-class GetSessionResponse(
+class SessionResponse(
     @Schema(description = "세션 ID", example = "01HWPNRE5TS9S7VC99WPETE5KE")
     val sessionId: String,
 
@@ -27,15 +26,15 @@ class GetSessionResponse(
     @Schema(description = "세션 타입", example = "ONLINE")
     val sessionType: String,
 
-    @Schema(description = "장소", example = "온라인")
-    val place: PlaceResponse,
+    @Schema(description = "장소 정보, null인 경우 온라인 세션")
+    val place: PlaceResponse?,
 
     @Schema(description = "세션 코드 (어드민 role 경우 view)", example = "1234")
     val code: String?,
 ) {
     companion object {
         fun fromDomain(session: Session) = with(session) {
-            GetSessionResponse(
+            SessionResponse(
                 sessionId = sessionId,
                 generation = generation,
                 week = week,
@@ -43,30 +42,9 @@ class GetSessionResponse(
                 description = description,
                 startTime = startTime.toString(),
                 sessionType = sessionType.name,
-                place = place.let { PlaceResponse.fromDomain(it) },
+                place = session.place?.let { PlaceResponse.fromDomain(it) },
                 code = code,
             )
-        }
-    }
-
-    data class PlaceResponse(
-        @Schema(description = "장소 이름", example = "전북 익산시 부송동 100")
-        val address: String,
-
-        @Schema(description = "위도", example = "35.9418")
-        val latitude: Double,
-
-        @Schema(description = "경도", example = "35.9418")
-        val longitude: Double,
-    ) {
-        companion object {
-            fun fromDomain(place: Place) = with(place) {
-                PlaceResponse(
-                    address = address,
-                    latitude = latitude,
-                    longitude = longitude,
-                )
-            }
         }
     }
 }

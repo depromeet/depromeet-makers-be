@@ -1,17 +1,20 @@
 package com.depromeet.makers.domain.model
 
 data class Place(
+    val placeId: String,
+    val name: String,
     val address: String,
-    val name: String?,
     val longitude: Double,
     val latitude: Double,
 ) {
     fun update(
+        placeId: String,
         address: String,
         longitude: Double,
         latitude: Double,
-        name: String?,
+        name: String,
     ) = copy(
+        placeId = placeId,
         address = address,
         longitude = longitude,
         latitude = latitude,
@@ -26,23 +29,18 @@ data class Place(
     }
 
     companion object {
-        fun newPlace(
+        fun create(
+            placeId: String,
             address: String,
             longitude: Double,
             latitude: Double,
-            name: String?,
+            name: String,
         ) = Place(
+            placeId = placeId,
             address = address,
             longitude = longitude,
             latitude = latitude,
             name = name,
-        )
-
-        fun emptyPlace() = Place(
-            address = "온라인",
-            longitude = 0.0,
-            latitude = 0.0,
-            name = null,
         )
     }
 }

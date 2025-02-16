@@ -23,7 +23,8 @@ class GetInfoSessionTest : BehaviorSpec({
             description = "세션 설명",
             startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
             sessionType = SessionType.OFFLINE,
-            place = Place.newPlace(
+            place = Place.create(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "서울특별시 강남구 테헤란로 521",
                 longitude = 127.034,
                 latitude = 37.501,
@@ -42,12 +43,12 @@ class GetInfoSessionTest : BehaviorSpec({
             )
 
             Then("위치 정보가 마스킹되어 반환된다") {
-                result.place.longitude shouldBe 0.0
-                result.place.latitude shouldBe 0.0
+                result.place!!.longitude shouldBe 0.0
+                result.place!!.latitude shouldBe 0.0
             }
 
             Then("출석 코드가 마스킹되어 반환된다") {
-                result.code shouldBe null
+                result.code shouldBe "null"
             }
         }
     }
@@ -64,7 +65,8 @@ class GetInfoSessionTest : BehaviorSpec({
             description = "세션 설명",
             startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
             sessionType = SessionType.OFFLINE,
-            place = Place.newPlace(
+            place = Place.create(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "서울특별시 강남구 테헤란로 521",
                 longitude = 127.034,
                 latitude = 37.501,
@@ -83,8 +85,8 @@ class GetInfoSessionTest : BehaviorSpec({
             )
 
             Then("위치 정보가 마스킹되지 않고 반환된다") {
-                result.place.longitude shouldBe 127.034
-                result.place.latitude shouldBe 37.501
+                result.place!!.longitude shouldBe 127.034
+                result.place!!.latitude shouldBe 37.501
             }
 
             Then("출석 코드가 마스킹되지 않고 반환된다") {

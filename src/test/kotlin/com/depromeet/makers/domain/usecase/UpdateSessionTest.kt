@@ -1,7 +1,6 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.SessionGateway
-import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
 import io.kotest.core.spec.style.BehaviorSpec
@@ -24,7 +23,7 @@ class UpdateSessionTest : BehaviorSpec({
             description = "세션 설명",
             startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
             sessionType = SessionType.OFFLINE,
-            place = Place.emptyPlace(),
+            place = null,
         )
 
         val mockSessionId = "123e4567-e89b-12d3-a456-426614174000"
@@ -45,8 +44,11 @@ class UpdateSessionTest : BehaviorSpec({
                     sessionId = mockSessionId,
                     title = mockTitle,
                     description = mockDescription,
-                    startTime = null,
-                    sessionType = null,
+                    startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
+                    sessionType = SessionType.ONLINE,
+                    generation = 0,
+                    week = 0,
+                    place = null,
                 )
             )
 

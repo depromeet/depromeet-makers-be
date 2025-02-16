@@ -1,6 +1,7 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.gateway.SessionGateway
+import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
 import java.time.LocalDateTime
@@ -10,10 +11,13 @@ class UpdateSession(
 ) : UseCase<UpdateSession.UpdateSessionInput, Session> {
     data class UpdateSessionInput(
         val sessionId: String,
-        val title: String?,
+        val generation: Int,
+        val week: Int,
+        val title: String,
         val description: String?,
-        val startTime: LocalDateTime?,
-        val sessionType: SessionType?,
+        val startTime: LocalDateTime,
+        val sessionType: SessionType,
+        val place: Place?,
     )
 
     override fun execute(input: UpdateSessionInput): Session {
@@ -21,10 +25,13 @@ class UpdateSession(
 
         return sessionGateway.save(
             session.update(
-                title = input.title ?: session.title,
+                generation = input.generation,
+                week = input.week,
+                title = input.title,
                 description = input.description,
-                startTime = input.startTime ?: session.startTime,
-                sessionType = input.sessionType ?: session.sessionType,
+                startTime = input.startTime,
+                sessionType = input.sessionType,
+                place = input.place,
             )
         )
     }
