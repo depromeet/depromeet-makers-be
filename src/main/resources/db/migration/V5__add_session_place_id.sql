@@ -1,0 +1,2 @@
+ALTER TABLE session
+ADD COLUMN place_id VARCHAR(255) NULL;
