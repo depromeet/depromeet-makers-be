@@ -46,6 +46,7 @@ enum class ErrorCode(
     INVALID_SESSION_PLACE("SE0001", "오프라인 세션의 장소가 기입이 필요합니다"),
     SESSION_ALREADY_EXISTS("SE0002", "이미 해당 세션이 존재합니다"),
     SESSION_NOT_FOUND("SE0003", "해당하는 세션을 찾을 수 없습니다"),
+    INVALID_SESSION("SE0004", "잘못 기입된 세션 정보입니다"),
 
     /**
      * 출석 관련 오류

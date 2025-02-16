@@ -1,62 +1,54 @@
 package com.depromeet.makers.domain.usecase
 
 import com.depromeet.makers.domain.exception.SessionAlreadyExistsException
-import com.depromeet.makers.domain.exception.SessionPlaceNotFoundException
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Place
 import com.depromeet.makers.domain.model.Session
 import com.depromeet.makers.domain.model.SessionType
 import java.time.LocalDateTime
 
-class CreateNewSession(
+class CreateSession(
     private val sessionGateWay: SessionGateway,
-) : UseCase<CreateNewSession.CreateNewSessionInput, Session> {
-    data class CreateNewSessionInput(
+) : UseCase<CreateSession.CreateSessionInput, Session> {
+    data class CreateSessionInput(
         val generation: Int,
         val week: Int,
         val title: String,
         val description: String?,
         val startTime: LocalDateTime,
         val sessionType: SessionType,
-        val address: String?,
-        val longitude: Double?,
-        val latitude: Double?,
-        val placeName: String?,
+        val place: Place?,
     )
 
-    override fun execute(input: CreateNewSessionInput): Session {
+    override fun execute(input: CreateSessionInput): Session {
         if (hasSameGenerationAndWeekSession(input.generation, input.week)) {
             throw SessionAlreadyExistsException()
         }
 
+        if (input.sessionType.isOnline()) {
+            return sessionGateWay.save(
+                Session.createOnline(
+                    generation = input.generation,
+                    week = input.week,
+                    title = input.title,
+                    description = input.description,
+                    startTime = input.startTime,
+                )
+            )
+        }
+
         return sessionGateWay.save(
-            Session.newSession(
+            Session.createOffline(
                 generation = input.generation,
                 week = input.week,
                 title = input.title,
                 description = input.description,
                 startTime = input.startTime,
-                sessionType = input.sessionType,
-                place = getNewPlace(input),
+                place = input.place!!,
             )
         )
     }
 
     private fun hasSameGenerationAndWeekSession(generation: Int, week: Int) =
         sessionGateWay.existsByGenerationAndWeek(generation, week)
-
-    private fun getNewPlace(input: CreateNewSessionInput) =
-        if (input.sessionType.isOnline()) {
-            Place.emptyPlace()
-        } else {
-            if (input.address == null || input.longitude == null || input.latitude == null) {
-                throw SessionPlaceNotFoundException()
-            }
-            Place.newPlace(
-                address = input.address,
-                longitude = input.longitude,
-                latitude = input.latitude,
-                name = input.placeName,
-            )
-        }
 }

@@ -6,6 +6,7 @@ import com.depromeet.makers.domain.gateway.MemberGateway
 import com.depromeet.makers.domain.gateway.SessionGateway
 import com.depromeet.makers.domain.model.Attendance
 import com.depromeet.makers.domain.model.Session
+import java.time.LocalDateTime
 
 class GetMemberAttendances(
     private val attendanceGateway: AttendanceGateway,
@@ -30,9 +31,12 @@ class GetMemberAttendances(
         // 기본값 없으면 세팅 (추후 걷어낼 로직)
         val sessions = (1..16).map {
             sessionGateway.findByGenerationAndWeek(input.generation, it) ?: sessionGateway.save(
-                Session.newSession(
+                Session.createOnline(
                     generation = input.generation,
                     week = it,
+                    title = "세션 제목",
+                    description = "세션 설명",
+                    startTime = LocalDateTime.now(),
                 )
             )
         }

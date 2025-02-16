@@ -29,7 +29,8 @@ class RefreshSessionCodeTest :
                     startTime = LocalDateTime.of(2030, 10, 1, 10, 0),
                     sessionType = SessionType.OFFLINE,
                     place =
-                        Place.newPlace(
+                        Place.create(
+                            placeId = "123e4567-e89b-12d3-a456-426614174000",
                             name = "테스트 장소",
                             address = "전북 익산시 부송동 100",
                             longitude = 35.9418,
@@ -51,7 +52,7 @@ class RefreshSessionCodeTest :
                     result.code shouldNotBe previousCode
                     result.code shouldNotBe null
                     result.code.shouldBeInteger()
-                    result.code!!.length shouldBe 4
+                    result.code.length shouldBe 4
                 }
             }
         }

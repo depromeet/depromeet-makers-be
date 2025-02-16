@@ -1,29 +1,41 @@
 package com.depromeet.makers.presentation.restapi.controller
 
 import com.depromeet.makers.domain.model.MemberRole
-import com.depromeet.makers.domain.usecase.*
-import com.depromeet.makers.presentation.restapi.dto.request.CreateNewSessionRequest
+import com.depromeet.makers.domain.model.Place
+import com.depromeet.makers.domain.usecase.CreateSession
+import com.depromeet.makers.domain.usecase.DeleteSession
+import com.depromeet.makers.domain.usecase.GetInfoSession
+import com.depromeet.makers.domain.usecase.GetSessions
+import com.depromeet.makers.domain.usecase.RefreshSessionCode
+import com.depromeet.makers.domain.usecase.UpdateSession
 import com.depromeet.makers.presentation.restapi.dto.request.GetSessionsRequest
-import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionPlaceRequest
-import com.depromeet.makers.presentation.restapi.dto.request.UpdateSessionRequest
-import com.depromeet.makers.presentation.restapi.dto.response.*
+import com.depromeet.makers.presentation.restapi.dto.request.SessionRequest
+import com.depromeet.makers.presentation.restapi.dto.response.SessionsResponse
+import com.depromeet.makers.presentation.restapi.dto.response.SessionResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @Tag(name = "세션 관련 API", description = "세션의 정보를 관리하는 API")
 @RestController
 @RequestMapping("/v1/sessions")
 class SessionController(
-    private val createNewSession: CreateNewSession,
+    private val createSession: CreateSession,
     private val getSessions: GetSessions,
     private val updateSession: UpdateSession,
-    private val updateSessionPlace: UpdateSessionPlace,
     private val deleteSession: DeleteSession,
     private val getInfoSession: GetInfoSession,
     private val refreshSessionCode: RefreshSessionCode,
@@ -32,23 +44,30 @@ class SessionController(
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping
     fun createNewSession(
-        @RequestBody @Valid request: CreateNewSessionRequest,
-    ): CreateNewSessionResponse {
-        val session = createNewSession.execute(
-            CreateNewSession.CreateNewSessionInput(
+        @RequestBody @Valid request: SessionRequest,
+    ): SessionResponse {
+        val place = request.place?.let {
+            Place(
+                placeId = it.placeId,
+                name = it.placeName,
+                address = it.address,
+                longitude = it.longitude,
+                latitude = it.latitude,
+            )
+        }
+
+        val session = createSession.execute(
+            CreateSession.CreateSessionInput(
                 generation = request.generation,
                 week = request.week,
                 title = request.title,
                 description = request.description,
                 startTime = request.startTime,
                 sessionType = request.sessionType,
-                address = request.address,
-                longitude = request.longitude,
-                latitude = request.latitude,
-                placeName = request.placeName,
+                place = place
             )
         )
-        return CreateNewSessionResponse.fromDomain(session)
+        return SessionResponse.fromDomain(session)
     }
 
     @Operation(
@@ -61,17 +80,17 @@ class SessionController(
     fun getSessions(
         authentication: Authentication,
         @Valid request: GetSessionsRequest,
-    ): GetSessionsResponse {
+    ): SessionsResponse {
         val sessions = getSessions.execute(
             GetSessions.GetSessionsInput(
                 generation = request.generation,
                 isOrganizer = authentication.authorities.any { it.authority == MemberRole.ORGANIZER.roleName }
             )
-        ).map { GetSessionsResponse.SessionResponse.fromDomain(it) }
+        )
 
-        return GetSessionsResponse(
+        return SessionsResponse(
             generation = request.generation,
-            sessions = sessions,
+            sessions = sessions.map { SessionResponse.fromDomain(it) },
         )
     }
 
@@ -82,8 +101,8 @@ class SessionController(
     @GetMapping("/info")
     fun getInfoSession(
         authentication: Authentication,
-    ): GetSessionResponse {
-        return GetSessionResponse.fromDomain(
+    ): SessionResponse {
+        return SessionResponse.fromDomain(
             getInfoSession.execute(
                 GetInfoSession.GetInfoSessionInput(
                     now = LocalDateTime.now(),
@@ -98,37 +117,31 @@ class SessionController(
     @PutMapping("/{sessionId}")
     fun updateSession(
         @PathVariable sessionId: String,
-        @RequestBody @Valid request: UpdateSessionRequest,
-    ): UpdateSessionResponse {
+        @RequestBody @Valid request: SessionRequest,
+    ): SessionResponse {
+        val place = request.place?.let {
+            Place(
+                placeId = it.placeId,
+                name = it.placeName,
+                address = it.address,
+                longitude = it.longitude,
+                latitude = it.latitude,
+            )
+        }
+
         val updatedSession = updateSession.execute(
             UpdateSession.UpdateSessionInput(
                 sessionId = sessionId,
+                generation = request.generation,
+                week = request.week,
                 title = request.title,
                 description = request.description,
                 startTime = request.startTime,
                 sessionType = request.sessionType,
+                place = place,
             )
         )
-        return UpdateSessionResponse.fromDomain(updatedSession)
-    }
-
-    @Operation(summary = "세션 장소 수정", description = "세션의 장소를 수정합니다.")
-    @PreAuthorize("hasRole('ORGANIZER')")
-    @PutMapping("/{sessionId}/place")
-    fun updateSessionPlace(
-        @PathVariable sessionId: String,
-        @RequestBody @Valid request: UpdateSessionPlaceRequest,
-    ): UpdateSessionPlaceResponse {
-        val updatedSession = updateSessionPlace.execute(
-            UpdateSessionPlace.UpdateSessionInput(
-                sessionId = sessionId,
-                address = request.address,
-                latitude = request.latitude,
-                longitude = request.longitude,
-                name = request.placeName,
-            )
-        )
-        return UpdateSessionPlaceResponse.fromDomain(updatedSession)
+        return SessionResponse.fromDomain(updatedSession)
     }
 
     @Operation(summary = "세션 코드 갱신", description = "세션의 코드를 갱신합니다.")
@@ -136,12 +149,12 @@ class SessionController(
     @PatchMapping("/{sessionId}/code")
     fun refreshSessionCode(
         @PathVariable sessionId: String,
-    ): UpdateSessionResponse {
+    ): SessionResponse {
         val updatedSession =
             refreshSessionCode.execute(
                 sessionId = sessionId,
             )
-        return UpdateSessionResponse.fromDomain(updatedSession)
+        return SessionResponse.fromDomain(updatedSession)
     }
 
     @Operation(summary = "세션 삭제", description = "세션을 삭제합니다.")

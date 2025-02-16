@@ -51,8 +51,8 @@ class CheckInSession(
             validateLocation(input.latitude, input.longitude)
 
             val distance = calculateDistance(
-                thisWeekSession.place.latitude,
-                thisWeekSession.place.longitude,
+                thisWeekSession.place!!.latitude,
+                thisWeekSession.place!!.longitude,
                 input.latitude,
                 input.longitude,
             )

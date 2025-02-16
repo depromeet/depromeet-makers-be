@@ -12,8 +12,8 @@ data class Session(
     val description: String?,
     val startTime: LocalDateTime,
     val sessionType: SessionType,
-    val place: Place,
-    val code: String? = generateCode(),
+    val place: Place?,
+    val code: String = generateCode(),
 ) {
     fun isOnline() = sessionType.isOnline()
 
@@ -21,8 +21,8 @@ data class Session(
 
     fun mask(): Session {
         return copy(
-            place = place.maskLocation(),
-            code = null,
+            place = place?.maskLocation(),
+            code = "null",
         )
     }
 
@@ -33,8 +33,8 @@ data class Session(
         description: String? = this.description,
         startTime: LocalDateTime = this.startTime,
         sessionType: SessionType = this.sessionType,
-        place: Place = this.place,
-        code: String? = this.code,
+        place: Place? = this.place,
+        code: String = this.code,
     ): Session {
         return copy(
             generation = generation,
@@ -49,14 +49,12 @@ data class Session(
     }
 
     companion object {
-        fun newSession(
+        fun createOnline(
             generation: Int,
             week: Int,
-            title: String = "세션 제목입니다.",
-            description: String? = "",
-            startTime: LocalDateTime = LocalDateTime.now(),
-            sessionType: SessionType = SessionType.ONLINE,
-            place: Place = Place.emptyPlace(),
+            title: String,
+            description: String?,
+            startTime: LocalDateTime,
         ): Session {
             return Session(
                 sessionId = generateULID(),
@@ -65,7 +63,27 @@ data class Session(
                 title = title,
                 description = description,
                 startTime = startTime,
-                sessionType = sessionType,
+                sessionType = SessionType.ONLINE,
+                place = null,
+            )
+        }
+
+        fun createOffline(
+            generation: Int,
+            week: Int,
+            title: String,
+            description: String?,
+            startTime: LocalDateTime,
+            place: Place,
+        ): Session {
+            return Session(
+                sessionId = generateULID(),
+                generation = generation,
+                week = week,
+                title = title,
+                description = description,
+                startTime = startTime,
+                sessionType = SessionType.ONLINE,
                 place = place,
             )
         }

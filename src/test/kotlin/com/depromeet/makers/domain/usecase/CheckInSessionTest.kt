@@ -45,7 +45,7 @@ class CheckInSessionTest : BehaviorSpec({
             description = null,
             startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
             sessionType = SessionType.ONLINE,
-            place = Place.emptyPlace(),
+            place = null,
         )
 
         every { memberGateway.getById(any()) } returns mockMember
@@ -146,6 +146,7 @@ class CheckInSessionTest : BehaviorSpec({
             startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
             sessionType = SessionType.OFFLINE,
             place = Place(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "전북 익산시 부송동 100",
                 name = "오프라인 장소",
                 latitude = 35.9418,
@@ -214,6 +215,7 @@ class CheckInSessionTest : BehaviorSpec({
             startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
             sessionType = SessionType.OFFLINE,
             place = Place(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "전북 익산시 부송동 100",
                 name = "오프라인 장소",
                 latitude = 35.9418,
@@ -235,7 +237,7 @@ class CheckInSessionTest : BehaviorSpec({
             member = mockMember,
             sessionType = SessionType.OFFLINE,
 
-        )
+            )
         every { attendanceGateway.save(any()) } returns mockk()
 
         When("execute가 실행되면") {
@@ -283,6 +285,7 @@ class CheckInSessionTest : BehaviorSpec({
             startTime = LocalDateTime.of(2024, 5, 15, 16, 0),
             sessionType = SessionType.OFFLINE,
             place = Place(
+                placeId = "123e4567-e89b-12d3-a456-426614174000",
                 address = "전북 익산시 부송동 100",
                 name = "오프라인 장소",
                 latitude = 35.9418,
