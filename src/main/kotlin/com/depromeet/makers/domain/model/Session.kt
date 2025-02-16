@@ -83,7 +83,7 @@ data class Session(
                 title = title,
                 description = description,
                 startTime = startTime,
-                sessionType = SessionType.ONLINE,
+                sessionType = SessionType.OFFLINE,
                 place = place,
             )
         }
