@@ -1,4 +1,4 @@
-package com.depromeet.depromeet_makers_be
+package com.depromeet.makers
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

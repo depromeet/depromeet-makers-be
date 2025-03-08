@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.depromeet.depromeet-makers-be' is invalid and this project uses 'com.depromeet.depromeet_makers_be' instead.
+* The original package name 'com.depromeet.depromeet-makers-be' is invalid and this project uses 'com.depromeet.makers' instead.
 
 # Getting Started
 

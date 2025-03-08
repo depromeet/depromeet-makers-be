@@ -1,4 +1,4 @@
-package com.depromeet.depromeet_makers_be
+package com.depromeet.makers
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
