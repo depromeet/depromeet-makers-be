@@ -1,0 +1,35 @@
+enable:
+  issues: true
+  prs: true
+
+comments:
+  prs: |
+    Auto labels applied based on the title of the PR.
+
+# 레이블
+labels:
+  'bug':
+    include:
+      - '\bfix\b'
+  'test':
+    include:
+      - '\btest\b'
+  'feature':
+    include:
+      - '\bfeat\b'
+  'documentation':
+    include:
+      - '\bdocs\b'
+  'refactor':
+    include:
+      - '\brefactor\b'
+  'chore':
+    include:
+      - '\bchore\b'
+  'fix':
+    include:
+      - '\bfix\b'
+  'release':
+    include:
+      - '\release\b'
+
