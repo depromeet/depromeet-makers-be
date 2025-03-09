@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class DepromeetMakersBeApplication
 
 fun main(args: Array<String>) {
-	runApplication<DepromeetMakersBeApplication>(*args)
+    runApplication<DepromeetMakersBeApplication>(*args)
 }
