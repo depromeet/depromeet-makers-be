@@ -13,7 +13,7 @@ class WebExceptionHandler {
     fun handleDomainException(e: DomainException): ResponseEntity<ErrorResponse> {
         val errorCode = e.errorCode
         if (errorCode.isCriticalError()) {
-           // return handleUnhandledException(e)
+            return handleUnhandledException(e)
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -22,8 +22,8 @@ class WebExceptionHandler {
 
     @ExceptionHandler
     fun handleUnhandledException(e: Exception): ResponseEntity<ErrorResponse> {
+        e.printStackTrace()
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ErrorResponse(0, ""))
     }
-
 }
