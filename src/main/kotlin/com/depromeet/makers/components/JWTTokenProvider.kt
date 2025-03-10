@@ -1,10 +1,10 @@
 package com.depromeet.makers.components
 
+import com.depromeet.makers.config.properties.AppProperties
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.domain.vo.TokenPair
 import io.jsonwebtoken.Jwts
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -15,11 +15,9 @@ import javax.crypto.spec.SecretKeySpec
 
 @Component
 class JWTTokenProvider(
-    @Value("\${app.token.secretKey}") private val verifyKey: String,
-    @Value("\${app.token.expiration.access}") private val accessTokenExpiration: Long,
-    @Value("\${app.token.expiration.refresh}") private val refreshTokenExpiration: Long,
+    private val appProperties: AppProperties,
 ) {
-    private final val signKey: SecretKey = SecretKeySpec(verifyKey.toByteArray(), "AES")
+    private final val signKey: SecretKey = SecretKeySpec(appProperties.token.secretKey.toByteArray(), "AES")
     private val jwtParser = Jwts
         .parser()
         .decryptWith(signKey)
@@ -94,9 +92,9 @@ class JWTTokenProvider(
         return claims.payload[USER_ID_CLAIM_KEY] as? String ?: throw RuntimeException()
     }
 
-    private fun generateAccessTokenExpiration() = Date(System.currentTimeMillis() + accessTokenExpiration * 1000)
+    private fun generateAccessTokenExpiration() = Date(System.currentTimeMillis() + appProperties.token.expiration.access * 1000)
 
-    private fun generateRefreshTokenExpiration() = Date(System.currentTimeMillis() + refreshTokenExpiration * 1000)
+    private fun generateRefreshTokenExpiration() = Date(System.currentTimeMillis() + appProperties.token.expiration.refresh * 1000)
 
     companion object {
         const val USER_ID_CLAIM_KEY = "user_id"
