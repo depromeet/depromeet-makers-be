@@ -20,7 +20,7 @@ class WebSecurityConfig {
     @Order(0)
     fun authSecurityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain =
         httpSecurity
-            .securityMatcher("/v1/auth/**")
+            .securityMatcher("/v1/auth/**", *swaggerApiPatterns)
             .csrf { it.disable() }
             .cors(Customizer.withDefaults())
             .sessionManagement {
@@ -69,4 +69,8 @@ class WebSecurityConfig {
             }
         }
         .build()
+
+    companion object {
+        private val swaggerApiPatterns = arrayOf("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
+    }
 }
