@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document("test")
 class Member(
     @Id
-    val id: String,
+    val id: String?,
     val name: String,
     val age: Age,
     val role: MemberRole,
@@ -16,7 +16,7 @@ class Member(
     companion object {
         fun create(name: String, age: Age): Member {
             return Member(
-                id = "1",
+                id = null,
                 name = name,
                 age = age,
                 role = MemberRole.USER,
