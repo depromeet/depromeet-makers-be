@@ -2,54 +2,43 @@ package com.depromeet.makers.components
 
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
-import com.depromeet.makers.presentation.web.dto.response.AppleKeyListResponse
 import com.depromeet.makers.presentation.web.dto.response.AppleKeyResponse
 import com.depromeet.makers.presentation.web.dto.response.KakaoAccountResponse
+import com.depromeet.makers.repository.client.AppleAuthClient
+import com.depromeet.makers.repository.client.KakaoAuthClient
 import com.depromeet.makers.util.logger
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nimbusds.jose.jwk.JWK
 import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestClient
 import java.util.Base64
 
 @Component
 class SocialLoginProvider(
-    private val restClient: RestClient,
     private val objectMapper: ObjectMapper,
+    private val appleAuthClient: AppleAuthClient,
+    private val kakaoAuthClient: KakaoAuthClient,
 ) {
     private val logger = logger()
 
-    fun authenticateFromKakao(accessToken: String): KakaoAccountResponse = restClient
-        .post()
-        .uri("https://kapi.kakao.com/v2/user/me")
-        .headers {
-            it.setBearerAuth(accessToken)
-            it.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
-        }
-        .retrieve()
-        .onStatus({ it.isError }) { _, res ->
-            val bodyValue = res.body.readAllBytes().toString(Charsets.UTF_8)
-            logger.error("[SocialLoginProvider] failed kakaologin with response - $bodyValue")
-            throw DomainException(ErrorCode.KAKAO_LOGIN_FAILED)
-        }
-        .body(KakaoAccountResponse::class.java)!!
+    fun authenticateFromKakao(accessToken: String): KakaoAccountResponse = try {
+        kakaoAuthClient.getKakaoAccount(mapOf("Authorization" to "Bearer $accessToken"))
+    } catch(e: Exception) {
+        logger.error("[SocialLoginProvider] failed kakao with error - ${e.message}")
+        throw DomainException(ErrorCode.INTERNAL_ERROR)
+    }
+
 
     fun authenticateFromApple(identityToken: String): String {
-        val pubKeys = getAppleKeys()
+        val pubKeys = try {
+            appleAuthClient.getApplyKeys()
+        } catch(e: Exception) {
+            logger.error("[SocialLoginProvider] failed applekey with error - ${e.message}")
+            throw DomainException(ErrorCode.INTERNAL_ERROR)
+        }
         return getUserIdFromAppleIdentity(pubKeys.keys.toTypedArray(), identityToken)
     }
 
-    private fun getAppleKeys(): AppleKeyListResponse = restClient
-        .get()
-        .uri("https://appleid.apple.com/auth/keys")
-        .retrieve()
-        .onStatus({ it.isError }) { _, res ->
-            val bodyValue = res.body.readAllBytes().toString(Charsets.UTF_8)
-            logger.error("[SocialLoginProvider] failed applekey with response - $bodyValue")
-            throw DomainException(ErrorCode.INTERNAL_ERROR)
-        }
-        .body(AppleKeyListResponse::class.java)!!
 
     private fun getUserIdFromAppleIdentity(keys: Array<AppleKeyResponse>, identityToken: String): String {
         val tokenParts = identityToken.split("\\.")
