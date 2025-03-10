@@ -4,6 +4,7 @@ import com.depromeet.makers.config.properties.AppProperties
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.domain.vo.TokenPair
+import com.depromeet.makers.util.logger
 import io.jsonwebtoken.Jwts
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -17,6 +18,7 @@ import javax.crypto.spec.SecretKeySpec
 class JWTTokenProvider(
     private val appProperties: AppProperties,
 ) {
+    private val logger = logger()
     private final val signKey: SecretKey = SecretKeySpec(appProperties.token.secretKey.toByteArray(), "AES")
     private val jwtParser = Jwts
         .parser()
@@ -63,10 +65,19 @@ class JWTTokenProvider(
         }.getOrElse {
             throw DomainException(ErrorCode.TOKEN_EXPIRED)
         }
-        val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
-        if (tokenType != ACCESS_TOKEN_TYPE_VALUE) throw RuntimeException()
+        val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: run {
+            logger.error("Token type not found in header - claims($claims)")
+            throw RuntimeException("Invalid token type!")
+        }
+        if (tokenType != ACCESS_TOKEN_TYPE_VALUE) {
+            logger.error("Token is not an access token - tokenType($tokenType)")
+            throw RuntimeException()
+        }
 
-        val userId = claims.payload[USER_ID_CLAIM_KEY] as? String? ?: throw RuntimeException()
+        val userId = claims.payload[USER_ID_CLAIM_KEY] as? String? ?: run {
+            logger.error("Cannot parse userId from claims - claims($claims)")
+            throw RuntimeException()
+        }
         val authoritiesStr = claims.payload[AUTHORITIES_CLAIM_KEY] as? String?
         val authorities = if (authoritiesStr.isNullOrEmpty()) {
             emptyList()
@@ -86,10 +97,19 @@ class JWTTokenProvider(
 
     fun getMemberIdFromRefreshToken(refreshToken: String): String {
         val claims = jwtParser.parseEncryptedClaims(refreshToken)
-        val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: throw RuntimeException()
-        if (tokenType != REFRESH_TOKEN_TYPE_VALUE) throw RuntimeException()
+        val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: run {
+            logger.error("Token type not found in header - claims($claims)")
+            throw RuntimeException()
+        }
+        if (tokenType != REFRESH_TOKEN_TYPE_VALUE) {
+            logger.error("Token is not an refresh token - tokenType($tokenType)")
+            throw RuntimeException()
+        }
 
-        return claims.payload[USER_ID_CLAIM_KEY] as? String ?: throw RuntimeException()
+        return claims.payload[USER_ID_CLAIM_KEY] as? String ?: run {
+            logger.error("Cannot parse userId from claims - claims($claims)")
+            throw RuntimeException()
+        }
     }
 
     private fun generateAccessTokenExpiration() = Date(System.currentTimeMillis() + appProperties.token.expiration.access * 1000)
