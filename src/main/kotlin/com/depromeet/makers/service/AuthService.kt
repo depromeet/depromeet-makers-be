@@ -17,7 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Service
 
 @Service
-class MemberService(
+class AuthService(
     private val jwtTokenProvider: JWTTokenProvider,
     private val socialLoginProvider: SocialLoginProvider,
     private val memberRepository: MemberRepository,
