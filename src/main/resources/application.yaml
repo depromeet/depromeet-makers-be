@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: depromeet-makers-be
+app:
+  token:
+    secretKey: ${TOKEN_SECRET_KEY}
+    expiration:
+      access: 86400
+      refresh: 2592000
+
+---
+# MongoDB
+spring:
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: ${MONGO_PORT}
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      database: ${MONGO_DB}
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
