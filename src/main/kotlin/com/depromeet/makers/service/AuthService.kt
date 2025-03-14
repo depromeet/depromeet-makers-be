@@ -3,6 +3,7 @@ package com.depromeet.makers.service
 import com.depromeet.makers.components.JWTTokenProvider
 import com.depromeet.makers.components.SocialLoginProvider
 import com.depromeet.makers.domain.Member
+import com.depromeet.makers.domain.SocialCredentials
 import com.depromeet.makers.domain.SocialCredentialsKey
 import com.depromeet.makers.domain.enums.SocialCredentialsProvider
 import com.depromeet.makers.domain.exception.DomainException
@@ -58,7 +59,9 @@ class AuthService(
     private fun loginWithCredential(socialCredentialsKey: SocialCredentialsKey): TokenPair {
         val retrievedMember = socialCredentialsRepository.findByIdOrNull(socialCredentialsKey)?.member ?: run {
             val newMember = Member.create("", Age(10))
-            memberRepository.save(newMember)
+            memberRepository.save(newMember).also {
+                socialCredentialsRepository.save(SocialCredentials(socialCredentialsKey, it))
+            }
         }
         return generateTokenFromMember(retrievedMember)
     }

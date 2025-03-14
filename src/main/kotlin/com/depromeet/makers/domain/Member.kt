@@ -5,7 +5,7 @@ import com.depromeet.makers.domain.vo.Age
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document("test")
+@Document("member")
 class Member(
     @Id
     val id: String?,
