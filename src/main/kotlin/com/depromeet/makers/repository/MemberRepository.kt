@@ -1,7 +1,6 @@
 package com.depromeet.makers.repository
 
-import com.depromeet.makers.domain.Test
+import com.depromeet.makers.domain.Member
 import org.springframework.data.mongodb.repository.MongoRepository
 
-interface TestRepository: MongoRepository<Test, String> {
-}
+interface MemberRepository : MongoRepository<Member, String>
