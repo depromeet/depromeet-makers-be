@@ -1,6 +1,7 @@
 package com.depromeet.makers.config
 
 import com.depromeet.makers.domain.exception.DomainException
+import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.presentation.web.dto.response.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +24,8 @@ class WebExceptionHandler {
     @ExceptionHandler
     fun handleUnhandledException(e: Exception): ResponseEntity<ErrorResponse> {
         e.printStackTrace()
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ErrorResponse(0, ""))
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ErrorResponse(ErrorCode.INTERNAL_ERROR.code, ErrorCode.INTERNAL_ERROR.message))
     }
 }
