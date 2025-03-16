@@ -5,7 +5,7 @@ enum class ErrorCode(
     val message: String,
 ) {
     INTERNAL_ERROR(5000, "알 수 없는 오류가 발생했어요"),
-    MEMBER_NOT_FOUND(4000, "테스트를 찾을 수 없어요"),
+    NOT_FOUND(4000, "존재하지 않아요"),
     TOKEN_EXPIRED(4001, "토큰이 만료되었어요"),
     TOKEN_NOT_FOUND(4002, "토큰이 없어요"),
     TOKEN_NOT_VALID(4003, "토큰이 유효하지 않아요"),

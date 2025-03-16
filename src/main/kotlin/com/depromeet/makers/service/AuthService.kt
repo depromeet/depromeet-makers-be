@@ -52,7 +52,7 @@ class AuthService(
 
     fun refreshWithRefreshToken(refreshToken: String): TokenPair {
         val memberId = jwtTokenProvider.getMemberIdFromRefreshToken(refreshToken)
-        val member = memberRepository.findByIdOrNull(memberId) ?: throw DomainException(ErrorCode.MEMBER_NOT_FOUND)
+        val member = memberRepository.findByIdOrNull(memberId) ?: throw DomainException(ErrorCode.NOT_FOUND)
         return generateTokenFromMember(member)
     }
 
