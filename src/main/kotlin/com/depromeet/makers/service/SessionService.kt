@@ -7,6 +7,7 @@ import com.depromeet.makers.domain.vo.Code
 import com.depromeet.makers.domain.vo.SessionPlace
 import com.depromeet.makers.repository.SessionRepository
 import org.bson.types.ObjectId
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -45,8 +46,7 @@ class SessionService(
     fun getSession(
         sessionId: ObjectId,
     ): Session {
-        return sessionRepository.findById(sessionId)
-            .orElseThrow { throw DomainException(ErrorCode.NOT_FOUND) }
+        return sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
     }
 
     fun getSession(
@@ -65,8 +65,7 @@ class SessionService(
         startTime: LocalDateTime,
         endTime: LocalDateTime,
     ): Session {
-        val session = sessionRepository.findById(sessionId)
-            .orElseThrow { throw DomainException(ErrorCode.NOT_FOUND) }
+        val session = sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
         session.title = title
         session.description = description
         session.place = place
@@ -78,8 +77,7 @@ class SessionService(
     fun updateSessionCode(
         sessionId: ObjectId,
     ): Session {
-        val session = sessionRepository.findById(sessionId)
-            .orElseThrow { throw DomainException(ErrorCode.NOT_FOUND) }
+        val session = sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
         session.code = Code.generate()
         return sessionRepository.save(session)
     }
