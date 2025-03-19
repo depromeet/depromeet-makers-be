@@ -1,6 +1,5 @@
 package com.depromeet.makers.presentation.web
 
-import com.depromeet.makers.config.properties.AppProperties
 import com.depromeet.makers.presentation.web.dto.request.SessionGenerationRequest
 import com.depromeet.makers.presentation.web.dto.request.SessionRequest
 import com.depromeet.makers.presentation.web.dto.response.SessionResponse
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "세션 API", description = "세션 관련 API")
 @RestController
 class SessionController(
-    private val appProperties: AppProperties,
     private val sessionService: SessionService,
 ) {
     @Operation(summary = "[어드민] 세션 생성", description = "세션을 생성합니다.")
