@@ -1,10 +1,8 @@
 package com.depromeet.makers.presentation.web
 
 import com.depromeet.makers.config.properties.AppProperties
-import com.depromeet.makers.domain.Session
-import com.depromeet.makers.domain.enums.SessionType
-import com.depromeet.makers.domain.vo.Code
-import com.depromeet.makers.domain.vo.SessionPlace
+import com.depromeet.makers.presentation.web.dto.request.SessionRequest
+import com.depromeet.makers.presentation.web.dto.response.SessionResponse
 import com.depromeet.makers.service.SessionService
 import com.depromeet.makers.util.AuthenticationUtil.isAdmin
 import io.swagger.v3.oas.annotations.Operation
@@ -12,9 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.bson.types.ObjectId
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @Tag(name = "세션 API", description = "세션 관련 API")
 @RestController
@@ -128,54 +124,5 @@ class SessionController(
         @PathVariable generation: Int,
     ) {
         sessionService.deleteAllByGeneration(generation)
-    }
-}
-
-data class SessionRequest(
-    val generation: Int,
-    val week: Int,
-    val title: String,
-    val description: String,
-    val place: SessionPlace?,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime,
-)
-
-data class SessionResponse(
-    val sessionId: String,
-    val generation: Int,
-    val week: Int,
-    val title: String,
-    val description: String,
-    val type: SessionType,
-    val place: SessionPlace?,
-    val code: Code,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime,
-) {
-    companion object {
-        fun from(session: Session): SessionResponse {
-            return SessionResponse(
-                sessionId = session.id.toHexString(),
-                generation = session.generation,
-                week = session.week,
-                title = session.title,
-                description = session.description,
-                type = session.getType(),
-                place = session.place,
-                startTime = session.startTime,
-                code = session.code,
-                endTime = session.endTime,
-            )
-        }
-
-        fun from(session: Session, mask: Boolean): SessionResponse {
-            return when (mask) {
-                false -> from(session)
-                true -> from(session).copy(
-                    code = session.code.mask()
-                )
-            }
-        }
     }
 }
