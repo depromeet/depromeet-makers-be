@@ -5,10 +5,12 @@ import com.depromeet.makers.domain.vo.Code
 import com.depromeet.makers.domain.vo.SessionPlace
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
 @Document("session")
+@CompoundIndex(def = "{'generation': 1, 'week': 1}", unique = true)
 class Session(
     @Id
     val id: ObjectId,
