@@ -66,11 +66,13 @@ class SessionService(
         endTime: LocalDateTime,
     ): Session {
         val session = sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
-        session.title = title
-        session.description = description
-        session.place = place
-        session.startTime = startTime
-        session.endTime = endTime
+        session.update(
+            title = title,
+            description = description,
+            place = place,
+            startTime = startTime,
+            endTime = endTime,
+        )
         return sessionRepository.save(session)
     }
 

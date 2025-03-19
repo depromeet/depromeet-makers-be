@@ -23,6 +23,24 @@ class Session(
     var startTime: LocalDateTime,
     var endTime: LocalDateTime,
 ) {
+    fun update(
+        generation: Int = this.generation,
+        week: Int = this.week,
+        title: String = this.title,
+        description: String = this.description,
+        place: SessionPlace? = this.place,
+        startTime: LocalDateTime = this.startTime,
+        endTime: LocalDateTime = this.endTime,
+    ) {
+        this.generation = generation
+        this.week = week
+        this.title = title
+        this.description = description
+        this.place = place
+        this.startTime = startTime
+        this.endTime = endTime
+    }
+
     fun getType(): SessionType {
         return SessionType.of(this)
     }
