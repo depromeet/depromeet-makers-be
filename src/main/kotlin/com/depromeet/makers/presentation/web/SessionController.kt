@@ -6,6 +6,7 @@ import com.depromeet.makers.domain.enums.SessionType
 import com.depromeet.makers.domain.vo.Code
 import com.depromeet.makers.domain.vo.SessionPlace
 import com.depromeet.makers.service.SessionService
+import com.depromeet.makers.util.AuthenticationUtil.isAdmin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.bson.types.ObjectId
@@ -45,7 +46,7 @@ class SessionController(
         authentication: Authentication,
         @PathVariable sessionId: String,
     ): SessionResponse {
-        val needMask = !authentication.authorities.contains(SimpleGrantedAuthority("ROLE_ADMIN"))
+        val needMask = authentication.isAdmin().not()
         val session = sessionService.getSession(
             sessionId = ObjectId(sessionId),
         )
@@ -58,7 +59,7 @@ class SessionController(
         authentication: Authentication,
         @PathVariable generation: Int = appProperties.depromeet.generation,
     ): List<SessionResponse> {
-        val needMask = !authentication.authorities.contains(SimpleGrantedAuthority("ROLE_ADMIN"))
+        val needMask = authentication.isAdmin().not()
         val sessions = sessionService.getAllSessionByGeneration(
             generation = generation,
         )
@@ -72,7 +73,7 @@ class SessionController(
         @PathVariable generation: Int = appProperties.depromeet.generation,
         @PathVariable week: Int,
     ): SessionResponse {
-        val needMask = !authentication.authorities.contains(SimpleGrantedAuthority("ROLE_ADMIN"))
+        val needMask = authentication.isAdmin().not()
         val session = sessionService.getSession(
             generation = generation,
             week = week,
