@@ -1,6 +1,7 @@
 package com.depromeet.makers.presentation.web
 
 import com.depromeet.makers.config.properties.AppProperties
+import com.depromeet.makers.presentation.web.dto.request.SessionGenerationRequest
 import com.depromeet.makers.presentation.web.dto.request.SessionRequest
 import com.depromeet.makers.presentation.web.dto.response.SessionResponse
 import com.depromeet.makers.service.SessionService
@@ -119,10 +120,10 @@ class SessionController(
 
     @Operation(summary = "[어드민] 기수 별 세션 전체 삭제", description = "기수에 해당하는 모든 세션을 삭제합니다.")
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/v1/sessions/generation/{generation}")
+    @DeleteMapping("/v1/sessions")
     fun deleteAllSessionByGeneration(
-        @PathVariable generation: Int,
+        @RequestBody request: SessionGenerationRequest,
     ) {
-        sessionService.deleteAllByGeneration(generation)
+        sessionService.deleteAllByGeneration(request.generation)
     }
 }

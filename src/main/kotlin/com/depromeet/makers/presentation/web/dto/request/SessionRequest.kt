@@ -12,3 +12,7 @@ data class SessionRequest(
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
 )
+
+data class SessionGenerationRequest(
+    val generation: Int,
+)
