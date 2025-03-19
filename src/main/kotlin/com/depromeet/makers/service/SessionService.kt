@@ -49,14 +49,6 @@ class SessionService(
         return sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
     }
 
-    fun getSession(
-        generation: Int,
-        week: Int,
-    ): Session {
-        return sessionRepository.findByGenerationAndWeek(generation, week)
-            ?: throw DomainException(ErrorCode.NOT_FOUND)
-    }
-
     fun updateSession(
         sessionId: ObjectId,
         title: String,
