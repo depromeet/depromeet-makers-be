@@ -11,7 +11,14 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.bson.types.ObjectId
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "세션 API", description = "세션 관련 API")
 @RestController
@@ -51,31 +58,15 @@ class SessionController(
     }
 
     @Operation(summary = "전체 세션 조회", description = "기수에 해당하는 세션을 조회합니다.")
-    @GetMapping("/v1/sessions/generation/{generation}/")
+    @GetMapping("/v1/sessions")
     fun getAllSessionByGeneration(
         authentication: Authentication,
-        @PathVariable generation: Int = appProperties.depromeet.generation,
+        @RequestParam generation: Int,
     ): List<SessionResponse> {
         val needMask = authentication.isAdmin().not()
-        val sessions = sessionService.getAllSessionByGeneration(
-            generation = generation,
-        )
-        return sessions.map { session -> SessionResponse.from(session, needMask) }
-    }
+        val sessions = sessionService.getAllSessionByGeneration(generation)
 
-    @Operation(summary = "기수 & 주차 별 세션 조회", description = "기수와 주차에 해당하는 세션을 조회합니다.")
-    @GetMapping("/v1/sessions/generation/{generation}/week/{week}")
-    fun getSessionByWeek(
-        authentication: Authentication,
-        @PathVariable generation: Int = appProperties.depromeet.generation,
-        @PathVariable week: Int,
-    ): SessionResponse {
-        val needMask = authentication.isAdmin().not()
-        val session = sessionService.getSession(
-            generation = generation,
-            week = week,
-        )
-        return SessionResponse.from(session, needMask)
+        return sessions.map { session -> SessionResponse.from(session, needMask) }
     }
 
     @Operation(summary = "[어드민] 세션 수정", description = "특정 세션을 수정합니다.")
