@@ -6,6 +6,7 @@ import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.domain.vo.TokenPair
 import com.depromeet.makers.util.logger
 import io.jsonwebtoken.Jwts
+import org.bson.types.ObjectId
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -95,7 +96,7 @@ class JWTTokenProvider(
         )
     }
 
-    fun getMemberIdFromRefreshToken(refreshToken: String): String {
+    fun getMemberIdFromRefreshToken(refreshToken: String): ObjectId {
         val claims = jwtParser.parseEncryptedClaims(refreshToken)
         val tokenType = claims.header[TOKEN_TYPE_HEADER_KEY] ?: run {
             logger.error("Token type not found in header - claims($claims)")
@@ -106,10 +107,10 @@ class JWTTokenProvider(
             throw RuntimeException()
         }
 
-        return claims.payload[USER_ID_CLAIM_KEY] as? String ?: run {
+        return ObjectId(claims.payload[USER_ID_CLAIM_KEY] as? String ?: run {
             logger.error("Cannot parse userId from claims - claims($claims)")
             throw RuntimeException()
-        }
+        })
     }
 
     private fun generateAccessTokenExpiration() = Date(System.currentTimeMillis() + appProperties.token.expiration.access * 1000)
