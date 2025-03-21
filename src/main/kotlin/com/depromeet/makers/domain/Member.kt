@@ -17,7 +17,7 @@ class Member(
     companion object {
         fun create(name: String, age: Age): Member {
             return Member(
-                id = null,
+                id = ObjectId(),
                 name = name,
                 age = age,
                 role = MemberRole.USER,
