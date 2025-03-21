@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.support.RestClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
@@ -32,5 +33,11 @@ class WebConfig : WebMvcConfigurer {
             .builderFor(restClientAdapter)
             .build()
             .createClient(KakaoAuthClient::class.java)
+    }
+
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+            .allowedMethods("*")
+            .allowedOrigins("*")
     }
 }

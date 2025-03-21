@@ -3,6 +3,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.4.3"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("com.google.cloud.tools.jib") version "3.4.5"
 }
 
 group = "com.depromeet"
@@ -41,6 +42,32 @@ dependencies {
 kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
+}
+
+jib {
+	val imageName: String = project.name
+	val imageTag: String = System.getenv("GITHUB_SHA") ?: "dev"
+	val dockerUser: String = System.getenv("DOCKER_USER") ?: "ddingmin00"
+
+	from {
+		image = "amazoncorretto:21-alpine3.19-jdk"
+		platforms {
+			platform {
+				architecture = "arm64"
+				os = "linux"
+			}
+		}
+	}
+	to {
+		image = "$dockerUser/$imageName"
+		tags = setOf("latest", imageTag)
+	}
+	container {
+		creationTime = "USE_CURRENT_TIMESTAMP"
+		ports = listOf("8080")
+		environment = mapOf("timezone" to "Asia/Seoul")
+		user = "1000:1000"
 	}
 }
 

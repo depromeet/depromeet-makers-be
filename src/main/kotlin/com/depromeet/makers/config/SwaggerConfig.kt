@@ -16,7 +16,10 @@ class SwaggerConfig {
         .servers(
             listOf(
                 Server()
-                    .description("API 서버 URL")
+                    .description("API DEV 서버 URL")
+                    .url("https://dev-makers.ddmz.org"),
+                Server()
+                    .description("API LOCAL 서버 URL")
                     .url("http://localhost:8080"),
             ),
         )
