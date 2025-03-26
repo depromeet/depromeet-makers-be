@@ -76,6 +76,8 @@ class SessionController(
     ): SessionResponse {
         val session = sessionService.updateSession(
             sessionId = ObjectId(sessionId),
+            generation = request.generation,
+            week = request.week,
             title = request.title,
             description = request.description,
             place = request.place,

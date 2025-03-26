@@ -11,7 +11,12 @@ data class SessionRequest(
     val place: SessionPlace?,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
-)
+) {
+    init {
+        require(generation > 0) { "generation must be greater than 0" }
+        require(week > 0) { "week must be greater than 0" }
+    }
+}
 
 data class SessionGenerationRequest(
     val generation: Int,
