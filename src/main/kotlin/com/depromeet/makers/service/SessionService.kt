@@ -51,6 +51,8 @@ class SessionService(
 
     fun updateSession(
         sessionId: ObjectId,
+        generation: Int,
+        week: Int,
         title: String,
         description: String,
         place: SessionPlace?,
@@ -59,6 +61,8 @@ class SessionService(
     ): Session {
         val session = sessionRepository.findByIdOrNull(sessionId) ?: throw DomainException(ErrorCode.NOT_FOUND)
         session.update(
+            generation = generation,
+            week = week,
             title = title,
             description = description,
             place = place,
