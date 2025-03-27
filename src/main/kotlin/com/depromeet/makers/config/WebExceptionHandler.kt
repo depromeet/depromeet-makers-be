@@ -17,8 +17,8 @@ class WebExceptionHandler {
             return handleUnhandledException(e)
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ErrorResponse(e.errorCode.code, ""))
+        return ResponseEntity.status(errorCode.httpStatus)
+            .body(ErrorResponse(e.errorCode.code, e.errorCode.message))
     }
 
     @ExceptionHandler
