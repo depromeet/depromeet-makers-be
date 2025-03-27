@@ -3,6 +3,7 @@ package com.depromeet.makers.presentation.web
 import com.depromeet.makers.presentation.web.dto.request.AppleLoginRequest
 import com.depromeet.makers.presentation.web.dto.request.KakaoLoginRequest
 import com.depromeet.makers.presentation.web.dto.request.RefreshTokenRequest
+import com.depromeet.makers.presentation.web.dto.request.TestLoginRequest
 import com.depromeet.makers.presentation.web.dto.response.AuthenticationResponse
 import com.depromeet.makers.service.AuthService
 import io.swagger.v3.oas.annotations.Operation
@@ -36,8 +37,10 @@ class AuthController(
 
     @Operation(summary = "테스트 로그인", description = "테스트용 로그인을 수행합니다.")
     @PostMapping("/v1/auth/test")
-    fun testLogin(): AuthenticationResponse {
-        val loginResult = authService.testLogin()
+    fun testLogin(
+        @RequestBody testLoginRequest: TestLoginRequest,
+    ): AuthenticationResponse {
+        val loginResult = authService.testLogin(testLoginRequest.externalIdentifier)
         return AuthenticationResponse.from(loginResult)
     }
 
