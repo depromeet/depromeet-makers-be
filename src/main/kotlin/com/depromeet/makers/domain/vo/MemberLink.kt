@@ -1,8 +1,8 @@
 package com.depromeet.makers.domain.vo
 
-import com.depromeet.makers.domain.enums.Website
+import com.depromeet.makers.domain.enums.WebsiteType
 
 data class MemberLink(
-    val website: Website,
+    val website: WebsiteType,
     val link: String,
 )

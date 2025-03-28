@@ -1,6 +1,6 @@
 package com.depromeet.makers.domain.enums
 
-enum class Website {
+enum class WebsiteType {
     GITHUB,
     BLOG,
     LINKEDIN,
