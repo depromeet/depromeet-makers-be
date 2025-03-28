@@ -5,10 +5,12 @@ import com.depromeet.makers.components.SocialLoginProvider
 import com.depromeet.makers.domain.Member
 import com.depromeet.makers.domain.SocialCredentials
 import com.depromeet.makers.domain.SocialCredentialsKey
+import com.depromeet.makers.domain.enums.MemberPosition
+import com.depromeet.makers.domain.enums.MemberRole
+import com.depromeet.makers.domain.enums.MemberStatus
 import com.depromeet.makers.domain.enums.SocialCredentialsProvider
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
-import com.depromeet.makers.domain.vo.Age
 import com.depromeet.makers.domain.vo.TokenPair
 import com.depromeet.makers.repository.MemberRepository
 import com.depromeet.makers.repository.SocialCredentialsRepository
@@ -24,10 +26,10 @@ class AuthService(
     private val memberRepository: MemberRepository,
     private val socialCredentialsRepository: SocialCredentialsRepository,
 ) {
-    fun testLogin(): TokenPair {
+    fun testLogin(id: String): TokenPair {
         val socialCredentialsKey = SocialCredentialsKey(
             provider = SocialCredentialsProvider.TEST,
-            externalIdentifier = "test"
+            externalIdentifier = id,
         )
         return loginWithCredential(socialCredentialsKey)
     }
@@ -58,7 +60,15 @@ class AuthService(
 
     private fun loginWithCredential(socialCredentialsKey: SocialCredentialsKey): TokenPair {
         val retrievedMember = socialCredentialsRepository.findByIdOrNull(socialCredentialsKey)?.member ?: run {
-            val newMember = Member.create("", Age(10))
+            val newMember = Member.create(
+                name = "test",
+                email = "test",
+                deviceToken = "test",
+                position = MemberPosition.IOS,
+                role = MemberRole.ADMIN,
+                status = MemberStatus.REGISTERED,
+                teamHistory = emptyList(),
+            )
             memberRepository.save(newMember).also {
                 socialCredentialsRepository.save(SocialCredentials(socialCredentialsKey, it))
             }
