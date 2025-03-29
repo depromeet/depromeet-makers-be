@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -30,3 +29,6 @@ build/
 /out/
 
 application-local.yaml
+
+# env file
+.env
