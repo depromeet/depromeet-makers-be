@@ -27,6 +27,8 @@ class Member(
     var website: Set<MemberLink>,
     var skills: Set<String>,
 ) {
+    fun isPendingStatus(): Boolean = status == MemberStatus.PENDING
+
     companion object {
         fun create(
             name: String,

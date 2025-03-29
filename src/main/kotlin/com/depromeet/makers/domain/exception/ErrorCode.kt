@@ -10,12 +10,16 @@ enum class ErrorCode(
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 50000, "알 수 없는 오류가 발생했어요"),
 
     NOT_FOUND(HttpStatus.NOT_FOUND, 40000, "존재하지 않아요"),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, 40001, "잘못된 요청이에요"),
+    VERIFICATION_EXPIRED(HttpStatus.BAD_REQUEST, 40002, "인증 코드가 만료되었어요"),
 
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 40100, "권한이 없어요"),
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, 40101, "토큰이 없어요"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 40102, "토큰이 만료되었어요"),
     TOKEN_NOT_VALID(HttpStatus.UNAUTHORIZED, 40103, "토큰이 유효하지 않아요"),
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED, 40104, "인증되지 않았어요"),
+
+    FORBIDDEN(HttpStatus.FORBIDDEN, 40300, "접근 권한이 없어요"),
     ;
 
     fun isCriticalError(): Boolean {
