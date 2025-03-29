@@ -48,7 +48,13 @@ kotlin {
 jib {
 	val imageName: String = project.name
 	val imageTag: String = System.getenv("GITHUB_SHA") ?: "dev"
-	val dockerUser: String = System.getenv("DOCKER_USER") ?: "ddingmin00"
+	val dockerUser: String = "ddingmin00"
+
+	// 변수 값 로깅
+	println("🚀 JIB BUILD CONFIGURATION 🚀")
+	println("🔹 Image Name  : $imageName")
+	println("🔹 Image Tag   : $imageTag")
+	println("🔹 Docker User : $dockerUser")
 
 	from {
 		image = "amazoncorretto:21-alpine3.19-jdk"
