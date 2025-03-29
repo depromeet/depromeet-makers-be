@@ -1,5 +1,6 @@
 package com.depromeet.makers.service
 
+import com.depromeet.makers.components.EmailSender
 import com.depromeet.makers.components.JWTTokenProvider
 import com.depromeet.makers.components.SocialLoginProvider
 import com.depromeet.makers.domain.Member
@@ -33,6 +34,7 @@ class AuthService(
     private val memberRepository: MemberRepository,
     private val memberVerificationRepository: MemberVerificationRepository,
     private val socialCredentialsRepository: SocialCredentialsRepository,
+    private val emailSender: EmailSender,
 ) {
     fun testLogin(id: String): TokenPair {
         val socialCredentialsKey = SocialCredentialsKey(
@@ -150,8 +152,14 @@ class AuthService(
 
         val randomString = StringUtil.generateRandomString(6)
         memberVerificationRepository.save(MemberVerification.create(ObjectId(memberId), randomString))
-        // TODO: 이메일 발송
-        // sendEmail(member.email)
+
+        // 인증 이메일 발송
+        emailSender.sendEmailVerificationMail(
+            EmailSender.SendVerificationEmailRequest(
+                targetEmail = member.email,
+                code = randomString,
+            )
+        )
     }
 
     fun refreshWithRefreshToken(refreshToken: String): TokenPair {
