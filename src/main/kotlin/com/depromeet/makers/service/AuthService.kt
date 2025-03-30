@@ -8,19 +8,18 @@ import com.depromeet.makers.domain.MemberVerification
 import com.depromeet.makers.domain.MemberVerificationKey
 import com.depromeet.makers.domain.SocialCredentials
 import com.depromeet.makers.domain.SocialCredentialsKey
-import com.depromeet.makers.domain.enums.MemberPosition
 import com.depromeet.makers.domain.enums.MemberRole
 import com.depromeet.makers.domain.enums.MemberStatus
 import com.depromeet.makers.domain.enums.SocialCredentialsProvider
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
+import com.depromeet.makers.domain.vo.Code
 import com.depromeet.makers.domain.vo.TokenPair
 import com.depromeet.makers.presentation.web.dto.request.RegisterRequest
 import com.depromeet.makers.presentation.web.dto.request.RegisterWithVerifyRequest
 import com.depromeet.makers.repository.MemberRepository
 import com.depromeet.makers.repository.MemberVerificationRepository
 import com.depromeet.makers.repository.SocialCredentialsRepository
-import com.depromeet.makers.util.StringUtil
 import org.bson.types.ObjectId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -150,14 +149,14 @@ class AuthService(
     fun requestEmailVerification(memberId: String) {
         val member = memberRepository.findByIdOrNull(ObjectId(memberId)) ?: throw DomainException(ErrorCode.NOT_FOUND)
 
-        val randomString = StringUtil.generateRandomString(6)
-        memberVerificationRepository.save(MemberVerification.create(ObjectId(memberId), randomString))
+        val randomCode = Code.generate()
+        memberVerificationRepository.save(MemberVerification.create(ObjectId(memberId), randomCode))
 
         // 인증 이메일 발송
         emailSender.sendEmailVerificationMail(
             EmailSender.SendVerificationEmailRequest(
                 targetEmail = member.email,
-                code = randomString,
+                code = randomCode,
             )
         )
     }

@@ -1,5 +1,6 @@
 package com.depromeet.makers.domain
 
+import com.depromeet.makers.domain.vo.Code
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -18,12 +19,12 @@ class MemberVerification(
 
         fun create(
             memberId: ObjectId,
-            verificationCode: String,
+            verificationCode: Code,
         ): MemberVerification {
             return MemberVerification(
                 key = MemberVerificationKey(
                     memberId = memberId,
-                    verificationCode = verificationCode,
+                    verificationCode = verificationCode.code,
                 ),
                 expiresAt = LocalDateTime.now().plusMinutes(VERIFICATION_EXPIRE_MINUTES),
             )

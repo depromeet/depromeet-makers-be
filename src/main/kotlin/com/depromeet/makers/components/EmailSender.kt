@@ -1,5 +1,6 @@
 package com.depromeet.makers.components
 
+import com.depromeet.makers.domain.vo.Code
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
@@ -14,7 +15,7 @@ class EmailSender(
     fun sendEmailVerificationMail(request: SendVerificationEmailRequest) {
         val message = javaMailSender.createMimeMessage()
         val content = with(Context()) {
-            setVariable("code", request.code)
+            setVariable("code", request.code.code)
             springTemplateEngine.process("email-verification", this)
         }
 
@@ -28,6 +29,6 @@ class EmailSender(
 
     data class SendVerificationEmailRequest(
         val targetEmail: String,
-        val code: String,
+        val code: Code,
     )
 }
