@@ -33,6 +33,45 @@ class WebSecurityConfig {
 
     @Bean
     @Order(1)
+    fun adminSecurityFilterChain(
+        httpSecurity: HttpSecurity,
+        jwtTokenProvider: JWTTokenProvider,
+        handlerExceptionResolver: HandlerExceptionResolver,
+    ): SecurityFilterChain = httpSecurity
+        .securityMatcher("/admin/**")
+        .csrf { it.disable() }
+        .cors(Customizer.withDefaults())
+        .sessionManagement {
+            it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        }
+        .authorizeHttpRequests {
+            it.anyRequest().hasRole("hasRole('ADMIN')")
+        }
+        .addFilterBefore(
+            JWTAuthenticationFilter(jwtTokenProvider, handlerExceptionResolver),
+            UsernamePasswordAuthenticationFilter::class.java,
+        )
+        .exceptionHandling {
+            it.accessDeniedHandler { request, response, exception ->
+                handlerExceptionResolver.resolveException(
+                    request,
+                    response,
+                    null,
+                    DomainException(ErrorCode.UNAUTHORIZED),
+                )
+            }.authenticationEntryPoint { request, response, authException ->
+                handlerExceptionResolver.resolveException(
+                    request,
+                    response,
+                    null,
+                    DomainException(ErrorCode.UNAUTHENTICATED),
+                )
+            }
+        }
+        .build()
+
+    @Bean
+    @Order(2)
     fun securityFilterChain(
         httpSecurity: HttpSecurity,
         jwtTokenProvider: JWTTokenProvider,
@@ -71,6 +110,7 @@ class WebSecurityConfig {
         .build()
 
     companion object {
-        private val swaggerApiPatterns = arrayOf("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
+        private val swaggerApiPatterns =
+            arrayOf("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
     }
 }
