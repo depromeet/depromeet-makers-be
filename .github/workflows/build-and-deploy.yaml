@@ -1,7 +1,8 @@
 name: 이미지 빌드 & 푸쉬
 on:
+  workflow_dispatch:
   push:
-    branches: [ 'develop' ]
+    branches: [ 'main' ]
     paths:
       - '.github/workflows/**'
       - 'build.gradle.kts'
@@ -24,10 +25,10 @@ jobs:
       - name: GitHub 에서 레포 받아오기
         uses: actions/checkout@v3
 
-      - name: JDK17 준비하기
+      - name: JDK21 준비하기
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: 도커허브 로그인
@@ -41,17 +42,19 @@ jobs:
 
       - name: 이미지 빌드하고 푸쉬하기
         id: build-image
+        env:
+          GITHUB_SHA: ${{ env.short_commit }}
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          echo "image-tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT &&
-          chmod +x ./gradlew &&
-          export IMAGE_TAG=$(git rev-parse --short HEAD) &&
-          export IMAGE_NAME=${{ secrets.IMAGE_NAME }} &&
+          chmod +x ./gradlew
           ./gradlew jib
 
       - name: 도커 배포하기
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo docker service update makers_web --image ${{ secrets.IMAGE_NAME }}:${{ steps.build-image.outputs.image-tag }}
+          script: |
+            cd ${{ secrets.SSH_PATH }}
+            chmod +x ./deploy.sh && ./deploy.sh dev
