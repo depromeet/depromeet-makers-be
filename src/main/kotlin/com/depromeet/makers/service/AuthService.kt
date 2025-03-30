@@ -148,6 +148,9 @@ class AuthService(
 
     fun requestEmailVerification(memberId: String) {
         val member = memberRepository.findByIdOrNull(ObjectId(memberId)) ?: throw DomainException(ErrorCode.NOT_FOUND)
+        if (!member.isUnregisteredStatus()) {
+            throw DomainException(ErrorCode.BAD_REQUEST)
+        }
 
         val randomCode = Code.generate()
         memberVerificationRepository.save(MemberVerification.create(ObjectId(memberId), randomCode))
