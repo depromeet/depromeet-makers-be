@@ -20,6 +20,7 @@ spring:
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DB}
       field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+      auto-index-creation: true
 app:
   token:
     secretKey: ${TOKEN_SECRET_KEY}
