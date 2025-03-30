@@ -6,6 +6,7 @@ data class RegisterRequest(
     val name: String,
     val email: String,
     val position: MemberPosition,
+    val teamHistory: List<TeamHistoryRequest>,
 
     val appleLogin: AppleLoginRequest?,
     val kakaoLogin: KakaoLoginRequest?,
@@ -13,4 +14,9 @@ data class RegisterRequest(
     init {
         require(appleLogin != null || kakaoLogin != null) { "appleLogin or kakaoLogin must be provided" }
     }
+
+    data class TeamHistoryRequest(
+        val generation: Int,
+        val team: Int?,
+    )
 }

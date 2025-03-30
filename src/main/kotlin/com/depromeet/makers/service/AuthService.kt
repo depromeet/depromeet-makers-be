@@ -14,6 +14,7 @@ import com.depromeet.makers.domain.enums.SocialCredentialsProvider
 import com.depromeet.makers.domain.exception.DomainException
 import com.depromeet.makers.domain.exception.ErrorCode
 import com.depromeet.makers.domain.vo.Code
+import com.depromeet.makers.domain.vo.TeamHistory
 import com.depromeet.makers.domain.vo.TokenPair
 import com.depromeet.makers.presentation.web.dto.request.RegisterRequest
 import com.depromeet.makers.presentation.web.dto.request.RegisterWithVerifyRequest
@@ -102,7 +103,12 @@ class AuthService(
             position = request.position,
             role = MemberRole.USER,
             status = MemberStatus.PENDING,
-            teamHistory = emptyList(),
+            teamHistory = request.teamHistory.map {
+                TeamHistory(
+                    generation = it.generation,
+                    team = it.team,
+                )
+            },
         )
 
         // 해당 소셜 계정에 대해 계정 매핑
