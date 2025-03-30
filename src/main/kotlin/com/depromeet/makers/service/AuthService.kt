@@ -178,7 +178,13 @@ class AuthService(
 
             val previousMember = memberRepository.findFirstByEmail(email) ?: throw DomainException(ErrorCode.NOT_FOUND)
 
+            if (!previousMember.isUnregisteredStatus()) {
+                // 이미 등록된 계정일 경우 에러
+                throw DomainException(ErrorCode.NOT_FOUND)
+            }
+
             // 기가입자일 경우 소셜 계정 링크
+            memberRepository.save(previousMember.register())
             socialCredentialsRepository.save(SocialCredentials(socialCredentialsKey, previousMember))
             return@run previousMember
         }

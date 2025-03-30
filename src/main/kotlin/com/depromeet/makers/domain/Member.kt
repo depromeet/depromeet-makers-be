@@ -29,6 +29,13 @@ class Member(
 ) {
     fun isPendingStatus(): Boolean = status == MemberStatus.PENDING
 
+    fun isUnregisteredStatus(): Boolean = status == MemberStatus.UNREGISTERED
+
+    fun register(): Member {
+        status = MemberStatus.REGISTERED
+        return this
+    }
+
     companion object {
         fun create(
             name: String,
