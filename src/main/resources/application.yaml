@@ -1,6 +1,17 @@
 spring:
   application:
     name: depromeet-makers-be
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   data:
     mongodb:
       host: ${MONGO_HOST}
@@ -9,6 +20,7 @@ spring:
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DB}
       field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+      auto-index-creation: true
 app:
   token:
     secretKey: ${TOKEN_SECRET_KEY}

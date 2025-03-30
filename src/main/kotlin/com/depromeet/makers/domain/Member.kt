@@ -8,6 +8,7 @@ import com.depromeet.makers.domain.vo.MemberLink
 import com.depromeet.makers.domain.vo.TeamHistory
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("member")
@@ -15,6 +16,7 @@ class Member(
     @Id
     val id: ObjectId,
     var name: String,
+    @Indexed
     var email: String,
     var deviceToken: String?,
     var description: String?,
@@ -27,6 +29,15 @@ class Member(
     var website: Set<MemberLink>,
     var skills: Set<String>,
 ) {
+    fun isPendingStatus(): Boolean = status == MemberStatus.PENDING
+
+    fun isUnregisteredStatus(): Boolean = status == MemberStatus.UNREGISTERED
+
+    fun register(): Member {
+        status = MemberStatus.REGISTERED
+        return this
+    }
+
     companion object {
         fun create(
             name: String,

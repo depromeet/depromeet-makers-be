@@ -1,8 +1,11 @@
 package com.depromeet.makers.presentation.web
 
 import com.depromeet.makers.presentation.web.dto.request.AppleLoginRequest
+import com.depromeet.makers.presentation.web.dto.request.EmailVerifyRequest
 import com.depromeet.makers.presentation.web.dto.request.KakaoLoginRequest
 import com.depromeet.makers.presentation.web.dto.request.RefreshTokenRequest
+import com.depromeet.makers.presentation.web.dto.request.RegisterRequest
+import com.depromeet.makers.presentation.web.dto.request.RegisterWithVerifyRequest
 import com.depromeet.makers.presentation.web.dto.request.TestLoginRequest
 import com.depromeet.makers.presentation.web.dto.response.AuthenticationResponse
 import com.depromeet.makers.service.AuthService
@@ -34,6 +37,33 @@ class AuthController(
         val loginResult = authService.appleLogin(appleLoginRequest.identityToken)
         return AuthenticationResponse.from(loginResult)
     }
+
+    @Operation(summary = "수동 회원 가입", description = "어드민 승인이 필요한 수동 회원가입을 수행합니다.")
+    @PostMapping("/v1/auth/register")
+    fun register(
+        @RequestBody registerRequest: RegisterRequest,
+    ) {
+        authService.register(registerRequest)
+    }
+
+    @Operation(summary = "이메일 인증 기반 회원 가입", description = "이메일 인증을 통한 회원 가입을 수행합니다.")
+    @PostMapping("/v1/auth/verify")
+    fun register(
+        @RequestBody verifyRequest: RegisterWithVerifyRequest,
+    ): AuthenticationResponse {
+        val loginResult = authService.registerWithEmailVerify(verifyRequest)
+        return AuthenticationResponse.from(loginResult)
+    }
+
+    @Operation(summary = "이메일 인증 요청", description = "해당 사용자에 인증 요청을 시도합니다")
+    @PostMapping("/v1/auth/verify-request")
+    fun emailVerify(
+        @RequestBody verifyRequest: EmailVerifyRequest,
+    ) {
+        authService.requestEmailVerification(verifyRequest.memberId)
+    }
+
+
 
     @Operation(summary = "테스트 로그인", description = "테스트용 로그인을 수행합니다.")
     @PostMapping("/v1/auth/test")
